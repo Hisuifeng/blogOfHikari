@@ -197,7 +197,7 @@
     margin: 0;
     text-decoration: none;
     background: #e06c75;
-    color: #f9f7ed;
+    stroke: red;
     padding: 6px 8px;
     cursor: auto;
     border-radius: 5px;
@@ -205,6 +205,7 @@
     align-items: center;
     gap: 4px;
 }
+
 
 /* 摘要 */
 #articleList .article-digest {
@@ -251,10 +252,6 @@
 
 .page-resent-left {
     display: flex;
-}
-
-.canvas {
-
 }
 
 .canvas .circle {

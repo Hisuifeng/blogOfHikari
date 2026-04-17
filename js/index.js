@@ -1,3 +1,4 @@
+
 var page_welcome = document.getElementById("page-welcome");
 var background = document.getElementById("background-overlay");
 background.classList.remove("background-overlay")
