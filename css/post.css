@@ -1,0 +1,400 @@
+html,
+body {
+    /* 平滑滚动 */
+    position: relative;
+    height: 100%;
+    scroll-behavior: smooth;
+}
+
+/* ============================================
+   整体布局 & 响应式框架 (已优化自适应)
+   ============================================ */
+
+#page {
+    display: flex;
+    max-width: 1400px;
+    /* 大屏幕内容居中，避免过宽 */
+    margin: 0 auto;
+    padding: 0 20px;
+    gap: 30px;
+    /* 左右区域间距 */
+}
+
+/* 左侧目录区域 */
+#page-main-left {
+    width: 260px;
+    flex-shrink: 0;
+    /* 防止被右侧内容挤压 */
+    position: relative;
+    z-index: 1;
+}
+
+/* 右侧文章主体 */
+#page-main-right {
+    flex: 1;
+    min-width: 0;
+    /* 防止flex溢出 */
+    padding: 0;
+    /* 原 20% 内边距移除，改用内部卡片控制 */
+}
+
+/* ============================================
+   顶部 Banner (标题、字数统计)
+   ============================================ */
+.banner {
+    display: grid;
+    text-align: center;
+    z-index: -1;
+    left: 0;
+    top: 0;
+    height: 40vh;
+    width: 100%;
+}
+
+#title {
+    margin: auto;
+    font-size: 35px;
+}
+
+/* ============================================
+   目录卡片 (粘性定位 + 样式细节)
+   ============================================ */
+#toc {
+    background-color: #ffffff8a;
+    backdrop-filter: blur(6px);
+    position: sticky;
+    /* 改为粘性，随滚动固定于顶部 */
+    top: 40vh;
+    margin: 0;
+    box-shadow: 1px 1px 8px #999;
+    border: 1px solid #999;
+    border-radius: 5px;
+    width: 100%;
+    /* 撑满左侧容器 */
+    max-height: calc(100vh - 45vh);
+    overflow-y: auto;
+    /* 目录过长时滚动 */
+}
+
+#toc .toc-title {
+    font-size: 20px;
+    margin: 0;
+    padding: 12px 15px;
+    border-bottom: 1px dashed #ccc;
+    font-weight: bold;
+}
+
+#toc .toc-content {
+    padding: 10px 15px;
+}
+
+#toc .toc-content a {
+    font-size: 14px;
+    color: #666;
+    text-decoration: none;
+    display: block;
+    padding: 3px 0;
+    transition: all 0.2s;
+}
+
+#toc .toc-content a:hover {
+    color: #e06c75;
+    padding-left: 5px;
+}
+
+#toc .toc-content ul,
+#toc .toc-content ol {
+    padding-left: 18px;
+    list-style: none;
+    /* 隐藏默认标记 */
+    margin: 5px 0;
+}
+
+#toc .toc-content li {
+    position: relative;
+    line-height: 1.6;
+}
+
+/* 自定义目录列表标记 (替代 ::marker 更可控) */
+#toc .toc-content li::marker {
+    content: "·";
+    color: #999;
+    font-weight: bold;
+    position: absolute;
+    left: -15px;
+}
+
+/* 基础结构：一个作为进度条的元素 */
+.progress-bar {
+    height: 5px;
+    background: #e06c75;
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* 关键：将动画时间线关联到根滚动容器（即页面本身） */
+    animation-timeline: scroll(root);
+    /* 定义动画：从0%宽度变化到100%宽度 */
+    animation-name: scaleProgress;
+    animation-fill-mode: both;
+}
+
+/* 定义动画关键帧 */
+@keyframes scaleProgress {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+/* ============================================
+   文章内容卡片 (毛玻璃效果)
+   ============================================ */
+#article {
+    padding: 30px 40px;
+    box-shadow: 0px 0px 20px 10px #9999994a;
+    background-color: #ffffff8a;
+    backdrop-filter: blur(6px);
+    border-radius: 8px;
+}
+
+/* 文章内部元素间隔 */
+#article ol,
+#article ul {
+    padding-left: 40px;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+#article li {
+    margin: 10px 0;
+    line-height: 150%;
+}
+
+#article h1,
+#article h2,
+#article h3,
+#article h4,
+#article h5,
+#article h6 {
+    line-height: 40px;
+    margin: 20px 0 15px;
+}
+
+#article h1 {
+    font-size: 32px;
+    font-weight: 900;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e06c75;
+}
+
+#article h2 {
+    font-size: 25px;
+    border-left: 3px solid #73b1e0;
+    padding-left: 10px;
+}
+
+#article h3 {
+    font-size: 22px;
+}
+
+#article a {
+    color: #e06c75;
+    transition: color 0.2s;
+    text-decoration: none;
+}
+
+#article a:hover {
+    color: #a24f56;
+    border-bottom: 1.5px solid;
+}
+
+#article h1 a:hover {
+    border-bottom: none;
+}
+
+#article img {
+    max-width: 50%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0px 0px 8px #999;
+}
+
+#article p {
+    margin: 0 0 10px;
+    line-height: 30px;
+}
+
+#article blockquote {
+    border-left: 4px solid #a4a3a3;
+    backdrop-filter: blur(6px);
+    margin: 20px 0;
+}
+
+#article blockquote p {
+    margin: 15px 25px;
+    font-size: 15px;
+    color: #a4a3a3;
+}
+
+/* 表格样式 */
+#article table {
+    width: 100%;
+    margin: 1rem 0;
+    background-color: #ffffff00;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0px 0px 8px #999;
+    backdrop-filter: blur(6px);
+    border-collapse: collapse;
+}
+
+#article table thead {
+    background-color: #f8f9fa4d;
+}
+
+#article table th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #e9ecef20;
+}
+
+#article table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef23;
+}
+
+#article table tbody tr:nth-child(even) {
+    background-color: #f8f9fa3c;
+}
+
+#article table tbody tr:hover {
+    background-color: #ffffff;
+    transition: background-color 0.2s ease;
+}
+
+/* 代码块工具栏 */
+.code-toolbar {
+    border: 1px solid #f0f0f0;
+    box-shadow: 0px 0px 20px 10px #9999994a;
+    backdrop-filter: blur(6px);
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: #ffffff00;
+}
+
+/* ============================================
+   标签区域
+   ============================================ */
+.post-tags {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px dashed #ccc;
+}
+
+.post-tags span {
+    font-size: 14px;
+    color: #666;
+}
+
+.post-tags .tag a {
+    color: #e06c75;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+.post-tags .tag a:hover {
+    border-bottom: 1px solid #e06c75;
+}
+
+/* ============================================
+   响应式断点 (平板 & 手机)
+   ============================================ */
+@media (max-width: 1024px) {
+    #page {
+        padding: 0 15px;
+        gap: 20px;
+    }
+
+    #page-main-left {
+        width: 240px;
+    }
+
+    #article {
+        padding: 20px 25px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* 移动端隐藏左侧目录 */
+    #page-main-left {
+        display: none;
+    }
+
+    #page {
+        padding: 0 10px;
+    }
+
+    #article {
+        padding: 20px 15px;
+    }
+
+    #title {
+        font-size: 28px;
+    }
+
+    /* 代码块/表格允许横向滚动 */
+    .code-toolbar {
+        overflow-x: auto;
+    }
+
+    #article table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* 大屏幕优化：略微增加阅读舒适度 */
+@media (min-width: 1400px) {
+    #page {
+        max-width: 1300px;
+    }
+
+    #page-main-left {
+        width: 280px;
+    }
+}
+
+#toc::-webkit-scrollbar {
+	display: block;
+	/* 隐藏滚动条 */
+}
+/* 整体滚动条 */
+::-webkit-scrollbar {
+width: 8px; /* 滚动条宽度 */
+}
+
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+background: #f0f0f069; /* 轨道背景色 */
+border-radius: 10px; /* 圆角 */
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+background: #fefefed1; /* 滑块背景色 */
+border-radius: 10px; /* 圆角 */
+}
+
+/* 滑块悬停效果 */
+::-webkit-scrollbar-thumb:hover {
+background: #7d7d7de4;
+}

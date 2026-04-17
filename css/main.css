@@ -1,0 +1,102 @@
+/* #################### 全局 #################### */
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+*::-webkit-scrollbar {
+	display: none;
+	/* 隐藏滚动条 */
+}
+
+html,
+body,
+#main {
+	color: #555;
+	height: 100%;
+}
+
+/* #################### 全局 #################### */
+
+
+/* #################### 主页 #################### */
+
+canvas#live2dcanvas {
+	border: 0 !important;
+	left: 0;
+}
+
+.trans {
+	transition: all 180ms ease 0s;
+	/*淡出*/
+}
+
+.blank {
+	height: 50px;
+	width: 100%;
+}
+
+.background {
+	position: fixed;
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+	z-index: -1;
+}
+
+#img_background {
+	display: flex;
+	background: url("/images/wallpaper.jpg");
+	background-size: cover;
+	z-index: -1;
+	width: 110%;
+	height: 110%;
+	left: 0;
+	top: 0;
+	position: absolute;
+}
+
+.background-overlay {
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+	background-color: #ffffff8a;
+}
+
+/* #################### 自适应 #################### */
+
+/* 当浏览器窗口不超过最大800px时(意思就是小于800px时) */
+
+@media screen and (max-width: 800px) {
+	aside {
+		display: none;
+	}
+
+	#content {
+		padding-left: 0;
+	}
+
+	canvas#live2dcanvas {
+		display: none;
+	}
+}
+
+/*竖屏*/
+@media all and (orientation : portrait) {
+
+	aside {
+		display: none;
+	}
+
+	#content {
+		padding-left: 0;
+	}
+
+	canvas#live2dcanvas {
+		display: none;
+	}
+
+}
+
+/* #################### 自适应 #################### */

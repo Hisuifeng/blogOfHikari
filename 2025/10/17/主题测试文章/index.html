@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Hikari 的博客</title>
+	<meta charset="utf-8">
+	<!-- 引入配置文件 -->
+	
+<link rel="stylesheet" href="/css/main.css">
+
+
+		<!-- 字体图片库 -->
+		
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+			<!-- 代码高亮库 -->
+			
+<link rel="stylesheet" href="/lib/highlight/prism/prism.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+	<topnav>
+		
+<link rel="stylesheet" href="/css/topnav.css">
+
+<div class="topnav">
+	<div class="topnav_a_left">
+		<a href="/">Hikari's Blog - 光的博客</a>
+	</div>
+	<div class="topnav_a_right">
+	
+	
+        <a href="/about" class="menu-item-link">关于</a>
+    
+        <a href="/archives" class="menu-item-link">归档</a>
+    
+    
+    
+        <a class="trans" href="https://github.com/Hisuifeng" class="menu-item-link" target="_blank">github</a>
+    
+	</div>
+</div>
+
+<!-- 最尾部添加，这里就不列以前的代码了 -->
+<div id="toc" style="display: none;"></div>
+	</topnav>
+	<!-- 引入正文 -->
+	<div id="content">
+		<div class="background">
+			<div id="background-overlay" class="background-overlay">
+				<div id="img_background"></div>
+			</div>
+
+		</div>
+		
+<link rel="stylesheet" href="/css/post.css">
+
+	<div id="page">
+		<div id="page-main-left">
+			<div id="toc">
+				<p class="progress-bar">
+				<div class="toc-title">目录</div>
+				<div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%9F%BA%E7%A1%80%E6%B5%8B%E8%AF%95%E2%80%8B"><span class="toc-text">一、文本格式基础测试​</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%A0%87%E9%A2%98%E5%B1%82%E7%BA%A7%E2%80%8B"><span class="toc-text">1.1 标题层级​</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">一级标题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">二级标题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">三级标题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Inline-%E6%A0%BC%E5%BC%8F%E2%80%8B"><span class="toc-text">1.2 Inline 格式​</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE%E4%B8%93%E9%A1%B9%E6%B5%8B%E8%AF%95"><span class="toc-text">二、代码高亮专项测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Python"><span class="toc-text">Python</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-C"><span class="toc-text">C&#x2F;C++</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript"><span class="toc-text">JavaScript</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-CSS-%E4%BB%A3%E7%A0%81"><span class="toc-text">HTML + CSS 代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E8%AF%AD%E8%A8%80%E6%8C%87%E5%AE%9A%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-text">无语言指定代码块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9B%BE%E7%89%87%E6%B5%8B%E8%AF%95"><span class="toc-text">三、图片测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%88%97%E8%A1%A8%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="toc-text">二、列表功能测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-text">2.1 无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-text">2.2 有序列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%BC%95%E7%94%A8%E4%B8%8E%E8%A1%A8%E6%A0%BC%E6%B5%8B%E8%AF%95"><span class="toc-text">三、引用与表格测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%BC%95%E7%94%A8%E5%8A%9F%E8%83%BD"><span class="toc-text">3.1 引用功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E8%A1%A8%E6%A0%BC%E5%8A%9F%E8%83%BD"><span class="toc-text">3.2 表格功能</span></a></li></ol></li></ol></div>
+			</div>
+		</div>
+		<div id="page-main-right">
+			<div class="banner">
+				<div class="blank"></div>
+				<h id="title">主题测试文章</h>
+				<h3>本文全文共 2.6k 字，预计阅读： 2 mins.</h3>
+			</div>
+
+			<div id="article">
+				<div class="blank"></div>
+				<p>这是一篇测试文章，用于验证博客的核心渲染能力。</p>
+<h2 id="一、文本格式基础测试​"><a href="#一、文本格式基础测试​" class="headerlink" title="一、文本格式基础测试​"></a>一、文本格式基础测试​</h2><h3 id="1-1-标题层级​"><a href="#1-1-标题层级​" class="headerlink" title="1.1 标题层级​"></a>1.1 标题层级​</h3><h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><h3 id="1-2-Inline-格式​"><a href="#1-2-Inline-格式​" class="headerlink" title="1.2 Inline 格式​"></a>1.2 Inline 格式​</h3><p>加粗文本：<strong>加粗文本</strong>​<br>斜体文本：<em>斜体文本</em>​<br>加粗斜体：<em><strong>加粗斜体</strong></em>​<br>删除线：<del>删除线</del>​<br>行内代码：<code>printf(&quot;hello world&quot;)</code>​<br>超链接：</p>
+<ul>
+<li>外部链接：<a href="URL">这是一个超链接</a></li>
+<li>内部锚点：点击跳转到<a href="#%E4%B8%80%E3%80%81%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%9F%BA%E7%A1%80%E6%B5%8B%E8%AF%95%E2%80%8B">一、文本格式基础测试​</a></li>
+</ul>
+<h2 id="二、代码高亮专项测试"><a href="#二、代码高亮专项测试" class="headerlink" title="二、代码高亮专项测试"></a>二、代码高亮专项测试</h2><p>hexo自带的代码高亮太几把好看了，建议还是去高亮官网调。这里用的是棱镜<a target="_blank" rel="noopener" href="https://prismjs.com/">Prism</a>​进行的代码高亮。<br>这里用最经典的杨辉三角来展示代码高亮吧。​</p>
+<h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3><pre><code class="language-Python">n=int(input())
+nums=[[0]*n for i in range(n)]#初始化一个n*n的零阵
+for i in range(n):
+    for j in range(n):
+        if j==0:
+            nums[i][j]=1
+        else:
+            nums[i][j]=nums[i-1][j-1]+nums[i-1][j]
+        if nums[i][j]!=0:
+            print(nums[i][j],end=&#39; &#39;)
+    print()
+</code></pre>
+<h3 id="C-C"><a href="#C-C" class="headerlink" title="C&#x2F;C++"></a>C&#x2F;C++</h3><pre><code class="language-C">#include&lt;stdio.h&gt;
+int main()&#123;
+    int map[10][10] = &#123;0&#125;;//10*10的二维0数组为进行操作
+    /*分析，最左列为1，因此从第2列考虑
+    公式：ls[i][j]=ls[i-1][j-1]+ls[i-1][j]*/
+    for (int i = 0; i &lt; 10; i++)&#123;//初始化最左列
+        map[i][0] = 1;
+    &#125;
+    for (int i = 1; i &lt; 10; i++)&#123;
+        for (int j = 1; j &lt; 10; j++)&#123;
+                map[i][j] = map[i-1][j-1]+map[i-1][j];
+        &#125;
+    &#125;
+    for (int i = 0; i &lt; 10; i++)&#123;
+        for (int j = 0; j &lt; 10; j++)&#123;
+            if (map[i][j] != 0)&#123;//不输出0
+                printf(&quot;%5d&quot;,map[i][j]);
+            &#125;
+        &#125;
+        printf(&quot;\n&quot;);
+    &#125;
+    return 0;
+&#125;
+</code></pre>
+<h3 id="JavaScript"><a href="#JavaScript" class="headerlink" title="JavaScript"></a>JavaScript</h3><pre><code class="language-JavaScript">function yanghui(row) &#123;
+   // 创建一维数组
+   var arr = new Array(row);
+   // 创建二维数组
+   for (var i = 0; i &lt; arr.length; i++) &#123;
+       arr[i] = new Array(i + 1);
+   &#125;
+   // 循环赋值
+   for (var i = 0; i &lt; arr.length; i++) &#123;
+       for (var j = 0; j &lt; arr[i].length; j++) &#123;
+           if (j === 0 || i === j) &#123;
+               arr[i][j] = 1; // 首尾赋值为1
+           &#125; else &#123;
+               arr[i][j] = arr[i - 1][j] + arr[i - 1][j - 1]; // 中间值为上一行两个相邻数字之和
+           &#125;
+       &#125;
+   &#125;
+   // 打印三角
+   for (var i = 0; i &lt; arr.length; i++) &#123;
+       for (var j = 0; j &lt; arr[i].length; j++) &#123;
+           document.write(arr[i][j] + &quot; &quot;);
+       &#125;
+       document.write(&quot;&lt;br/&gt;&quot;);
+   &#125;
+&#125;
+// 调用函数，生成5行的杨辉三角
+yanghui(5);
+</code></pre>
+<h3 id="HTML-CSS-代码"><a href="#HTML-CSS-代码" class="headerlink" title="HTML + CSS 代码"></a>HTML + CSS 代码</h3><pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;zh-CN&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;代码高亮测试页面&lt;/title&gt;
+    &lt;style&gt;
+        .code-block &#123;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            padding: 16px;
+            font-family: &quot;Consolas&quot;, monospace;
+            overflow-x: auto; /* 处理长代码换行 */
+        &#125;
+        .title &#123;
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 600;
+        &#125;
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1 class=&quot;title&quot;&gt;代码高亮演示&lt;/h1&gt;
+    &lt;div class=&quot;code-block&quot;&gt;
+        // 这里是示例代码
+        console.log(&quot;Hello, Code Highlight!&quot;);
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="无语言指定代码块"><a href="#无语言指定代码块" class="headerlink" title="无语言指定代码块"></a>无语言指定代码块</h3><pre><code class="language-none">井inculde 《stdio。h》
+viod main()&#123;
+    char【10】c=“hello world”；
+    pRintf（“%f”，c）；
+&#125;
+</code></pre>
+<h2 id="三、图片测试"><a href="#三、图片测试" class="headerlink" title="三、图片测试"></a>三、图片测试</h2><p><img src="/images/wallpaper.jpg" alt="这是图片"></p>
+<h2 id="二、列表功能测试"><a href="#二、列表功能测试" class="headerlink" title="二、列表功能测试"></a>二、列表功能测试</h2><p>以下分别测试无序列表和有序列表。</p>
+<h3 id="2-1-无序列表"><a href="#2-1-无序列表" class="headerlink" title="2.1 无序列表"></a>2.1 无序列表</h3><ul>
+<li>测试项 1：无序列表默认样式</li>
+<li>测试项 2：嵌套无序列表<ul>
+<li>嵌套子项 A</li>
+<li>嵌套子项 B</li>
+</ul>
+</li>
+<li>测试项 3：列表与段落结合<br>这是列表项后的补充段落，用于验证列表与正文的间距和排版是否正常。</li>
+</ul>
+<h3 id="2-2-有序列表"><a href="#2-2-有序列表" class="headerlink" title="2.2 有序列表"></a>2.2 有序列表</h3><ol>
+<li>第一步：创建测试文档</li>
+<li>第二步：添加各类格式内容<ol>
+<li>子步骤 1：插入代码块</li>
+<li>子步骤 2：插入表格</li>
+</ol>
+</li>
+<li>第三步：预览并验证效果</li>
+</ol>
+<h2 id="三、引用与表格测试"><a href="#三、引用与表格测试" class="headerlink" title="三、引用与表格测试"></a>三、引用与表格测试</h2><h3 id="3-1-引用功能"><a href="#3-1-引用功能" class="headerlink" title="3.1 引用功能"></a>3.1 引用功能</h3><p>引用常用于引用外部观点或重要提示，测试长文本引用的换行和缩进效果：</p>
+<blockquote>
+<p>“Markdown 是一种轻量级标记语言，它允许人们使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档。”<br>—— 引自 Markdown 官方说明</p>
+</blockquote>
+<h3 id="3-2-表格功能"><a href="#3-2-表格功能" class="headerlink" title="3.2 表格功能"></a>3.2 表格功能</h3><p>表格用于展示结构化数据，测试表头、单元格对齐及内容换行效果：</p>
+<table>
+<thead>
+<tr>
+<th>功能模块</th>
+<th>测试内容</th>
+<th>预期效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文字格式</td>
+<td>粗体、斜体、删除线</td>
+<td>样式清晰，无错乱</td>
+</tr>
+<tr>
+<td>代码高亮</td>
+<td>多语言代码块</td>
+<td>语法颜色区分明显</td>
+</tr>
+<tr>
+<td>列表</td>
+<td>嵌套列表、列表+段落</td>
+<td>层级分明，间距合理</td>
+</tr>
+<tr>
+<td>表格</td>
+<td>多列数据、单元格换行</td>
+<td>边框完整，内容居中对齐</td>
+</tr>
+</tbody></table>
+
+					<div>
+						<h1></h1>
+						<p>Hikari 作于 2025-10-17 10:55:45 ，转载时请附上链接和作者。</p>
+						<p>『善待生活，热爱一切，常开怀大笑。』</p>
+						<h1></h1>
+					</div>
+					<section class="post-tags">
+						<div>
+							<span>标签:</span>
+							<span class="tag">
+								
+									
+										<a href="/tags/%E7%8C%8E%E5%A5%87/#">#猎奇 </a>
+										
+										<a href="/tags/%E6%9A%B4%E5%8A%9B/#">#暴力 </a>
+										
+											
+							</span>
+						</div>
+					</section>
+					<div class="blank"></div>
+			</div>
+		</div>
+	</div>
+	<!-- 引入代码高亮的 js -->
+	
+<script src="/lib/highlight/prism/prism.js"></script>
+
+	
+<script src="/js/post.js"></script>
+
+		
+	</div>
+
+	</div>
+
+
+			<!-- 引入 js 文件 -->
+			
+<script src="/js/main.js"></script>
+
+
+					<script type="text/javascript">
+						L2Dwidget.init();
+					</script>
+
+</body>
+
+</html>

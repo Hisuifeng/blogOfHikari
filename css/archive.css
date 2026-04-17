@@ -1,0 +1,45 @@
+.page {
+    width: 100%;
+}
+
+.page-main {
+    width: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.years {
+    font-size: 26px;
+}
+
+.article-li {
+    display: flex;
+    text-align: center;
+
+}
+
+
+#article-title {
+    font-size: 18px;
+    border-left: 3px solid #ffffffc5;
+    border-radius: 0px 5px 5px 0px;
+}
+
+#article-title a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.article-li:hover {
+    border-radius: 5px;
+    background-color: #ffffff99;
+    backdrop-filter: blur(6px);
+}
+.post-tags{
+    text-align: right;
+}
+.tag a{
+    text-decoration: none;
+    color: #555;
+}
