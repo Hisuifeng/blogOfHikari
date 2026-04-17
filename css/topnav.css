@@ -1,36 +1,161 @@
-/* 为顶部导航添加黑色背景色 */
+/* ===== 顶部导航基础样式 ===== */
 .topnav {
-    z-index: 100;
-    position: fixed;
-    top: 0;
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  min-height: 60px;
+  background-color: #cdcdcd9a;
+  box-shadow: 0 30px 45px #0000001a;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* 左侧标题 */
+.topnav_a_left a {
+  display: inline-block;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 14px 8px;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 右侧菜单（桌面横向排列，无动画） */
+.topnav_a_right {
+  display: block;
+  align-items: center;
+  gap: 4px;
+}
+
+.topnav_a_right a {
+  color: #ffffff;
+  text-align: center;
+  padding: 18px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.topnav_a_right a:hover {
+  background-color: #dddddd64;
+  color: #1e1e1e;
+}
+
+/* 汉堡按钮（默认隐藏） */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 8px 16px;
+  margin-left: auto;
+  min-width: 60px;
+  min-height: 60px;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 汉堡图标容器（用于旋转动画） */
+.hamburger span {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+}
+
+/* 打开状态时旋转 90 度，同时可以改为 ✕ 符号（仍保留旋转感） */
+.hamburger.is-open span {
+  transform: rotate(90deg);
+}
+
+.hamburger:hover {
+  opacity: 0.85;
+}
+
+/* ===== 移动端适配（≤ 768px） ===== */
+@media screen and (max-width: 768px) {
+  .topnav {
+    padding: 0 4px;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  /* 移动端菜单：默认隐藏，通过 max-height / opacity / padding 实现滑动淡入动画 */
+  .topnav_a_right {
+    display: flex;
+    /* 保持 flex 布局，但视觉隐藏 */
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
     width: 100%;
+    border-top: 1px solid transparent;
+    /* 隐藏时透明边框避免占位 */
+    margin-top: 0;
+
+    /* 动画核心属性 */
+    max-height: 0;
+    opacity: 0;
+    padding: 0 0;
     overflow: hidden;
 
-    background-color: #cdcdcd9a;
-    /* 设置背景颜色并使其部分透明 */
-    box-shadow: 0 30px 45px #0000001a;
-    /* 添加阴影效果 */
-    backdrop-filter: blur(6px);
-    /* 应用模糊效果 */
+    /* 过渡效果：max-height 使用较长的贝塞尔曲线保证平滑，opacity 同步 */
+    transition:
+      max-height 0.4s cubic-bezier(0.33, 1, 0.68, 1),
+      opacity 0.3s ease-in-out,
+      padding 0.3s ease-in-out,
+      border-color 0.1s ease;
+  }
+
+  /* 展开状态：恢复可见性与尺寸 */
+  .topnav_a_right.show {
+    max-height: 500px;
+    /* 足够容纳所有菜单项，可根据实际项目调整 */
+    opacity: 1;
+    padding: 8px 0 12px;
+    border-top-color: rgba(255, 255, 255, 0.2);
+    margin-top: 4px;
+    overflow: visible;
+    /* 展开后允许链接悬停效果可见 */
+  }
+
+  .topnav_a_right a {
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-right: 6px;
+    font-size: 1.1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(4px);
+    /* 链接自身的过渡 */
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .topnav_a_right a:hover {
+    background-color: rgba(220, 220, 220, 0.4);
+  }
+
+  .topnav_a_left a {
+    font-size: 1.1rem;
+    padding: 14px 4px;
+  }
 }
 
-/* 设置导航栏中链接的样式 */
-.topnav a{
-    color: #ffffff;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-}
-.topnav_a_left a{
-    float: left;
-}
-.topnav_a_right a{
-    float: right;
-}
-
-/* 更改鼠标悬停时链接的颜色 */
-.topnav_a_right a:hover {
-    background-color: #dddddd64;
-    color: black;
+/* 超小屏幕优化 */
+@media screen and (max-width: 400px) {
+  .topnav_a_left a {
+    font-size: 1rem;
+    white-space: normal;
+    word-break: keep-all;
+  }
 }

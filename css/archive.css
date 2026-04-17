@@ -1,45 +1,181 @@
+/* ========== 全局归档页面样式 ========== */
 .page {
     width: 100%;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 2rem 0 4rem;
 }
 
+/* 主要内容容器：居中、响应式宽度、舒适留白 */
 .page-main {
-    width: 50%;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 90%;
+    max-width: 880px;
+    margin: 0 auto;
+    background: transparent;
+    position: static;      /* 移除绝对定位，改用标准流 */
+    left: auto;
+    transform: none;
 }
 
+/* 年份标题 */
 .years {
-    font-size: 26px;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 2rem 0 1.25rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid #e2e8f0;
+    color: #1e293b;
+    letter-spacing: -0.3px;
+    position: relative;
 }
 
+/* 可选：年份标题前的装饰小点 */
+.years::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #c66169;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 12px;
+}
+
+/* 文章条目容器 */
 .article-li {
     display: flex;
-    text-align: center;
-
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff8a;
+    backdrop-filter: blur(6px);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
+    transition: all 0.25s ease;
 }
 
+.article-li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.15);
+}
 
+/* 文章日期 (月-日) */
+#article-date {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4b5563;
+    background: #ffffff8e;
+    padding: 0.2rem 0.8rem;
+    border-radius: 8px;
+    min-width: 70px;
+    text-align: center;
+    margin-right: 1rem;
+    letter-spacing: 0.3px;
+}
+
+/* 文章标题 */
 #article-title {
-    font-size: 18px;
-    border-left: 3px solid #ffffffc5;
-    border-radius: 0px 5px 5px 0px;
+    flex: 1;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+    border-left: none;        /* 移除原本的生硬左边框，用更柔和的分隔 */
+    padding-left: 0;
+    border-radius: 0;
 }
 
 #article-title a {
     text-decoration: none;
-    color: #000000;
+    color: #2c1618;
+    transition: color 0.2s;
+    display: inline-block;
+    line-height: 1.4;
 }
 
-.article-li:hover {
-    border-radius: 5px;
-    background-color: #ffffff99;
-    backdrop-filter: blur(6px);
+#article-title a:hover {
+    color: #e06c75;
+    text-decoration: underline;
+    text-underline-offset: 4px;
 }
-.post-tags{
+
+/* 标签容器 */
+.post-tags {
+    flex-shrink: 0;
+    margin-left: 1rem;
     text-align: right;
 }
-.tag a{
+
+.tag {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: flex-end;
+}
+
+.tag a {
+    display: inline-block;
     text-decoration: none;
-    color: #555;
+    color: #ffffff;
+    background: #e06c75;
+    font-size: 14px;
+    border-radius: 5px;
+    padding: 4px 10px;
+    transition: all 0.2s ease;
+}
+
+.tag a:hover {
+    background: #c66169;
+    color: #cccccc;
+}
+
+/* ========== 移动端适配 ========== */
+@media (max-width: 680px) {
+    .page-main {
+        width: 92%;
+        max-width: 100%;
+    }
+
+    .years {
+        font-size: 1.6rem;
+        margin-top: 1rem;
+    }
+
+    .article-li {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    #article-date {
+        margin-bottom: 0.5rem;
+        margin-right: 0;
+        font-size: 0.8rem;
+    }
+
+    #article-title {
+        margin-bottom: 0.6rem;
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    .post-tags {
+        margin-left: 0;
+        text-align: left;
+        width: 100%;
+    }
+
+    .tag {
+        justify-content: flex-start;
+    }
+}
+
+/* 无文章时的占位提示（可选，如果你的主题有的话） */
+.page-main:empty::before {
+    content: "📭 暂无归档文章";
+    display: block;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 1.1rem;
+    padding: 3rem;
 }

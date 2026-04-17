@@ -6,6 +6,29 @@ body {
     scroll-behavior: smooth;
 }
 
+#to_top {
+    position: fixed;
+    top: calc(100% - 200px);
+    left: calc(100% - 200px);
+}
+
+#to_top img {
+    width: 200px;
+}
+
+#to_top img:hover {
+    transform: rotate(360deg);
+    transition: all 0.2s;
+}
+
+#to_top img:active {
+    transform: scale(0.8);
+    /* 缩小到80% */
+    transform-origin: 0.5 0.5;
+    /* 基点为左上角 */
+    transition: all 0.2s;
+}
+
 /* ============================================
    整体布局 & 响应式框架 (已优化自适应)
    ============================================ */
@@ -64,14 +87,14 @@ body {
     backdrop-filter: blur(6px);
     position: sticky;
     /* 改为粘性，随滚动固定于顶部 */
-    top: 40vh;
+    top: 20vh;
     margin: 0;
     box-shadow: 1px 1px 8px #999;
     border: 1px solid #999;
     border-radius: 5px;
     width: 100%;
     /* 撑满左侧容器 */
-    max-height: calc(100vh - 45vh);
+    max-height: calc(100vh - 25vh);
     overflow-y: auto;
     /* 目录过长时滚动 */
 }
@@ -115,6 +138,38 @@ body {
     line-height: 1.6;
 }
 
+#toc img {
+    display: block;
+    text-align: center;
+    width: calc(100% - 40px);
+    margin: 20px;
+    border-radius: 8px;
+}
+
+#nick,
+.slogan {
+    text-indent: 20px;
+}
+
+#nick {
+    font-size: 18px;
+}
+
+.slogan {
+    font-size: 14px;
+}
+
+#nick a {
+    color: #e06c75;
+    transition: color 0.2s;
+    text-decoration: none;
+}
+
+#nick a:hover {
+    color: #a24f56;
+    border-bottom: 1.5px solid;
+}
+
 /* 自定义目录列表标记 (替代 ::marker 更可控) */
 #toc .toc-content li::marker {
     content: "·";
@@ -128,9 +183,6 @@ body {
 .progress-bar {
     height: 5px;
     background: #e06c75;
-    position: fixed;
-    top: 0;
-    left: 0;
     /* 关键：将动画时间线关联到根滚动容器（即页面本身） */
     animation-timeline: scroll(root);
     /* 定义动画：从0%宽度变化到100%宽度 */
@@ -374,27 +426,33 @@ body {
 }
 
 #toc::-webkit-scrollbar {
-	display: block;
-	/* 隐藏滚动条 */
+    display: block;
+    /* 隐藏滚动条 */
 }
+
 /* 整体滚动条 */
 ::-webkit-scrollbar {
-width: 8px; /* 滚动条宽度 */
+    width: 8px;
+    /* 滚动条宽度 */
 }
 
 /* 滚动条轨道 */
 ::-webkit-scrollbar-track {
-background: #f0f0f069; /* 轨道背景色 */
-border-radius: 10px; /* 圆角 */
+    background: #f0f0f069;
+    /* 轨道背景色 */
+    border-radius: 10px;
+    /* 圆角 */
 }
 
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
-background: #fefefed1; /* 滑块背景色 */
-border-radius: 10px; /* 圆角 */
+    background: #fefefed1;
+    /* 滑块背景色 */
+    border-radius: 10px;
+    /* 圆角 */
 }
 
 /* 滑块悬停效果 */
 ::-webkit-scrollbar-thumb:hover {
-background: #7d7d7de4;
+    background: #7d7d7de4;
 }
