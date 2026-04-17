@@ -3,7 +3,7 @@
 
 <head>
 	<title>Hikari 的博客</title>
-	<meta charset="utf-8">
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<!-- 引入配置文件 -->
 	
 <link rel="stylesheet" href="/css/main.css">
@@ -25,26 +25,114 @@
 		
 <link rel="stylesheet" href="/css/topnav.css">
 
-<div class="topnav">
-	<div class="topnav_a_left">
-		<a href="/">Hikari's Blog - 光的博客</a>
-	</div>
-	<div class="topnav_a_right">
-	
-	
-        <a href="/about" class="menu-item-link">关于</a>
-    
-        <a href="/archives" class="menu-item-link">归档</a>
-    
-    
-    
-        <a class="trans" href="https://github.com/Hisuifeng" class="menu-item-link" target="_blank">github</a>
-    
-	</div>
-</div>
+<nav class="topnav" aria-label="主导航">
+  <div class="topnav_a_left">
+    <a href="/">Hikari's Blog - 光的博客</a>
+  </div>
 
-<!-- 最尾部添加，这里就不列以前的代码了 -->
-<div id="toc" style="display: none;"></div>
+  <!-- 汉堡按钮：内部 span 用于动画和字符切换 -->
+  <button class="hamburger" id="hamburgerBtn" aria-label="菜单" aria-expanded="false" aria-controls="navMenu">
+    <span>☰</span>
+  </button>
+
+  <!-- 右侧菜单容器 -->
+  <div class="topnav_a_right" id="navMenu">
+    
+      <a href="/about" class="menu-item-link">关于</a>
+    
+      <a href="/archives" class="menu-item-link">归档</a>
+    
+    
+      <a class="trans" href="https://github.com/Hisuifeng" target="_blank" rel="noopener">github</a>
+    
+  </div>
+</nav>
+
+<script>
+  (function() {
+    const navMenu = document.getElementById('navMenu');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const hamburgerSpan = hamburgerBtn?.querySelector('span');
+    if (!navMenu || !hamburgerBtn || !hamburgerSpan) return;
+
+    const MOBILE_BREAKPOINT = 768;
+    let isMenuOpen = false;
+
+    // 更新图标：切换字符并控制旋转类
+    function updateIcon(open) {
+      hamburgerSpan.textContent = open ? '✕' : '☰';
+      hamburgerBtn.classList.toggle('is-open', open);
+      hamburgerBtn.setAttribute('aria-expanded', open);
+    }
+
+    function closeMenu() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function openMenu() {
+      if (window.innerWidth <= MOBILE_BREAKPOINT) {
+        navMenu.classList.add('show');
+        isMenuOpen = true;
+        updateIcon(true);
+      }
+    }
+
+    function toggleMenu(e) {
+      e.stopPropagation();
+      if (window.innerWidth > MOBILE_BREAKPOINT) return;
+      isMenuOpen ? closeMenu() : openMenu();
+    }
+
+    function resetForDesktop() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function handleViewportChange() {
+      if (window.innerWidth > MOBILE_BREAKPOINT) {
+        resetForDesktop();
+      } else {
+        if (isMenuOpen) closeMenu();
+        navMenu.classList.remove('show');
+        updateIcon(false);
+      }
+    }
+
+    hamburgerBtn.addEventListener('click', toggleMenu);
+
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) closeMenu();
+      });
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleViewportChange, 80);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) {
+        if (!hamburgerBtn.contains(e.target) && !navMenu.contains(e.target)) {
+          closeMenu();
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isMenuOpen && window.innerWidth <= MOBILE_BREAKPOINT) {
+        closeMenu();
+        hamburgerBtn.focus();
+      }
+    });
+
+    handleViewportChange();
+  })();
+</script>
 	</topnav>
 	<!-- 引入正文 -->
 	<div id="content">
@@ -60,20 +148,36 @@
 	<div id="page">
 		<div id="page-main-left">
 			<div id="toc">
-				<p class="progress-bar">
+				<p class="progress-bar"></p>
+				<div id="page-main-person">
+					<!-- <img src="https://t.alcy.cc/moez"> -->
+					<div id="person">
+						<img class="head" src="/about/images/head.jpg">
+						<div id="NickAndSlogan">
+							<b>
+								<p id="nick"><a href="/about"><ruby>
+											Hikari <rt>ひかり</rt>
+										</ruby> - 光</a></p>
+							</b>
+							<p class="slogan">有朋自远方来，不亦乐乎。</p>
+							<p class="slogan">欢迎你，我的朋友！ヾ(≧▽≦*)o</p>
+						</div>
+					</div>
+
+				</div>
 				<div class="toc-title">目录</div>
 				<div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%9F%BA%E7%A1%80%E6%B5%8B%E8%AF%95%E2%80%8B"><span class="toc-text">一、文本格式基础测试​</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%A0%87%E9%A2%98%E5%B1%82%E7%BA%A7%E2%80%8B"><span class="toc-text">1.1 标题层级​</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">一级标题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">二级标题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">三级标题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Inline-%E6%A0%BC%E5%BC%8F%E2%80%8B"><span class="toc-text">1.2 Inline 格式​</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE%E4%B8%93%E9%A1%B9%E6%B5%8B%E8%AF%95"><span class="toc-text">二、代码高亮专项测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Python"><span class="toc-text">Python</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-C"><span class="toc-text">C&#x2F;C++</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript"><span class="toc-text">JavaScript</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-CSS-%E4%BB%A3%E7%A0%81"><span class="toc-text">HTML + CSS 代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E8%AF%AD%E8%A8%80%E6%8C%87%E5%AE%9A%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-text">无语言指定代码块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9B%BE%E7%89%87%E6%B5%8B%E8%AF%95"><span class="toc-text">三、图片测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%88%97%E8%A1%A8%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="toc-text">二、列表功能测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-text">2.1 无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-text">2.2 有序列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%BC%95%E7%94%A8%E4%B8%8E%E8%A1%A8%E6%A0%BC%E6%B5%8B%E8%AF%95"><span class="toc-text">三、引用与表格测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%BC%95%E7%94%A8%E5%8A%9F%E8%83%BD"><span class="toc-text">3.1 引用功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E8%A1%A8%E6%A0%BC%E5%8A%9F%E8%83%BD"><span class="toc-text">3.2 表格功能</span></a></li></ol></li></ol></div>
 			</div>
 		</div>
 		<div id="page-main-right">
-			<div class="banner">
+			<div class="banner" name="top">
 				<div class="blank"></div>
 				<h id="title">主题测试文章</h>
-				<h3>本文全文共 2.6k 字，预计阅读： 2 mins.</h3>
+				<h3>本文全文共 2.6k 字，预计阅读： 2 mins.
+				</h3>
 			</div>
 
 			<div id="article">
-				<div class="blank"></div>
 				<p>这是一篇测试文章，用于验证博客的核心渲染能力。</p>
 <h2 id="一、文本格式基础测试​"><a href="#一、文本格式基础测试​" class="headerlink" title="一、文本格式基础测试​"></a>一、文本格式基础测试​</h2><h3 id="1-1-标题层级​"><a href="#1-1-标题层级​" class="headerlink" title="1.1 标题层级​"></a>1.1 标题层级​</h3><h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><h3 id="1-2-Inline-格式​"><a href="#1-2-Inline-格式​" class="headerlink" title="1.2 Inline 格式​"></a>1.2 Inline 格式​</h3><p>加粗文本：<strong>加粗文本</strong>​<br>斜体文本：<em>斜体文本</em>​<br>加粗斜体：<em><strong>加粗斜体</strong></em>​<br>删除线：<del>删除线</del>​<br>行内代码：<code>printf(&quot;hello world&quot;)</code>​<br>超链接：</p>
 <ul>
@@ -237,7 +341,7 @@ viod main()&#123;
 
 					<div>
 						<h1></h1>
-						<p>Hikari 作于 2025-10-17 10:55:45 ，转载时请附上链接和作者。</p>
+						<p>Hikari 作于 2025-10-14 10:55:45 ，转载时请附上链接和作者。</p>
 						<p>『善待生活，热爱一切，常开怀大笑。』</p>
 						<h1></h1>
 					</div>
@@ -258,15 +362,20 @@ viod main()&#123;
 					<div class="blank"></div>
 			</div>
 		</div>
+		<div id="to_top">
+			<a href="#top">
+				<img src="/images/to_top.png" alt="">
+				<p class="progress-bar"></p>
+			</a>
+		</div>
 	</div>
 	<!-- 引入代码高亮的 js -->
 	
 <script src="/lib/highlight/prism/prism.js"></script>
 
-	
+		
 <script src="/js/post.js"></script>
 
-		
 	</div>
 
 	</div>

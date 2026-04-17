@@ -3,7 +3,7 @@
 
 <head>
 	<title>Hikari 的博客</title>
-	<meta charset="utf-8">
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<!-- 引入配置文件 -->
 	
 <link rel="stylesheet" href="/css/main.css">
@@ -25,26 +25,114 @@
 		
 <link rel="stylesheet" href="/css/topnav.css">
 
-<div class="topnav">
-	<div class="topnav_a_left">
-		<a href="/">Hikari's Blog - 光的博客</a>
-	</div>
-	<div class="topnav_a_right">
-	
-	
-        <a href="/about" class="menu-item-link">关于</a>
-    
-        <a href="/archives" class="menu-item-link">归档</a>
-    
-    
-    
-        <a class="trans" href="https://github.com/Hisuifeng" class="menu-item-link" target="_blank">github</a>
-    
-	</div>
-</div>
+<nav class="topnav" aria-label="主导航">
+  <div class="topnav_a_left">
+    <a href="/">Hikari's Blog - 光的博客</a>
+  </div>
 
-<!-- 最尾部添加，这里就不列以前的代码了 -->
-<div id="toc" style="display: none;"></div>
+  <!-- 汉堡按钮：内部 span 用于动画和字符切换 -->
+  <button class="hamburger" id="hamburgerBtn" aria-label="菜单" aria-expanded="false" aria-controls="navMenu">
+    <span>☰</span>
+  </button>
+
+  <!-- 右侧菜单容器 -->
+  <div class="topnav_a_right" id="navMenu">
+    
+      <a href="/about" class="menu-item-link">关于</a>
+    
+      <a href="/archives" class="menu-item-link">归档</a>
+    
+    
+      <a class="trans" href="https://github.com/Hisuifeng" target="_blank" rel="noopener">github</a>
+    
+  </div>
+</nav>
+
+<script>
+  (function() {
+    const navMenu = document.getElementById('navMenu');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const hamburgerSpan = hamburgerBtn?.querySelector('span');
+    if (!navMenu || !hamburgerBtn || !hamburgerSpan) return;
+
+    const MOBILE_BREAKPOINT = 768;
+    let isMenuOpen = false;
+
+    // 更新图标：切换字符并控制旋转类
+    function updateIcon(open) {
+      hamburgerSpan.textContent = open ? '✕' : '☰';
+      hamburgerBtn.classList.toggle('is-open', open);
+      hamburgerBtn.setAttribute('aria-expanded', open);
+    }
+
+    function closeMenu() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function openMenu() {
+      if (window.innerWidth <= MOBILE_BREAKPOINT) {
+        navMenu.classList.add('show');
+        isMenuOpen = true;
+        updateIcon(true);
+      }
+    }
+
+    function toggleMenu(e) {
+      e.stopPropagation();
+      if (window.innerWidth > MOBILE_BREAKPOINT) return;
+      isMenuOpen ? closeMenu() : openMenu();
+    }
+
+    function resetForDesktop() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function handleViewportChange() {
+      if (window.innerWidth > MOBILE_BREAKPOINT) {
+        resetForDesktop();
+      } else {
+        if (isMenuOpen) closeMenu();
+        navMenu.classList.remove('show');
+        updateIcon(false);
+      }
+    }
+
+    hamburgerBtn.addEventListener('click', toggleMenu);
+
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) closeMenu();
+      });
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleViewportChange, 80);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) {
+        if (!hamburgerBtn.contains(e.target) && !navMenu.contains(e.target)) {
+          closeMenu();
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isMenuOpen && window.innerWidth <= MOBILE_BREAKPOINT) {
+        closeMenu();
+        hamburgerBtn.focus();
+      }
+    });
+
+    handleViewportChange();
+  })();
+</script>
 	</topnav>
 	<!-- 引入正文 -->
 	<div id="content">
@@ -60,20 +148,36 @@
 	<div id="page">
 		<div id="page-main-left">
 			<div id="toc">
-				<p class="progress-bar">
+				<p class="progress-bar"></p>
+				<div id="page-main-person">
+					<!-- <img src="https://t.alcy.cc/moez"> -->
+					<div id="person">
+						<img class="head" src="/about/images/head.jpg">
+						<div id="NickAndSlogan">
+							<b>
+								<p id="nick"><a href="/about"><ruby>
+											Hikari <rt>ひかり</rt>
+										</ruby> - 光</a></p>
+							</b>
+							<p class="slogan">有朋自远方来，不亦乐乎。</p>
+							<p class="slogan">欢迎你，我的朋友！ヾ(≧▽≦*)o</p>
+						</div>
+					</div>
+
+				</div>
 				<div class="toc-title">目录</div>
 				<div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%93%9D%E6%A1%A5%E6%9D%AF%E4%B9%8B%E6%AD%BB"><span class="toc-text">一、蓝桥杯之死</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9B%9E%E9%A1%BE%E8%93%9D%E6%A1%A5%E6%9D%AF"><span class="toc-text">二、回顾蓝桥杯</span></a></li></ol></div>
 			</div>
 		</div>
 		<div id="page-main-right">
-			<div class="banner">
+			<div class="banner" name="top">
 				<div class="blank"></div>
 				<h id="title">亡妻回忆录(蓝桥杯)</h>
-				<h3>本文全文共 786 字，预计阅读： 1 mins.</h3>
+				<h3>本文全文共 786 字，预计阅读： 1 mins.
+				</h3>
 			</div>
 
 			<div id="article">
-				<div class="blank"></div>
 				<h2 id="一、蓝桥杯之死"><a href="#一、蓝桥杯之死" class="headerlink" title="一、蓝桥杯之死"></a>一、蓝桥杯之死</h2><p>首先给图<br><img src="https://pic1.zhimg.com/v2-eb5504d02063cdadff781eca4a19ceb4_r.jpeg" alt="这是图片"><br><a target="_blank" rel="noopener" href="https://dasai.lanqiao.cn/notices/1708">官网链接</a><br>蓝桥杯的离去好像在人们意料之中。</p>
 <blockquote>
 <p>“一个点击就送的水赛，奖项有什么含金量？难道在简历里写上蓝桥杯是一件很自豪的事吗？”</p>
@@ -98,9 +202,7 @@
 							<span class="tag">
 								
 									
-										<a href="/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/#">#蓝桥杯 </a>
-										
-										<a href="/tags/%E6%8A%BD%E8%B1%A1/#">#抽象 </a>
+										<a href="/tags/%E9%97%B2%E8%81%8A%E5%90%B9%E6%B0%B4/#">#闲聊吹水 </a>
 										
 											
 							</span>
@@ -109,15 +211,20 @@
 					<div class="blank"></div>
 			</div>
 		</div>
+		<div id="to_top">
+			<a href="#top">
+				<img src="/images/to_top.png" alt="">
+				<p class="progress-bar"></p>
+			</a>
+		</div>
 	</div>
 	<!-- 引入代码高亮的 js -->
 	
 <script src="/lib/highlight/prism/prism.js"></script>
 
-	
+		
 <script src="/js/post.js"></script>
 
-		
 	</div>
 
 	</div>

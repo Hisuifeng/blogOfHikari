@@ -3,7 +3,7 @@
 
 <head>
 	<title>Hikari 的博客</title>
-	<meta charset="utf-8">
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<!-- 引入配置文件 -->
 	
 <link rel="stylesheet" href="/css/main.css">
@@ -25,26 +25,114 @@
 		
 <link rel="stylesheet" href="/css/topnav.css">
 
-<div class="topnav">
-	<div class="topnav_a_left">
-		<a href="/">Hikari's Blog - 光的博客</a>
-	</div>
-	<div class="topnav_a_right">
-	
-	
-        <a href="/about" class="menu-item-link">关于</a>
-    
-        <a href="/archives" class="menu-item-link">归档</a>
-    
-    
-    
-        <a class="trans" href="https://github.com/Hisuifeng" class="menu-item-link" target="_blank">github</a>
-    
-	</div>
-</div>
+<nav class="topnav" aria-label="主导航">
+  <div class="topnav_a_left">
+    <a href="/">Hikari's Blog - 光的博客</a>
+  </div>
 
-<!-- 最尾部添加，这里就不列以前的代码了 -->
-<div id="toc" style="display: none;"></div>
+  <!-- 汉堡按钮：内部 span 用于动画和字符切换 -->
+  <button class="hamburger" id="hamburgerBtn" aria-label="菜单" aria-expanded="false" aria-controls="navMenu">
+    <span>☰</span>
+  </button>
+
+  <!-- 右侧菜单容器 -->
+  <div class="topnav_a_right" id="navMenu">
+    
+      <a href="/about" class="menu-item-link">关于</a>
+    
+      <a href="/archives" class="menu-item-link">归档</a>
+    
+    
+      <a class="trans" href="https://github.com/Hisuifeng" target="_blank" rel="noopener">github</a>
+    
+  </div>
+</nav>
+
+<script>
+  (function() {
+    const navMenu = document.getElementById('navMenu');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const hamburgerSpan = hamburgerBtn?.querySelector('span');
+    if (!navMenu || !hamburgerBtn || !hamburgerSpan) return;
+
+    const MOBILE_BREAKPOINT = 768;
+    let isMenuOpen = false;
+
+    // 更新图标：切换字符并控制旋转类
+    function updateIcon(open) {
+      hamburgerSpan.textContent = open ? '✕' : '☰';
+      hamburgerBtn.classList.toggle('is-open', open);
+      hamburgerBtn.setAttribute('aria-expanded', open);
+    }
+
+    function closeMenu() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function openMenu() {
+      if (window.innerWidth <= MOBILE_BREAKPOINT) {
+        navMenu.classList.add('show');
+        isMenuOpen = true;
+        updateIcon(true);
+      }
+    }
+
+    function toggleMenu(e) {
+      e.stopPropagation();
+      if (window.innerWidth > MOBILE_BREAKPOINT) return;
+      isMenuOpen ? closeMenu() : openMenu();
+    }
+
+    function resetForDesktop() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function handleViewportChange() {
+      if (window.innerWidth > MOBILE_BREAKPOINT) {
+        resetForDesktop();
+      } else {
+        if (isMenuOpen) closeMenu();
+        navMenu.classList.remove('show');
+        updateIcon(false);
+      }
+    }
+
+    hamburgerBtn.addEventListener('click', toggleMenu);
+
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) closeMenu();
+      });
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleViewportChange, 80);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) {
+        if (!hamburgerBtn.contains(e.target) && !navMenu.contains(e.target)) {
+          closeMenu();
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isMenuOpen && window.innerWidth <= MOBILE_BREAKPOINT) {
+        closeMenu();
+        hamburgerBtn.focus();
+      }
+    });
+
+    handleViewportChange();
+  })();
+</script>
 	</topnav>
 	<!-- 引入正文 -->
 	<div id="content">
@@ -57,7 +145,7 @@
 		
 <link rel="stylesheet" href="/css/index.css">
 
-	<div id="page-welcome">
+	<div id="page-welcome" onclick="welcomeFunc()">
 
 		<div class="saying">
 			<h1 id="subsaying">&emsp;Live well,love lots,and laugh often.</h1>
@@ -73,55 +161,11 @@
 
 			<div id="page-main-resent">
 				<div class="blank"></div>
-				<h1>&nbsp;近期文章</h1>
+				<h1><ruby>近期文章<rt>Resent posts</rt></ruby></h1>
+				<p>这里是近期发表的文章。</p>
 				<div class="blank"></div>
 				<div id="articleList">
 					
-
-						<article class="article-li">
-							<img src="/images/wallpaper.jpg" alt="">
-							<div id="article-li-left">
-								<p><a class="article-title trans" href="/2025/10/14/hello-world/"># hello-world</a></p>
-								<div class="about">
-									<object class="article-date" data="svg\calendar.svg" type="image/svg+xml" width="16"
-										height="16"></object>
-									<p>2025-10-14
-									</p>
-									<object class="article-words" data="svg\file-text.svg" type="image/svg+xml"
-										width="16" height="16"></object>
-									<p>
-										372字
-									</p>
-								</div>
-								<p class="article-digest">
-									<a class="article-digest-a" href="/2025/10/14/hello-world/">
-										Welcome to Hexo! This is your very first post. Check documentation for more
-											...
-									</a>
-								</p>
-								<section class="post-tags">
-									<span class="tag">
-										
-											
-												<a class="trans" href="/tags/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/#">&nbsp;#你好世界&nbsp;
-												</a>
-												
-													
-									</span>
-								</section>
-								<div class=".blank"></div>
-							</div>
-
-							<a id="article-li-right" class="trans" href="/2025/10/14/hello-world/">
-								<object class="svg-midlle" data="svg\chevron-right.svg" type="image/svg+xml" width="24"
-									height="24">
-									Your browser does not support SVG
-								</object>
-							</a>
-
-						</article>
-
-						
 
 						<article class="article-li">
 							<img src="https://pic1.zhimg.com/v2-eb5504d02063cdadff781eca4a19ceb4_r.jpeg" alt="">
@@ -150,10 +194,7 @@
 									<span class="tag">
 										
 											
-												<a class="trans" href="/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/#">&nbsp;#蓝桥杯&nbsp;
-												</a>
-												
-												<a class="trans" href="/tags/%E6%8A%BD%E8%B1%A1/#">&nbsp;#抽象&nbsp;
+												<a class="trans" href="/tags/%E9%97%B2%E8%81%8A%E5%90%B9%E6%B0%B4/#">&nbsp;#闲聊吹水&nbsp;
 												</a>
 												
 													
@@ -176,11 +217,11 @@
 						<article class="article-li">
 							<img src="/images/wallpaper.jpg" alt="">
 							<div id="article-li-left">
-								<p><a class="article-title trans" href="/2025/10/17/主题测试文章/"># 主题测试文章</a></p>
+								<p><a class="article-title trans" href="/2025/10/14/主题测试文章/"># 主题测试文章</a></p>
 								<div class="about">
 									<object class="article-date" data="svg\calendar.svg" type="image/svg+xml" width="16"
 										height="16"></object>
-									<p>2025-10-17
+									<p>2025-10-14
 									</p>
 									<object class="article-words" data="svg\file-text.svg" type="image/svg+xml"
 										width="16" height="16"></object>
@@ -189,7 +230,7 @@
 									</p>
 								</div>
 								<p class="article-digest">
-									<a class="article-digest-a" href="/2025/10/17/主题测试文章/">
+									<a class="article-digest-a" href="/2025/10/14/主题测试文章/">
 										这是一篇测试文章，用于验证博客的核心渲染能力。
 一、文本格式基础测试​1.1 标题层级​一级标题二级标题三级标题1.2 Inline 格式​加粗文本：
 											...
@@ -211,7 +252,97 @@
 								<div class=".blank"></div>
 							</div>
 
-							<a id="article-li-right" class="trans" href="/2025/10/17/主题测试文章/">
+							<a id="article-li-right" class="trans" href="/2025/10/14/主题测试文章/">
+								<object class="svg-midlle" data="svg\chevron-right.svg" type="image/svg+xml" width="24"
+									height="24">
+									Your browser does not support SVG
+								</object>
+							</a>
+
+						</article>
+
+						
+
+						<article class="article-li">
+							<img src="/images/wallpaper.jpg" alt="">
+							<div id="article-li-left">
+								<p><a class="article-title trans" href="/2026/04/12/序章：升学/"># 序章：升学</a></p>
+								<div class="about">
+									<object class="article-date" data="svg\calendar.svg" type="image/svg+xml" width="16"
+										height="16"></object>
+									<p>2026-04-12
+									</p>
+									<object class="article-words" data="svg\file-text.svg" type="image/svg+xml"
+										width="16" height="16"></object>
+									<p>
+										924字
+									</p>
+								</div>
+								<p class="article-digest">
+									<a class="article-digest-a" href="/2026/04/12/序章：升学/">
+										我迎来了人生的第二个转折点——升学高中。对于升学的学校本人还是觉得非常满意。首先这个学校是我就读的当地的重点中学，这意味着我不需要住校，不住校就能多睡
+											...
+									</a>
+								</p>
+								<section class="post-tags">
+									<span class="tag">
+										
+											
+												<a class="trans" href="/tags/%E3%80%8A%E7%81%B0%E7%83%AC%E5%90%AF%E7%A4%BA%E5%BD%95%E3%80%8B/#">&nbsp;#《灰烬启示录》&nbsp;
+												</a>
+												
+													
+									</span>
+								</section>
+								<div class=".blank"></div>
+							</div>
+
+							<a id="article-li-right" class="trans" href="/2026/04/12/序章：升学/">
+								<object class="svg-midlle" data="svg\chevron-right.svg" type="image/svg+xml" width="24"
+									height="24">
+									Your browser does not support SVG
+								</object>
+							</a>
+
+						</article>
+
+						
+
+						<article class="article-li">
+							<img src="/images/wallpaper.jpg" alt="">
+							<div id="article-li-left">
+								<p><a class="article-title trans" href="/2026/04/16/第一章：为情所困的班长/"># 第一章：为情所困的班长</a></p>
+								<div class="about">
+									<object class="article-date" data="svg\calendar.svg" type="image/svg+xml" width="16"
+										height="16"></object>
+									<p>2026-04-16
+									</p>
+									<object class="article-words" data="svg\file-text.svg" type="image/svg+xml"
+										width="16" height="16"></object>
+									<p>
+										3k字
+									</p>
+								</div>
+								<p class="article-digest">
+									<a class="article-digest-a" href="/2026/04/16/第一章：为情所困的班长/">
+										我前面是魔丸班班长芩竹，今年17，爱好游戏，王者特长。他上分失败已经有8天。“我糙这马超，这么会玩我给你了！”像这样在下课光明正大掏出手机玩的操作，在
+											...
+									</a>
+								</p>
+								<section class="post-tags">
+									<span class="tag">
+										
+											
+												<a class="trans" href="/tags/%E3%80%8A%E7%81%B0%E7%83%AC%E5%90%AF%E7%A4%BA%E5%BD%95%E3%80%8B/#">&nbsp;#《灰烬启示录》&nbsp;
+												</a>
+												
+													
+									</span>
+								</section>
+								<div class=".blank"></div>
+							</div>
+
+							<a id="article-li-right" class="trans" href="/2026/04/16/第一章：为情所困的班长/">
 								<object class="svg-midlle" data="svg\chevron-right.svg" type="image/svg+xml" width="24"
 									height="24">
 									Your browser does not support SVG
@@ -228,7 +359,6 @@
 	
 <script src="/js/index.js"></script>
 
-	
 	</div>
 
 	</div>

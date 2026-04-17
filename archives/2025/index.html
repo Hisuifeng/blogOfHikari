@@ -3,7 +3,7 @@
 
 <head>
 	<title>Hikari 的博客</title>
-	<meta charset="utf-8">
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<!-- 引入配置文件 -->
 	
 <link rel="stylesheet" href="/css/main.css">
@@ -25,26 +25,114 @@
 		
 <link rel="stylesheet" href="/css/topnav.css">
 
-<div class="topnav">
-	<div class="topnav_a_left">
-		<a href="/">Hikari's Blog - 光的博客</a>
-	</div>
-	<div class="topnav_a_right">
-	
-	
-        <a href="/about" class="menu-item-link">关于</a>
-    
-        <a href="/archives" class="menu-item-link">归档</a>
-    
-    
-    
-        <a class="trans" href="https://github.com/Hisuifeng" class="menu-item-link" target="_blank">github</a>
-    
-	</div>
-</div>
+<nav class="topnav" aria-label="主导航">
+  <div class="topnav_a_left">
+    <a href="/">Hikari's Blog - 光的博客</a>
+  </div>
 
-<!-- 最尾部添加，这里就不列以前的代码了 -->
-<div id="toc" style="display: none;"></div>
+  <!-- 汉堡按钮：内部 span 用于动画和字符切换 -->
+  <button class="hamburger" id="hamburgerBtn" aria-label="菜单" aria-expanded="false" aria-controls="navMenu">
+    <span>☰</span>
+  </button>
+
+  <!-- 右侧菜单容器 -->
+  <div class="topnav_a_right" id="navMenu">
+    
+      <a href="/about" class="menu-item-link">关于</a>
+    
+      <a href="/archives" class="menu-item-link">归档</a>
+    
+    
+      <a class="trans" href="https://github.com/Hisuifeng" target="_blank" rel="noopener">github</a>
+    
+  </div>
+</nav>
+
+<script>
+  (function() {
+    const navMenu = document.getElementById('navMenu');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const hamburgerSpan = hamburgerBtn?.querySelector('span');
+    if (!navMenu || !hamburgerBtn || !hamburgerSpan) return;
+
+    const MOBILE_BREAKPOINT = 768;
+    let isMenuOpen = false;
+
+    // 更新图标：切换字符并控制旋转类
+    function updateIcon(open) {
+      hamburgerSpan.textContent = open ? '✕' : '☰';
+      hamburgerBtn.classList.toggle('is-open', open);
+      hamburgerBtn.setAttribute('aria-expanded', open);
+    }
+
+    function closeMenu() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function openMenu() {
+      if (window.innerWidth <= MOBILE_BREAKPOINT) {
+        navMenu.classList.add('show');
+        isMenuOpen = true;
+        updateIcon(true);
+      }
+    }
+
+    function toggleMenu(e) {
+      e.stopPropagation();
+      if (window.innerWidth > MOBILE_BREAKPOINT) return;
+      isMenuOpen ? closeMenu() : openMenu();
+    }
+
+    function resetForDesktop() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function handleViewportChange() {
+      if (window.innerWidth > MOBILE_BREAKPOINT) {
+        resetForDesktop();
+      } else {
+        if (isMenuOpen) closeMenu();
+        navMenu.classList.remove('show');
+        updateIcon(false);
+      }
+    }
+
+    hamburgerBtn.addEventListener('click', toggleMenu);
+
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) closeMenu();
+      });
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleViewportChange, 80);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) {
+        if (!hamburgerBtn.contains(e.target) && !navMenu.contains(e.target)) {
+          closeMenu();
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isMenuOpen && window.innerWidth <= MOBILE_BREAKPOINT) {
+        closeMenu();
+        hamburgerBtn.focus();
+      }
+    });
+
+    handleViewportChange();
+  })();
+</script>
 	</topnav>
 	<!-- 引入正文 -->
 	<div id="content">
@@ -80,33 +168,7 @@
                     <span class="tag">
                       
                         
-                          <a class="trans" href="/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/#">&nbsp;#蓝桥杯&nbsp;
-                          </a>
-                          
-                          <a class="trans" href="/tags/%E6%8A%BD%E8%B1%A1/#">&nbsp;#抽象&nbsp;
-                          </a>
-                          
-                            
-                    </span>
-                  </section>
-                </article>
-                
-          
-                <article class="article-li trans">
-                  <p id="article-date">
-                    10-17&nbsp;
-                  </p>
-                  <p id="article-title"><a href="/2025/10/17/主题测试文章/">
-                      &nbsp;主题测试文章&nbsp;
-                    </a></p>
-                  <section class="post-tags">
-                    <span class="tag">
-                      
-                        
-                          <a class="trans" href="/tags/%E7%8C%8E%E5%A5%87/#">&nbsp;#猎奇&nbsp;
-                          </a>
-                          
-                          <a class="trans" href="/tags/%E6%9A%B4%E5%8A%9B/#">&nbsp;#暴力&nbsp;
+                          <a class="trans" href="/tags/%E9%97%B2%E8%81%8A%E5%90%B9%E6%B0%B4/#">&nbsp;#闲聊吹水&nbsp;
                           </a>
                           
                             
@@ -119,14 +181,17 @@
                   <p id="article-date">
                     10-14&nbsp;
                   </p>
-                  <p id="article-title"><a href="/2025/10/14/hello-world/">
-                      &nbsp;Hello World&nbsp;
+                  <p id="article-title"><a href="/2025/10/14/主题测试文章/">
+                      &nbsp;主题测试文章&nbsp;
                     </a></p>
                   <section class="post-tags">
                     <span class="tag">
                       
                         
-                          <a class="trans" href="/tags/%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C/#">&nbsp;#你好世界&nbsp;
+                          <a class="trans" href="/tags/%E7%8C%8E%E5%A5%87/#">&nbsp;#猎奇&nbsp;
+                          </a>
+                          
+                          <a class="trans" href="/tags/%E6%9A%B4%E5%8A%9B/#">&nbsp;#暴力&nbsp;
                           </a>
                           
                             
