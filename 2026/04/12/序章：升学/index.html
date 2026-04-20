@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Hikari 的博客</title>
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<!-- 引入配置文件 -->
+	
+<link rel="stylesheet" href="/css/main.css">
+
+
+		<!-- 字体图片库 -->
+		
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+			<!-- 代码高亮库 -->
+			
+<link rel="stylesheet" href="/lib/highlight/prism/prism.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+	<topnav>
+		
+<link rel="stylesheet" href="/css/topnav.css">
+
+<nav class="topnav" aria-label="主导航">
+  <div class="topnav_a_left">
+    <a href="/">Hikari's Blog - 光的博客</a>
+  </div>
+
+  <!-- 汉堡按钮：内部 span 用于动画和字符切换 -->
+  <button class="hamburger" id="hamburgerBtn" aria-label="菜单" aria-expanded="false" aria-controls="navMenu">
+    <span>☰</span>
+  </button>
+
+  <!-- 右侧菜单容器 -->
+  <div class="topnav_a_right" id="navMenu">
+    
+      <a href="/about" class="menu-item-link">关于</a>
+    
+      <a href="/archives" class="menu-item-link">归档</a>
+    
+    
+      <a class="trans" href="https://github.com/Hisuifeng" target="_blank" rel="noopener">github</a>
+    
+  </div>
+</nav>
+
+<script>
+  (function() {
+    const navMenu = document.getElementById('navMenu');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const hamburgerSpan = hamburgerBtn?.querySelector('span');
+    if (!navMenu || !hamburgerBtn || !hamburgerSpan) return;
+
+    const MOBILE_BREAKPOINT = 768;
+    let isMenuOpen = false;
+
+    // 更新图标：切换字符并控制旋转类
+    function updateIcon(open) {
+      hamburgerSpan.textContent = open ? '✕' : '☰';
+      hamburgerBtn.classList.toggle('is-open', open);
+      hamburgerBtn.setAttribute('aria-expanded', open);
+    }
+
+    function closeMenu() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function openMenu() {
+      if (window.innerWidth <= MOBILE_BREAKPOINT) {
+        navMenu.classList.add('show');
+        isMenuOpen = true;
+        updateIcon(true);
+      }
+    }
+
+    function toggleMenu(e) {
+      e.stopPropagation();
+      if (window.innerWidth > MOBILE_BREAKPOINT) return;
+      isMenuOpen ? closeMenu() : openMenu();
+    }
+
+    function resetForDesktop() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function handleViewportChange() {
+      if (window.innerWidth > MOBILE_BREAKPOINT) {
+        resetForDesktop();
+      } else {
+        if (isMenuOpen) closeMenu();
+        navMenu.classList.remove('show');
+        updateIcon(false);
+      }
+    }
+
+    hamburgerBtn.addEventListener('click', toggleMenu);
+
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) closeMenu();
+      });
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleViewportChange, 80);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) {
+        if (!hamburgerBtn.contains(e.target) && !navMenu.contains(e.target)) {
+          closeMenu();
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isMenuOpen && window.innerWidth <= MOBILE_BREAKPOINT) {
+        closeMenu();
+        hamburgerBtn.focus();
+      }
+    });
+
+    handleViewportChange();
+  })();
+</script>
+	</topnav>
+	<!-- 引入正文 -->
+	<div id="content">
+		<div class="background">
+			<div id="background-overlay" class="background-overlay">
+				<div id="img_background"></div>
+			</div>
+
+		</div>
+		
+<link rel="stylesheet" href="/css/post.css">
+
+	<div id="page">
+		<div id="page-main-left">
+			<div id="toc">
+				<p class="progress-bar"></p>
+				<div id="page-main-person">
+					<!-- <img src="https://t.alcy.cc/moez"> -->
+					<div id="person">
+						<img class="head" src="/about/images/head.jpg">
+						<div id="NickAndSlogan">
+							<b>
+								<p id="nick"><a href="/about"><ruby>
+											Hikari <rt>ひかり</rt>
+										</ruby> - 光</a></p>
+							</b>
+							<p class="slogan">有朋自远方来，不亦乐乎。</p>
+							<p class="slogan">欢迎你，我的朋友！ヾ(≧▽≦*)o</p>
+						</div>
+					</div>
+
+				</div>
+				<div class="toc-title">目录</div>
+				<div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%8F%E7%AB%A0%EF%BC%9A%E5%8D%87%E5%AD%A6"><span class="toc-text">序章：升学</span></a></li></ol></div>
+			</div>
+		</div>
+		<div id="page-main-right">
+			<div class="banner" name="top">
+				<div class="blank"></div>
+				<h id="title">序章：升学</h>
+				<h3>本文全文共 758 字，预计阅读： 1 mins.
+				</h3>
+			</div>
+
+			<div id="article">
+				<h2 id="序章：升学"><a href="#序章：升学" class="headerlink" title="序章：升学"></a>序章：升学</h2><pre>
+    我叫凛光，今天迎来了我人生中的第二个转折点——升学高中。这个高中是远近闻名的魔法名校，但不过我过的日子却不是与书籍相伴的奋斗史。
+    “今天开始，我们就是一个班级的人了，不管你一前发生了什么，我希望大家都能好好的读书......”班主任在讲台上说到，下面就有许多奇奇怪怪的声音......
+    咔咔咔的，是魔方转动的声音。
+    哗哗哗的，是书本翻动的声音，只不过这个声音是在桌下抽屉传来的。
+    直到屏幕键盘音效从桌下传来我都还能忍住，但随后......
+    “注意看，这个男人叫小帅......”
+    全班都看向了中间第一排——没错，就是正面挨着讲台的那个第一排。
+    老师转头就走了，砰的一声关上了教室门。
+    我从未想过“好好读书”居然强调的是该读书的时候就应该读书的意思......
+    因为一些原因，我暂时被分配在特殊班，这个班又被成为魔丸班。
+    这个班是普通班里面的一个特殊班，班级里的学生是初中成绩达到了进校线，但却因为各种原因导致无法进入正常班级，比如说长期休学后复学，背负处分等。同时这个班也被认为是纯粹的魔丸班，常被认为是“问题儿童”聚集地。
+    在学校，班级按照学生成绩分类，被分为两个层次。普通班和尖子班。
+    在初中时本校成绩优越的学生可以直升到尖子班。当然，直升并不意味着你能一直呆在班级里，你得在一学期的分班考试中展现出实力才能真正的住在班级里。
+    在这基础上还能分。普通班也有层次，大致有三层。
+    第一层是普通班里面的尖子班，一般也被称为移民班，因为这里面的学生都是从其他顶尖学校被刷下来的，但是成绩又不至于沦落到重高都无法读的地步。
+    第二层是普通班的普通班，这层是学生最多的班级。“魔丸班”也在这个层次里。
+    现在我的目标很简单，那就是在不久之后的分班考试中彻底脱离魔丸班，这样才能开启崭新的高中生活。
+    于是乎，一部浩大的奋斗史书开始书写了......
+    （完）
+</pre>
+					<div>
+						<h1></h1>
+						<p>Hikari 作于 2026-04-12 19:11:58 ，转载时请附上链接和作者。</p>
+						<p>『善待生活，热爱一切，常开怀大笑。』</p>
+						<h1></h1>
+					</div>
+					<section class="post-tags">
+						<div>
+							<span>标签:</span>
+							<span class="tag">
+								
+									
+										<a href="/tags/%E3%80%8A%E7%81%B0%E7%83%AC%E5%90%AF%E7%A4%BA%E5%BD%95%E3%80%8B/#">#《灰烬启示录》 </a>
+										
+											
+							</span>
+						</div>
+					</section>
+					<div class="blank"></div>
+			</div>
+		</div>
+		<div id="to_top">
+			<a href="#top">
+				<img src="/images/to_top.png" alt="">
+				<p class="progress-bar"></p>
+			</a>
+		</div>
+	</div>
+	<!-- 引入代码高亮的 js -->
+	
+<script src="/lib/highlight/prism/prism.js"></script>
+
+		
+<script src="/js/post.js"></script>
+
+	</div>
+
+	</div>
+
+
+			<!-- 引入 js 文件 -->
+			
+<script src="/js/main.js"></script>
+
+
+					<script type="text/javascript">
+						L2Dwidget.init();
+					</script>
+
+</body>
+
+</html>
