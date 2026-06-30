@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Hikari 的博客</title>
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<!-- 引入配置文件 -->
+	
+<link rel="stylesheet" href="/css/main.css">
+
+
+		<!-- 字体图片库 -->
+		
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+			<!-- 代码高亮库 -->
+			
+<link rel="stylesheet" href="/lib/highlight/prism/prism.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+	<topnav>
+		
+<link rel="stylesheet" href="/css/topnav.css">
+
+<nav class="topnav" aria-label="主导航">
+  <div class="topnav_a_left">
+    <a href="/">Hikari's Blog - 光的博客</a>
+  </div>
+
+  <!-- 汉堡按钮：内部 span 用于动画和字符切换 -->
+  <button class="hamburger" id="hamburgerBtn" aria-label="菜单" aria-expanded="false" aria-controls="navMenu">
+    <span>☰</span>
+  </button>
+
+  <!-- 右侧菜单容器 -->
+  <div class="topnav_a_right" id="navMenu">
+    
+      <a href="/about" class="menu-item-link">关于</a>
+    
+      <a href="/archives" class="menu-item-link">归档</a>
+    
+    
+      <a class="trans" href="https://github.com/Hisuifeng" target="_blank" rel="noopener">github</a>
+    
+  </div>
+</nav>
+
+<script>
+  (function() {
+    const navMenu = document.getElementById('navMenu');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const hamburgerSpan = hamburgerBtn?.querySelector('span');
+    if (!navMenu || !hamburgerBtn || !hamburgerSpan) return;
+
+    const MOBILE_BREAKPOINT = 768;
+    let isMenuOpen = false;
+
+    // 更新图标：切换字符并控制旋转类
+    function updateIcon(open) {
+      hamburgerSpan.textContent = open ? '✕' : '☰';
+      hamburgerBtn.classList.toggle('is-open', open);
+      hamburgerBtn.setAttribute('aria-expanded', open);
+    }
+
+    function closeMenu() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function openMenu() {
+      if (window.innerWidth <= MOBILE_BREAKPOINT) {
+        navMenu.classList.add('show');
+        isMenuOpen = true;
+        updateIcon(true);
+      }
+    }
+
+    function toggleMenu(e) {
+      e.stopPropagation();
+      if (window.innerWidth > MOBILE_BREAKPOINT) return;
+      isMenuOpen ? closeMenu() : openMenu();
+    }
+
+    function resetForDesktop() {
+      navMenu.classList.remove('show');
+      isMenuOpen = false;
+      updateIcon(false);
+    }
+
+    function handleViewportChange() {
+      if (window.innerWidth > MOBILE_BREAKPOINT) {
+        resetForDesktop();
+      } else {
+        if (isMenuOpen) closeMenu();
+        navMenu.classList.remove('show');
+        updateIcon(false);
+      }
+    }
+
+    hamburgerBtn.addEventListener('click', toggleMenu);
+
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) closeMenu();
+      });
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleViewportChange, 80);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) {
+        if (!hamburgerBtn.contains(e.target) && !navMenu.contains(e.target)) {
+          closeMenu();
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isMenuOpen && window.innerWidth <= MOBILE_BREAKPOINT) {
+        closeMenu();
+        hamburgerBtn.focus();
+      }
+    });
+
+    handleViewportChange();
+  })();
+</script>
+	</topnav>
+	<!-- 引入正文 -->
+	<div id="content">
+		<div class="background">
+			<div id="background-overlay" class="background-overlay">
+				<div id="img_background"></div>
+			</div>
+
+		</div>
+		
+<link rel="stylesheet" href="/css/post.css">
+
+<div id="page">
+    <div id="page-main-left">
+        <div id="toc">
+            <p class="progress-bar"></p>
+            <div id="page-main-person">
+                <div id="person">
+                    <img class="head" src="/about/images/head.jpg">
+                    <div id="NickAndSlogan">
+                        <b>
+                            <p id="nick"><a href="/about"><ruby>Hikari <rt>ひかり</rt></ruby> - 光</a></p>
+                        </b>
+                        <p class="slogan">有朋自远方来，不亦乐乎。</p>
+                        <p class="slogan">欢迎你，我的朋友！ヾ(≧▽≦*)o</p>
+                    </div>
+                </div>
+            </div>
+            <div class="toc-title">目录</div>
+            <div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%8F%E7%AB%A0%EF%BC%9A%E7%81%B0%E7%83%AC%E5%90%AF%E7%A4%BA%E5%BD%95"><span class="toc-text">序章：灰烬启示录</span></a></li></ol></div>
+        </div>
+    </div>
+    <div id="page-main-right">
+        <div class="banner" name="top">
+            <div class="blank"></div>
+            <h id="title">序章：灰烬启示录</h>
+            <h3>本文全文共 651 字，预计阅读： 1 mins.</h3>
+        </div>
+        <div id="article">
+            <h2 id="序章：灰烬启示录"><a href="#序章：灰烬启示录" class="headerlink" title="序章：灰烬启示录"></a>序章：灰烬启示录</h2><blockquote>
+<p>作于2026-6-25 21:08</p>
+</blockquote>
+<pre>
+    灰烬，是熊熊烈火后唯一能够剩下的东西。
+    每当逢年过节，望着坟前燃烧的钱纸我总是会思考人生的意义。
+    人在死亡后，身体被燃烧成的灰烬是你能在世上留下的最后的实体。在生物上讲，这个是无机盐，它没有思想，没有记忆，没有你作为人的一切——它不再跟你有任何关系。
+    每个人最终都会变老，都会死去，就连人类这个物种总有一天也会灭亡，这不是概率问题，只是个时间问题。
+    对于个人来说，人一生会死三次：
+    第一次是物理死亡，当你停止心跳的那一刻。
+    第二次是最后一个记得你名字的人也走了。
+    第三次是关于你的一切记录、视频、照片也全部被抹煞了。
+    99%的人，三代以后时间会抹平你存在过的一切痕迹。整个世界再也找不到一丁点关于你来过的痕迹。
+    所以，人生的意义就是你活着的这短短的几十年尽可能去体验，它就是生命中的全部意义所在。
+    当我们抬头仰望星河，数亿万年以后，一切人类的文明都会烟消云散，什么王侯将相、达官显贵，风流墨客，在历史的长河当中在时间的尺度上，都不过是一粒微小的尘埃。
+    人生其实就是一场旅程，一场终究不会留下任何痕迹的旅程。
+    火越烧越大，形成的对流将纸钱燃烧后的灰烬卷起，股股热浪袭来，唤醒着我往昔的记忆。我不由得加快了扔纸钱的速度，但依旧无法掩盖内心的忧郁。
+    人生多少事，到头不过几句。同一个地方，不同的时间，不同的意境，不同的体会，不同的人物。
+    人生的意义到底是什么，这个问题没有答案。但是人生的样子是什么，在灰烬之前我们早已经历。
+    这本书，记录了少男少女们的故事，灰烬之前的故事......
+    （完）
+</pre>
+            <div>
+                <h1></h1>
+                <p>Hikari 作于 2026-06-30 20:53:12 ，转载时请附上链接和作者。</p>
+                <p>『善待生活，热爱一切，常开怀大笑。』</p>
+                <h1></h1>
+            </div>
+            <section class="post-tags">
+                <div>
+                    <span>标签:</span>
+                    <span class="tag">
+                        
+                            
+                                <a href="/tags/%E3%80%8A%E7%81%B0%E7%83%AC%E5%90%AF%E7%A4%BA%E5%BD%95%E3%80%8B/#">#《灰烬启示录》 </a>
+                            
+                        
+                    </span>
+                </div>
+            </section>
+            <div class="blank"></div>
+        </div>
+    </div>
+</div>
+
+<!-- 移动端目录抽屉 -->
+<div id="mobile-toc-overlay" class="mobile-toc-overlay">
+    <div class="mobile-toc-panel">
+        <div class="mobile-toc-header">
+            <span class="toc-title">目录</span>
+            <span class="mobile-toc-close">✕</span>
+        </div>
+        <div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%8F%E7%AB%A0%EF%BC%9A%E7%81%B0%E7%83%AC%E5%90%AF%E7%A4%BA%E5%BD%95"><span class="toc-text">序章：灰烬启示录</span></a></li></ol></div>
+    </div>
+</div>
+
+<!-- 悬浮操作菜单（自适应：大屏直接返回顶部，小屏展开菜单） -->
+<div id="floating-menu" class="floating-action-menu">
+    <!-- 主按钮（带进度条） -->
+    <div class="menu-trigger">
+        <img src="/images/to_top.png" alt="返回顶部">
+        <p class="progress-bar"></p>
+    </div>
+    <!-- 子按钮组（仅小屏有效） -->
+    <div class="menu-actions">
+        <a class="menu-item back-to-top" href="#top" title="返回顶部">
+            <span>↑</span>
+        </a>
+        <div class="menu-item show-toc" id="btn-show-toc" title="显示目录">
+            <span>☰</span>
+        </div>
+    </div>
+</div>
+
+
+<script src="/lib/highlight/prism/prism.js"></script>
+
+
+<script src="/js/post.js"></script>
+
+	</div>
+
+	</div>
+
+
+			<!-- 引入 js 文件 -->
+			
+<script src="/js/main.js"></script>
+
+
+					<script type="text/javascript">
+						L2Dwidget.init();
+					</script>
+
+</body>
+
+</html>
