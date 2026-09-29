@@ -1,0 +1,48 @@
+/* ===== 页脚 ===== */
+.footer {
+	border-top: 1px solid var(--c-border);
+	background: var(--c-surface);
+	margin-top: 40px;
+	padding: 24px 0;
+	font-size: 13px;
+	color: var(--c-muted);
+}
+
+.footer p {
+	margin: 4px 0;
+}
+
+.footer-main {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px 20px;
+}
+
+.footer a {
+	color: var(--c-muted);
+	border-bottom: 1px solid transparent;
+}
+
+.footer a:hover {
+	color: var(--c-primary);
+	border-bottom-color: var(--c-primary);
+}
+
+.footer-saying {
+	margin-top: 12px;
+	padding-top: 12px;
+	border-top: 1px dashed var(--c-border);
+	color: var(--c-faint);
+	font-size: 12px;
+	text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+	.footer-main {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+}

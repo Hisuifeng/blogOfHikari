@@ -1,437 +1,469 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 
 <head>
-	<title>Hikari 的博客</title>
-	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<!-- 引入配置文件 -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+	<meta name="theme-color" content="#ffffff">
+	<title>
+		Hikari 的博客
+	</title>
+	<meta name="description" content="Hikari 的个人博客，记录小说、技术笔记和随笔。">
+	
+	<meta name="keywords" content="Hexo,博客,随笔,音游">
+	
+	
+	
+	
 	
 <link rel="stylesheet" href="/css/main.css">
 
-
-		<!-- 字体图片库 -->
-		
+	
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-
-			<!-- 代码高亮库 -->
-			
+	
+	
 <link rel="stylesheet" href="/lib/highlight/prism/prism.css">
 
+		
+	
+<link rel="stylesheet" href="/lib/highlight/prism/prism-line-numbers.css">
+
+		
+	
+	
+<link rel="stylesheet" href="/css/topnav.css">
+
+	
+<link rel="stylesheet" href="/css/footer.css">
+
+	
+<link rel="stylesheet" href="/css/code.css">
+
+	
+	
+<link rel="stylesheet" href="/css/anim.css">
+
+	
+	
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
-	<topnav>
-		
-<link rel="stylesheet" href="/css/topnav.css">
+	
+	<a class="skip-link" href="#main">跳到正文</a>
 
-<nav class="topnav" aria-label="主导航">
-  <div class="topnav_a_left">
-    <a href="/">Hikari's Blog - 光的博客</a>
-  </div>
+	<header class="topnav" id="top">
+	<div class="topnav-inner">
+		<a class="brand" href="/">
+			Hikari 的博客
+		</a>
 
-  <!-- 汉堡按钮：内部 span 用于动画和字符切换 -->
-  <button class="hamburger" id="hamburgerBtn" aria-label="菜单" aria-expanded="false" aria-controls="navMenu">
-    <span>☰</span>
-  </button>
+		<button class="hamburger" id="hamburger" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="nav-menu">
+			<span class="hamburger-bar"></span>
+			<span class="hamburger-bar"></span>
+			<span class="hamburger-bar"></span>
+		</button>
 
-  <!-- 右侧菜单容器 -->
-  <div class="topnav_a_right" id="navMenu">
-    
-      <a href="/about" class="menu-item-link">关于</a>
-    
-      <a href="/archives" class="menu-item-link">归档</a>
-    
-    
-      <a class="trans" href="https://github.com/Hisuifeng" target="_blank" rel="noopener">github</a>
-    
-  </div>
-</nav>
+		<nav class="nav-menu" id="nav-menu" aria-label="主导航">
+			
+				<a href="/" data-nav="/">首页</a>
+			
+				<a href="/archives" data-nav="/archives">归档</a>
+			
+				<a href="/tags" data-nav="/tags">标签</a>
+			
+				<a href="/categories" data-nav="/categories">分类</a>
+			
+				<a href="/links" data-nav="/links">友链</a>
+			
+				<a href="/search" data-nav="/search">搜索</a>
+			
+				<a href="/about" data-nav="/about">关于</a>
+			
+			
+				
+				<a href="https://github.com/Hisuifeng" class="nav-external" target="_blank" rel="noopener noreferrer" title="github">
+					
+<i class="fa fa-github" aria-hidden="true"></i>
+<span class="sr-only">github</span>
+				</a>
+			
+		</nav>
+	</div>
+</header>
 
-<script>
-  (function() {
-    const navMenu = document.getElementById('navMenu');
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const hamburgerSpan = hamburgerBtn?.querySelector('span');
-    if (!navMenu || !hamburgerBtn || !hamburgerSpan) return;
 
-    const MOBILE_BREAKPOINT = 768;
-    let isMenuOpen = false;
-
-    // 更新图标：切换字符并控制旋转类
-    function updateIcon(open) {
-      hamburgerSpan.textContent = open ? '✕' : '☰';
-      hamburgerBtn.classList.toggle('is-open', open);
-      hamburgerBtn.setAttribute('aria-expanded', open);
-    }
-
-    function closeMenu() {
-      navMenu.classList.remove('show');
-      isMenuOpen = false;
-      updateIcon(false);
-    }
-
-    function openMenu() {
-      if (window.innerWidth <= MOBILE_BREAKPOINT) {
-        navMenu.classList.add('show');
-        isMenuOpen = true;
-        updateIcon(true);
-      }
-    }
-
-    function toggleMenu(e) {
-      e.stopPropagation();
-      if (window.innerWidth > MOBILE_BREAKPOINT) return;
-      isMenuOpen ? closeMenu() : openMenu();
-    }
-
-    function resetForDesktop() {
-      navMenu.classList.remove('show');
-      isMenuOpen = false;
-      updateIcon(false);
-    }
-
-    function handleViewportChange() {
-      if (window.innerWidth > MOBILE_BREAKPOINT) {
-        resetForDesktop();
-      } else {
-        if (isMenuOpen) closeMenu();
-        navMenu.classList.remove('show');
-        updateIcon(false);
-      }
-    }
-
-    hamburgerBtn.addEventListener('click', toggleMenu);
-
-    navMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) closeMenu();
-      });
-    });
-
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(handleViewportChange, 80);
-    });
-
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) {
-        if (!hamburgerBtn.contains(e.target) && !navMenu.contains(e.target)) {
-          closeMenu();
-        }
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isMenuOpen && window.innerWidth <= MOBILE_BREAKPOINT) {
-        closeMenu();
-        hamburgerBtn.focus();
-      }
-    });
-
-    handleViewportChange();
-  })();
-</script>
-	</topnav>
-	<!-- 引入正文 -->
-	<div id="content">
-		<div class="background">
-			<div id="background-overlay" class="background-overlay">
-				<div id="img_background"></div>
-			</div>
-
-		</div>
+	
+	
+	<div id="content" tabindex="-1" class="has-hero">
 		
 <link rel="stylesheet" href="/css/index.css">
 
-	<div id="page-welcome" onclick="welcomeFunc()">
 
-		<div class="saying">
-			<h1 id="subsaying">&emsp;Live well,love lots,and laugh often.</h1>
-			<h1 id="saying">『善待生活，热爱一切，常开怀大笑。』</h1>
-		</div>
-		<h2 id="saying-author">—— Hikari</h2>
-		<object class="saying-next" data="svg\chevron-down.svg" type="image/svg+xml" width="30" height="30"></object>
+<link rel="stylesheet" href="/css/list.css">
+
+
+<link rel="stylesheet" href="/css/side-card.css">
+
+
+<link rel="stylesheet" href="/css/blocks.css">
+
+
+
+
+<section class="hero hero-has-bg">
+	
+		<span class="hero-bg" style="background-image:url('/images/wallpaper.jpg');opacity:0.32;--hero-speed:28s" aria-hidden="true"></span>
+	
+	<div class="wrap">
+		
+			<p class="hero-sub">Live well,love lots,and laugh often.</p>
+		
+		
+			<h1 class="hero-saying">善待生活，热爱一切，常开怀大笑。</h1>
+		
+		
+			<p class="hero-author">&mdash; Hikari</p>
+		
 	</div>
+</section>
 
-	<div id="page">
-		<div class="blank"></div>
-		<div id="page-main">
-
-			<div id="page-main-resent">
-				<div class="blank"></div>
-				<h1><ruby>近期文章<rt>Resent posts</rt></ruby></h1>
-				<p>这里是近期发表的文章。</p>
-				<div class="blank"></div>
-				<div id="articleList">
-					
-
-						<article class="article-li">
-							<img src="/images/wallpaper.jpg" alt="">
-							<div id="article-li-left">
-								<p><a class="article-title trans" href="/2025/10/14/主题测试文章/"># 主题测试文章</a></p>
-								<div class="about">
-									<object class="article-date" data="svg\calendar.svg" type="image/svg+xml" width="16"
-										height="16"></object>
-									<p>2025-10-14
-									</p>
-									<object class="article-words" data="svg\file-text.svg" type="image/svg+xml"
-										width="16" height="16"></object>
-									<p>
-										2.6k字
-									</p>
-								</div>
-								<p class="article-digest">
-									<a class="article-digest-a" href="/2025/10/14/主题测试文章/">
-										这是一篇测试文章，用于验证博客的核心渲染能力。
-一、文本格式基础测试​1.1 标题层级​一级标题二级标题三级标题1.2 Inline 格式​加粗文本：
-											...
-									</a>
-								</p>
-								<section class="post-tags">
-									<span class="tag">
-										
-											
-												<a class="trans" href="/tags/%E7%8C%8E%E5%A5%87/#">&nbsp;#猎奇&nbsp;
-												</a>
-												
-												<a class="trans" href="/tags/%E6%9A%B4%E5%8A%9B/#">&nbsp;#暴力&nbsp;
-												</a>
-												
-													
-									</span>
-								</section>
-								<div class=".blank"></div>
-							</div>
-
-							<a id="article-li-right" class="trans" href="/2025/10/14/主题测试文章/">
-								<object class="svg-midlle" data="svg\chevron-right.svg" type="image/svg+xml" width="24"
-									height="24">
-									Your browser does not support SVG
-								</object>
-							</a>
-
-						</article>
-
-						
-
-						<article class="article-li">
-							<img src="https://pic1.zhimg.com/v2-eb5504d02063cdadff781eca4a19ceb4_r.jpeg" alt="">
-							<div id="article-li-left">
-								<p><a class="article-title trans" href="/2025/10/20/亡妻回忆录(蓝桥杯)/"># 亡妻回忆录(蓝桥杯)</a></p>
-								<div class="about">
-									<object class="article-date" data="svg\calendar.svg" type="image/svg+xml" width="16"
-										height="16"></object>
-									<p>2025-10-20
-									</p>
-									<object class="article-words" data="svg\file-text.svg" type="image/svg+xml"
-										width="16" height="16"></object>
-									<p>
-										786字
-									</p>
-								</div>
-								<p class="article-digest">
-									<a class="article-digest-a" href="/2025/10/20/亡妻回忆录(蓝桥杯)/">
-										一、蓝桥杯之死首先给图官网链接蓝桥杯的离去好像在人们意料之中。
-
-“一个点击就送的水赛，奖项有什么含金量？难道在简历里写上蓝桥杯是一件很自豪的事吗？”
-											...
-									</a>
-								</p>
-								<section class="post-tags">
-									<span class="tag">
-										
-											
-												<a class="trans" href="/tags/%E9%97%B2%E8%81%8A%E5%90%B9%E6%B0%B4/#">&nbsp;#闲聊吹水&nbsp;
-												</a>
-												
-													
-									</span>
-								</section>
-								<div class=".blank"></div>
-							</div>
-
-							<a id="article-li-right" class="trans" href="/2025/10/20/亡妻回忆录(蓝桥杯)/">
-								<object class="svg-midlle" data="svg\chevron-right.svg" type="image/svg+xml" width="24"
-									height="24">
-									Your browser does not support SVG
-								</object>
-							</a>
-
-						</article>
-
-						
-
-						<article class="article-li">
-							<img src="/images/wallpaper.jpg" alt="">
-							<div id="article-li-left">
-								<p><a class="article-title trans" href="/2026/06/30/序章：灰烬启示录/"># 序章：灰烬启示录</a></p>
-								<div class="about">
-									<object class="article-date" data="svg\calendar.svg" type="image/svg+xml" width="16"
-										height="16"></object>
-									<p>2026-06-30
-									</p>
-									<object class="article-words" data="svg\file-text.svg" type="image/svg+xml"
-										width="16" height="16"></object>
-									<p>
-										651字
-									</p>
-								</div>
-								<p class="article-digest">
-									<a class="article-digest-a" href="/2026/06/30/序章：灰烬启示录/">
-										序章：灰烬启示录
-作于2026-6-25 21:08
-
-
-    灰烬，是熊熊烈火后唯一能够剩下的东西。
-    每当逢年过节，望着坟前燃烧的钱纸我总
-											...
-									</a>
-								</p>
-								<section class="post-tags">
-									<span class="tag">
-										
-											
-												<a class="trans" href="/tags/%E3%80%8A%E7%81%B0%E7%83%AC%E5%90%AF%E7%A4%BA%E5%BD%95%E3%80%8B/#">&nbsp;#《灰烬启示录》&nbsp;
-												</a>
-												
-													
-									</span>
-								</section>
-								<div class=".blank"></div>
-							</div>
-
-							<a id="article-li-right" class="trans" href="/2026/06/30/序章：灰烬启示录/">
-								<object class="svg-midlle" data="svg\chevron-right.svg" type="image/svg+xml" width="24"
-									height="24">
-									Your browser does not support SVG
-								</object>
-							</a>
-
-						</article>
-
-						
-
-						<article class="article-li">
-							<img src="/images/wallpaper.jpg" alt="">
-							<div id="article-li-left">
-								<p><a class="article-title trans" href="/2026/06/30/第一章：天才陨落/"># 第一章：天才陨落</a></p>
-								<div class="about">
-									<object class="article-date" data="svg\calendar.svg" type="image/svg+xml" width="16"
-										height="16"></object>
-									<p>2026-06-30
-									</p>
-									<object class="article-words" data="svg\file-text.svg" type="image/svg+xml"
-										width="16" height="16"></object>
-									<p>
-										1.9k字
-									</p>
-								</div>
-								<p class="article-digest">
-									<a class="article-digest-a" href="/2026/06/30/第一章：天才陨落/">
-										第一章：天才陨落
-作于2026-6-30 17:20
-
-
-    那年的比赛，真是精彩。
-    “这里是全国中等学校魔法大赛个人赛初中组四强的比赛现
-											...
-									</a>
-								</p>
-								<section class="post-tags">
-									<span class="tag">
-										
-											
-												<a class="trans" href="/tags/%E3%80%8A%E7%81%B0%E7%83%AC%E5%90%AF%E7%A4%BA%E5%BD%95%E3%80%8B/#">&nbsp;#《灰烬启示录》&nbsp;
-												</a>
-												
-													
-									</span>
-								</section>
-								<div class=".blank"></div>
-							</div>
-
-							<a id="article-li-right" class="trans" href="/2026/06/30/第一章：天才陨落/">
-								<object class="svg-midlle" data="svg\chevron-right.svg" type="image/svg+xml" width="24"
-									height="24">
-									Your browser does not support SVG
-								</object>
-							</a>
-
-						</article>
-
-						
-
-						<article class="article-li">
-							<img src="/images/wallpaper.jpg" alt="">
-							<div id="article-li-left">
-								<p><a class="article-title trans" href="/2026/07/01/第二章：欢迎新同学/"># 第二章：欢迎新同学</a></p>
-								<div class="about">
-									<object class="article-date" data="svg\calendar.svg" type="image/svg+xml" width="16"
-										height="16"></object>
-									<p>2026-07-01
-									</p>
-									<object class="article-words" data="svg\file-text.svg" type="image/svg+xml"
-										width="16" height="16"></object>
-									<p>
-										2.3k字
-									</p>
-								</div>
-								<p class="article-digest">
-									<a class="article-digest-a" href="/2026/07/01/第二章：欢迎新同学/">
-										第二章：欢迎新同学
-作于2026-7-1 15:44
-
-
-    这个世界虽然有魔法，但仍是电气的天下。为什么呢？因为百年前的战争将魔力矿物几乎消耗殆
-											...
-									</a>
-								</p>
-								<section class="post-tags">
-									<span class="tag">
-										
-											
-												<a class="trans" href="/tags/%E3%80%8A%E7%81%B0%E7%83%AC%E5%90%AF%E7%A4%BA%E5%BD%95%E3%80%8B/#">&nbsp;#《灰烬启示录》&nbsp;
-												</a>
-												
-													
-									</span>
-								</section>
-								<div class=".blank"></div>
-							</div>
-
-							<a id="article-li-right" class="trans" href="/2026/07/01/第二章：欢迎新同学/">
-								<object class="svg-midlle" data="svg\chevron-right.svg" type="image/svg+xml" width="24"
-									height="24">
-									Your browser does not support SVG
-								</object>
-							</a>
-
-						</article>
-
-						
-				</div>
+<div class="wrap home-wrap">
+	
+	<main class="home-main" id="main" tabindex="-1">
+		<div class="stat-bar">
+			<div>
+				<b>3</b>
+				<span>篇文章</span>
+			</div>
+			<div>
+				<b>0</b>
+				<span>个分类</span>
+			</div>
+			<div>
+				<b>6</b>
+				<span>个标签</span>
+			</div>
+			<div>
+				<b>10-14</b>
+				<span>最近更新</span>
 			</div>
 		</div>
-	</div>
-	
-<script src="/js/index.js"></script>
 
-	</div>
-
-	</div>
-
-
-			<!-- 引入 js 文件 -->
+		<div class="section-head">
+			<h2 class="section-title">最新文章</h2>
 			
+		</div>
+
+		
+
+
+<ul class="post-list">
+	
+		<li class="post-item">
+			<div class="post-item-main">
+				<h2 class="post-item-title">
+					<a href="/2026/09/29/AI%E7%BC%96%E7%A8%8B%E8%80%8D%E8%B5%B7%E5%98%9B/">AI编程耍起嘛（上）</a>
+				</h2>
+				
+					<p class="post-item-meta">
+						<time datetime="2026-09-29">
+							2026-09-29
+						</time>
+						
+							<span class="meta-dot">/</span>
+							<span>1.3k 字</span>
+						
+					</p>
+				
+				
+					<p class="post-item-digest">野人时代如果是在2024年前，那你可能会认为是写汇编写C就是古法编程。但在today，这个说法已经扩展到用编辑器敲任何代码都叫古法编程了。在这个连牢理@Mashiro_Neri都能靠大肥鱼写出复杂逻辑的代码的今天（能…</p>
+				
+				
+					<p class="post-item-tags">
+						
+							<a class="chip" href="/tags/%E9%97%B2%E8%81%8A%E5%90%B9%E6%B0%B4/">#闲聊吹水</a>
+						
+							<a class="chip" href="/tags/%E5%8F%A4%E6%B3%95%E7%BC%96%E7%A8%8B/">#古法编程</a>
+						
+					</p>
+				
+			</div>
+		</li>
+	
+		<li class="post-item">
+			<div class="post-item-main">
+				<h2 class="post-item-title">
+					<a href="/2025/10/20/%E4%BA%A1%E5%A6%BB%E5%9B%9E%E5%BF%86%E5%BD%95(%E8%93%9D%E6%A1%A5%E6%9D%AF)/">亡妻回忆录(蓝桥杯)</a>
+				</h2>
+				
+					<p class="post-item-meta">
+						<time datetime="2025-10-20">
+							2025-10-20
+						</time>
+						
+							<span class="meta-dot">/</span>
+							<span>786 字</span>
+						
+					</p>
+				
+				
+					<p class="post-item-digest">一、蓝桥杯之死首先给图官网链接蓝桥杯的离去好像在人们意料之中。 “一个点击就送的水赛，奖项有什么含金量？难道在简历里写上蓝桥杯是一件很自豪的事吗？” 可能也与选手大规模作弊有关 二、回顾蓝桥杯说真的，我是真绷不住了，…</p>
+				
+				
+					<p class="post-item-tags">
+						
+							<a class="chip" href="/tags/%E9%97%B2%E8%81%8A%E5%90%B9%E6%B0%B4/">#闲聊吹水</a>
+						
+							<a class="chip" href="/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/">#蓝桥杯</a>
+						
+							<a class="chip" href="/tags/%E7%BC%96%E7%A8%8B%E6%AF%94%E8%B5%9B/">#编程比赛</a>
+						
+					</p>
+				
+			</div>
+		</li>
+	
+		<li class="post-item">
+			<div class="post-item-main">
+				<h2 class="post-item-title">
+					<a href="/2025/10/14/%E4%B8%BB%E9%A2%98%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/">主题测试文章</a>
+				</h2>
+				
+					<p class="post-item-meta">
+						<time datetime="2025-10-14">
+							2025-10-14
+						</time>
+						
+							<span class="meta-dot">/</span>
+							<span>2.5k 字</span>
+						
+					</p>
+				
+				
+					<p class="post-item-digest">这是一篇测试文章，用于验证博客的核心渲染能力。 一、文本格式基础测试​1.1 标题层级​一级标题二级标题三级标题1.2 Inline 格式​加粗文本：加粗文本​斜体文本：斜体文本​加粗斜体：加粗斜体​删除线：删除线​…</p>
+				
+				
+					<p class="post-item-tags">
+						
+							<a class="chip" href="/tags/%E7%8C%8E%E5%A5%87/">#猎奇</a>
+						
+							<a class="chip" href="/tags/%E6%9A%B4%E5%8A%9B/">#暴力</a>
+						
+					</p>
+				
+			</div>
+		</li>
+	
+</ul>
+
+
+
+		
+			
+					<section class="home-block" aria-labelledby="home-tags-h">
+				<div class="section-head">
+					<h2 class="section-title" id="home-tags-h">标签</h2>
+					<a class="section-more" href="/tags">
+						共 6 个<i class="fa fa-angle-right" aria-hidden="true"></i>
+					</a>
+				</div>
+				<ul class="cloud home-cloud">
+					
+						<li>
+							<a class="cloud-item" href="/tags/%E9%97%B2%E8%81%8A%E5%90%B9%E6%B0%B4/"
+								style="--w:1.420">
+								闲聊吹水<sup>2</sup>
+							</a>
+						</li>
+					
+						<li>
+							<a class="cloud-item" href="/tags/%E7%8C%8E%E5%A5%87/"
+								style="--w:0.820">
+								猎奇<sup>1</sup>
+							</a>
+						</li>
+					
+						<li>
+							<a class="cloud-item" href="/tags/%E6%9A%B4%E5%8A%9B/"
+								style="--w:0.820">
+								暴力<sup>1</sup>
+							</a>
+						</li>
+					
+						<li>
+							<a class="cloud-item" href="/tags/%E5%8F%A4%E6%B3%95%E7%BC%96%E7%A8%8B/"
+								style="--w:0.820">
+								古法编程<sup>1</sup>
+							</a>
+						</li>
+					
+						<li>
+							<a class="cloud-item" href="/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/"
+								style="--w:0.820">
+								蓝桥杯<sup>1</sup>
+							</a>
+						</li>
+					
+						<li>
+							<a class="cloud-item" href="/tags/%E7%BC%96%E7%A8%8B%E6%AF%94%E8%B5%9B/"
+								style="--w:0.820">
+								编程比赛<sup>1</sup>
+							</a>
+						</li>
+					
+				</ul>
+			</section>
+		
+
+		
+			
+			<section class="home-block" aria-labelledby="home-archive-h">
+				<div class="section-head">
+					<h2 class="section-title" id="home-archive-h">归档</h2>
+					<a class="section-more" href="/archives">
+						按年翻阅<i class="fa fa-angle-right" aria-hidden="true"></i>
+					</a>
+				</div>
+				<ul class="home-archive">
+					
+						<li class="home-archive-year">
+							<a class="home-archive-year-link" href="/archives/2026/">
+								2026<span class="home-archive-count">1 篇</span>
+							</a>
+							<ul class="home-archive-months">
+								
+									<li>
+										<a href="/archives/2026/09/">
+											09 月<em>1</em>
+										</a>
+									</li>
+								
+							</ul>
+						</li>
+					
+						<li class="home-archive-year">
+							<a class="home-archive-year-link" href="/archives/2025/">
+								2025<span class="home-archive-count">2 篇</span>
+							</a>
+							<ul class="home-archive-months">
+								
+									<li>
+										<a href="/archives/2025/10/">
+											10 月<em>2</em>
+										</a>
+									</li>
+								
+							</ul>
+						</li>
+					
+				</ul>
+			</section>
+		
+	</main>
+
+	
+		<aside class="home-side" aria-label="关于作者">
+			
+
+<div class="side-card">
+	<div class="side-id">
+		
+		<a class="side-avatar-link" href="/about" aria-label="关于 Hikari">
+			
+				<img class="side-avatar" src="/images/head.jpg" alt="">
+			
+		</a>
+		<div class="side-id-info">
+			<p class="side-name"><a href="/about">Hikari</a></p>
+			
+				<p class="side-motto">何为坚强？</p>
+			
+			
+				<ul class="side-social">
+					
+						<li>
+							<a href="https://github.com/Hisuifeng" title="github" target="_blank" rel="noopener noreferrer">
+								
+<i class="fa fa-github" aria-hidden="true"></i>
+<span class="sr-only">github</span>
+							</a>
+						</li>
+					
+						<li>
+							<a href="mailto:minecraftsuifeng@outlook.com" title="mail" target="_blank" rel="noopener noreferrer">
+								
+<i class="fa fa-envelope" aria-hidden="true"></i>
+<span class="sr-only">mail</span>
+							</a>
+						</li>
+					
+				</ul>
+			
+		</div>
+	</div>
+
+	
+		
+		<ul class="side-stats">
+			<li><b>3</b><span>篇文章</span></li>
+			<li><b>6</b><span>个标签</span></li>
+		</ul>
+	
+
+    
+		<div class="side-pick">
+			<span class="side-cap">随便看看</span>
+			<a class="side-pick-link" href="/2025/10/14/%E4%B8%BB%E9%A2%98%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/">主题测试文章</a>
+		</div>
+	
+
+	
+		
+		<div class="side-about">
+			<p class="side-about-text">有朋自远方来，不亦乐乎。</p>
+		</div>
+	
+</div>
+
+		</aside>
+	
+</div>
+
+	</div>
+
+	<footer class="footer">
+	<div class="wrap">
+		<div class="footer-main">
+			<p class="footer-copy">
+				
+					&copy; 2025&ndash;2026
+				
+				Hikari
+			</p>
+			
+			
+				<p class="footer-meta">
+					Powered by <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+					&middot; Theme restart
+				</p>
+			
+		</div>
+		
+			<p class="footer-saying">&ldquo;善待生活，热爱一切，常开怀大笑。&rdquo;</p>
+		
+	</div>
+</footer>
+
+
+	<a href="#top" id="back-to-top" aria-label="回到顶部">
+		<i class="fa fa-angle-up" aria-hidden="true"></i>
+	</a>
+
+	
 <script src="/js/main.js"></script>
 
-
-					<script type="text/javascript">
-						L2Dwidget.init();
-					</script>
-
+	
 </body>
 
 </html>

@@ -1,206 +1,189 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 
 <head>
-	<title>Hikari 的博客</title>
-	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<!-- 引入配置文件 -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+	<meta name="theme-color" content="#ffffff">
+	<title>
+		标签：暴力 | Hikari 的博客
+	</title>
+	<meta name="description" content="Hikari 的个人博客，记录小说、技术笔记和随笔。">
+	
+	<meta name="keywords" content="Hexo,博客,随笔,音游">
+	
+	
+	
+	
 	
 <link rel="stylesheet" href="/css/main.css">
 
-
-		<!-- 字体图片库 -->
-		
+	
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-
-			<!-- 代码高亮库 -->
-			
+	
+	
 <link rel="stylesheet" href="/lib/highlight/prism/prism.css">
 
+		
+	
+<link rel="stylesheet" href="/lib/highlight/prism/prism-line-numbers.css">
+
+		
+	
+	
+<link rel="stylesheet" href="/css/topnav.css">
+
+	
+<link rel="stylesheet" href="/css/footer.css">
+
+	
+<link rel="stylesheet" href="/css/code.css">
+
+	
+	
+<link rel="stylesheet" href="/css/anim.css">
+
+	
+	
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
-	<topnav>
+	
+	<a class="skip-link" href="#content">跳到正文</a>
+
+	<header class="topnav" id="top">
+	<div class="topnav-inner">
+		<a class="brand" href="/">
+			Hikari 的博客
+		</a>
+
+		<button class="hamburger" id="hamburger" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="nav-menu">
+			<span class="hamburger-bar"></span>
+			<span class="hamburger-bar"></span>
+			<span class="hamburger-bar"></span>
+		</button>
+
+		<nav class="nav-menu" id="nav-menu" aria-label="主导航">
+			
+				<a href="/" data-nav="/">首页</a>
+			
+				<a href="/archives" data-nav="/archives">归档</a>
+			
+				<a href="/tags" data-nav="/tags">标签</a>
+			
+				<a href="/categories" data-nav="/categories">分类</a>
+			
+				<a href="/links" data-nav="/links">友链</a>
+			
+				<a href="/search" data-nav="/search">搜索</a>
+			
+				<a href="/about" data-nav="/about">关于</a>
+			
+			
+				
+				<a href="https://github.com/Hisuifeng" class="nav-external" target="_blank" rel="noopener noreferrer" title="github">
+					
+<i class="fa fa-github" aria-hidden="true"></i>
+<span class="sr-only">github</span>
+				</a>
+			
+		</nav>
+	</div>
+</header>
+
+
+	
+	
+	<div id="content" tabindex="-1">
 		
-<link rel="stylesheet" href="/css/topnav.css">
+<link rel="stylesheet" href="/css/page.css">
 
-<nav class="topnav" aria-label="主导航">
-  <div class="topnav_a_left">
-    <a href="/">Hikari's Blog - 光的博客</a>
-  </div>
 
-  <!-- 汉堡按钮：内部 span 用于动画和字符切换 -->
-  <button class="hamburger" id="hamburgerBtn" aria-label="菜单" aria-expanded="false" aria-controls="navMenu">
-    <span>☰</span>
-  </button>
+<link rel="stylesheet" href="/css/list.css">
 
-  <!-- 右侧菜单容器 -->
-  <div class="topnav_a_right" id="navMenu">
-    
-      <a href="/about" class="menu-item-link">关于</a>
-    
-      <a href="/archives" class="menu-item-link">归档</a>
-    
-    
-      <a class="trans" href="https://github.com/Hisuifeng" target="_blank" rel="noopener">github</a>
-    
-  </div>
-</nav>
 
-<script>
-  (function() {
-    const navMenu = document.getElementById('navMenu');
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const hamburgerSpan = hamburgerBtn?.querySelector('span');
-    if (!navMenu || !hamburgerBtn || !hamburgerSpan) return;
+<div class="wrap">
+	<div class="page-head">
+		<h1>标签：暴力<span class="en">Tag</span></h1>
+		<p class="desc">此标签下共 1 篇文章。</p>
+	</div>
 
-    const MOBILE_BREAKPOINT = 768;
-    let isMenuOpen = false;
+	
 
-    // 更新图标：切换字符并控制旋转类
-    function updateIcon(open) {
-      hamburgerSpan.textContent = open ? '✕' : '☰';
-      hamburgerBtn.classList.toggle('is-open', open);
-      hamburgerBtn.setAttribute('aria-expanded', open);
-    }
 
-    function closeMenu() {
-      navMenu.classList.remove('show');
-      isMenuOpen = false;
-      updateIcon(false);
-    }
-
-    function openMenu() {
-      if (window.innerWidth <= MOBILE_BREAKPOINT) {
-        navMenu.classList.add('show');
-        isMenuOpen = true;
-        updateIcon(true);
-      }
-    }
-
-    function toggleMenu(e) {
-      e.stopPropagation();
-      if (window.innerWidth > MOBILE_BREAKPOINT) return;
-      isMenuOpen ? closeMenu() : openMenu();
-    }
-
-    function resetForDesktop() {
-      navMenu.classList.remove('show');
-      isMenuOpen = false;
-      updateIcon(false);
-    }
-
-    function handleViewportChange() {
-      if (window.innerWidth > MOBILE_BREAKPOINT) {
-        resetForDesktop();
-      } else {
-        if (isMenuOpen) closeMenu();
-        navMenu.classList.remove('show');
-        updateIcon(false);
-      }
-    }
-
-    hamburgerBtn.addEventListener('click', toggleMenu);
-
-    navMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) closeMenu();
-      });
-    });
-
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(handleViewportChange, 80);
-    });
-
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) {
-        if (!hamburgerBtn.contains(e.target) && !navMenu.contains(e.target)) {
-          closeMenu();
-        }
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isMenuOpen && window.innerWidth <= MOBILE_BREAKPOINT) {
-        closeMenu();
-        hamburgerBtn.focus();
-      }
-    });
-
-    handleViewportChange();
-  })();
-</script>
-	</topnav>
-	<!-- 引入正文 -->
-	<div id="content">
-		<div class="background">
-			<div id="background-overlay" class="background-overlay">
-				<div id="img_background"></div>
+<ul class="post-list">
+	
+		<li class="post-item">
+			<div class="post-item-main">
+				<h2 class="post-item-title">
+					<a href="/2025/10/14/%E4%B8%BB%E9%A2%98%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/">主题测试文章</a>
+				</h2>
+				
+					<p class="post-item-meta">
+						<time datetime="2025-10-14">
+							2025-10-14
+						</time>
+						
+							<span class="meta-dot">/</span>
+							<span>2.5k 字</span>
+						
+					</p>
+				
+				
+					<p class="post-item-digest">这是一篇测试文章，用于验证博客的核心渲染能力。 一、文本格式基础测试​1.1 标题层级​一级标题二级标题三级标题1.2 Inline 格式​加粗文本：加粗文本​斜体文本：斜体文本​加粗斜体：加粗斜体​删除线：删除线​…</p>
+				
+				
+					<p class="post-item-tags">
+						
+							<a class="chip" href="/tags/%E7%8C%8E%E5%A5%87/">#猎奇</a>
+						
+							<a class="chip" href="/tags/%E6%9A%B4%E5%8A%9B/">#暴力</a>
+						
+					</p>
+				
 			</div>
+		</li>
+	
+</ul>
 
+
+</div>
+
+	</div>
+
+	<footer class="footer">
+	<div class="wrap">
+		<div class="footer-main">
+			<p class="footer-copy">
+				
+					&copy; 2025&ndash;2026
+				
+				Hikari
+			</p>
+			
+			
+				<p class="footer-meta">
+					Powered by <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+					&middot; Theme restart
+				</p>
+			
 		</div>
 		
-<link rel="stylesheet" href="/css/archive.css">
-
-  <div class="blank"></div>
-  <div class="page">
-    <div class="page-main">
-      <h1><ruby>归档<rt>Archive</rt></ruby></h1>
-      <p>这里将以时间线排序发表的文章。</p>
-      
-        
-          
-            
-              <p class="years">
-                2025
-              </p>
-              
-                <article class="article-li trans">
-                  <p id="article-date">
-                    10-14&nbsp;
-                  </p>
-                  <p id="article-title"><a href="/2025/10/14/主题测试文章/">
-                      &nbsp;主题测试文章&nbsp;
-                    </a></p>
-                  <section class="post-tags">
-                    <span class="tag">
-                      
-                        
-                          <a class="trans" href="/tags/%E7%8C%8E%E5%A5%87/#">&nbsp;#猎奇&nbsp;
-                          </a>
-                          
-                          <a class="trans" href="/tags/%E6%9A%B4%E5%8A%9B/#">&nbsp;#暴力&nbsp;
-                          </a>
-                          
-                            
-                    </span>
-                  </section>
-                </article>
-                
-
-    </div>
-  </div>
-
-  
-<script src="/js/line.js"></script>
-
+			<p class="footer-saying">&ldquo;善待生活，热爱一切，常开怀大笑。&rdquo;</p>
+		
 	</div>
+</footer>
 
-	</div>
 
+	<a href="#top" id="back-to-top" aria-label="回到顶部">
+		<i class="fa fa-angle-up" aria-hidden="true"></i>
+	</a>
 
-			<!-- 引入 js 文件 -->
-			
+	
 <script src="/js/main.js"></script>
 
-
-					<script type="text/javascript">
-						L2Dwidget.init();
-					</script>
-
+	
 </body>
 
 </html>

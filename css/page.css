@@ -1,0 +1,394 @@
+/* ===== 通用页面样式：about / page / tags / categories / links / search / 404 ===== */
+
+/* 独立区块标题（用于页面内部分节） */
+.box-title.plain {
+	padding: 0 0 8px;
+	background: none;
+	border-bottom: 1px solid var(--c-border);
+	margin: 32px 0 14px;
+	font-size: 15px;
+}
+
+/* ===== Markdown 正文（page / about 内的 rich 容器） ===== */
+.rich {
+	font-size: 15px;
+	line-height: 1.85;
+	color: var(--c-text);
+	word-break: break-word;
+}
+
+.rich h1, .rich h2, .rich h3, .rich h4 {
+	margin: 26px 0 12px;
+	line-height: 1.4;
+}
+
+.rich h1 { font-size: 23px; padding-bottom: 8px; border-bottom: 1px solid var(--c-border); }
+.rich h2 { font-size: 19px; padding-left: 10px; border-left: 3px solid var(--c-primary); }
+.rich h3 { font-size: 16px; }
+.rich h4 { font-size: 15px; color: var(--c-muted); }
+
+.rich > *:first-child { margin-top: 0; }
+
+.rich p { margin: 12px 0; }
+
+.rich a {
+	color: var(--c-primary);
+	border-bottom: 1px solid var(--c-border-strong);
+}
+
+.rich a:hover { border-bottom-color: var(--c-primary); }
+
+.rich ul, .rich ol { margin: 12px 0; padding-left: 1.6em; }
+.rich li { margin: 5px 0; }
+
+.rich img { margin: 18px auto; border: 1px solid var(--c-border); }
+
+.rich blockquote {
+	margin: 16px 0;
+	padding: 10px 16px;
+	color: var(--c-muted);
+	background: var(--c-surface);
+	border-left: 3px solid var(--c-border-strong);
+}
+
+.rich table { margin: 16px 0; font-size: 14px; border: 1px solid var(--c-border); }
+.rich th, .rich td { padding: 8px 12px; border: 1px solid var(--c-border); text-align: left; }
+.rich th { background: var(--c-surface); color: var(--c-title); }
+
+.rich :not(pre) > code {
+	padding: 2px 5px;
+	font-size: 13px;
+	color: var(--c-primary-dark);
+	background: var(--c-primary-soft);
+	border: 1px solid var(--c-border);
+}
+
+.rich pre {
+	margin: 16px 0;
+	padding: 14px 16px;
+	overflow-x: auto;
+	font-size: 13px;
+	background: #fbfbfb;
+	border: 1px solid var(--c-border);
+}
+
+.rich hr { margin: 24px 0; }
+
+/* ===== 关于页 ===== */
+.profile {
+	display: flex;
+	gap: 24px;
+	padding: 22px;
+	background: var(--c-surface);
+	border: 1px solid var(--c-border);
+}
+
+.profile-avatar {
+	width: 120px;
+	height: 120px;
+	flex-shrink: 0;
+	object-fit: cover;
+	border: 1px solid var(--c-border-strong);
+}
+
+.profile-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.profile-name {
+	font-size: 20px;
+	margin-bottom: 6px;
+}
+
+.profile-motto {
+	font-size: 13px;
+	color: var(--c-muted);
+}
+
+.profile-intro {
+	margin-top: 12px;
+	font-size: 14px;
+}
+
+.fact-list {
+	margin-top: 20px;
+	border: 1px solid var(--c-border);
+	border-bottom: 0;
+}
+
+.fact-list li {
+	display: flex;
+	gap: 16px;
+	padding: 10px 14px;
+	font-size: 14px;
+	border-bottom: 1px solid var(--c-border);
+}
+
+.fact-key {
+	width: 84px;
+	flex-shrink: 0;
+	color: var(--c-muted);
+	font-size: 13px;
+}
+
+.fact-val {
+	flex: 1;
+	min-width: 0;
+	color: var(--c-text);
+}
+
+/* 页面正文。名片区（.profile / .fact-list）之后要有一段留白，
+   否则正文第一行会紧贴上方块片的底边，看起来像是名片的一部分。
+   上面有 fact-list 时留白落在 fact-list 之后，没有时落在名片之后。 */
+.page-body {
+	margin-top: 30px;
+}
+
+/* 联系方式 */
+.contact-list {
+	border: 1px solid var(--c-border);
+	border-bottom: 0;
+}
+
+.contact-list li {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 12px 14px;
+	font-size: 14px;
+	border-bottom: 1px solid var(--c-border);
+}
+
+.contact-list li > i {
+	width: 16px;
+	color: var(--c-faint);
+	text-align: center;
+}
+
+.contact-key {
+	width: 48px;
+	font-size: 13px;
+	color: var(--c-muted);
+}
+
+.contact-list a {
+	color: var(--c-primary);
+	border-bottom: 1px solid var(--c-border-strong);
+}
+
+.contact-list a:hover { border-bottom-color: var(--c-primary); }
+
+.qr-item { align-items: flex-start !important; }
+
+.wechat-qr {
+	width: 128px;
+	height: 128px;
+	border: 1px solid var(--c-border-strong);
+}
+
+.contact-tip {
+	font-size: 12px;
+	color: var(--c-faint);
+}
+
+/* ===== 标签云 / 分类列表 =====
+   已抽到 css/blocks.css：标签云现在同时被 /tags/ 和首页使用，
+   继续留在 page.css 里会让首页要么样式丢失、要么被迫加载整份 page.css。 */
+
+/* ===== 友链 ===== */
+.friend-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.friend-item {
+	flex: 1 1 260px;
+	min-width: 0;
+}
+
+.friend-item a {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	height: 100%;
+	padding: 14px;
+	background: var(--c-bg);
+	border: 1px solid var(--c-border);
+	transition: all .15s ease;
+}
+
+.friend-item a:hover {
+	border-color: var(--c-primary);
+	background: var(--c-primary-soft);
+}
+
+.friend-avatar {
+	width: 44px;
+	height: 44px;
+	flex-shrink: 0;
+	object-fit: cover;
+	border: 1px solid var(--c-border);
+}
+
+.friend-avatar.fallback {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--c-surface);
+	color: var(--c-muted);
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.friend-body {
+	min-width: 0;
+}
+
+.friend-name {
+	display: block;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--c-title);
+}
+
+.friend-item a:hover .friend-name { color: var(--c-primary); }
+
+.friend-desc {
+	display: block;
+	margin-top: 2px;
+	font-size: 12px;
+	color: var(--c-muted);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* ===== 搜索 ===== */
+.search-box {
+	position: relative;
+	display: flex;
+	align-items: center;
+	border: 1px solid var(--c-border-strong);
+	background: var(--c-bg);
+	padding: 0 12px;
+	transition: border-color .15s ease;
+}
+
+.search-box:focus-within {
+	border-color: var(--c-primary);
+}
+
+.search-box > i {
+	color: var(--c-faint);
+	font-size: 14px;
+}
+
+.search-box input {
+	flex: 1;
+	min-width: 0;
+	height: 46px;
+	padding: 0 10px;
+	font-family: inherit;
+	font-size: 15px;
+	color: var(--c-text);
+	background: transparent;
+	border: 0;
+	outline: 0;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.search-box input::-webkit-search-cancel-button {
+	display: none;
+}
+
+#search-clear {
+	width: 26px;
+	height: 26px;
+	font-size: 13px;
+	color: var(--c-faint);
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+	display: none;
+}
+
+#search-clear.show { display: block; }
+#search-clear:hover { color: var(--c-primary); }
+
+.search-status {
+	margin: 14px 0;
+	font-size: 13px;
+	color: var(--c-muted);
+}
+
+.search-status b {
+	color: var(--c-primary);
+}
+
+/* ===== 404 ===== */
+.notfound {
+	padding: 70px 20px 80px;
+	text-align: center;
+}
+
+.notfound-code {
+	font-size: 84px;
+	font-weight: 700;
+	line-height: 1;
+	color: var(--c-primary);
+	letter-spacing: .04em;
+	font-family: var(--font-mono);
+}
+
+.notfound-text {
+	margin: 18px 0 28px;
+	font-size: 15px;
+	color: var(--c-muted);
+}
+
+.notfound-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+}
+
+/* ===== 响应式 ===== */
+@media screen and (max-width: 700px) {
+	.profile {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 16px;
+		padding: 20px 16px;
+	}
+
+	.profile-intro {
+		text-align: left;
+	}
+
+	.fact-list li {
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.fact-key {
+		width: auto;
+	}
+
+	.friend-item {
+		flex: 1 1 100%;
+	}
+
+	.notfound-code {
+		font-size: 62px;
+	}
+
+	.notfound {
+		padding: 50px 10px 60px;
+	}
+}

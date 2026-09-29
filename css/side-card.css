@@ -1,0 +1,189 @@
+/* ==========================================================================
+   side-card.css — 侧栏作者名片
+   文章页与首页共用（layout/_partial/side-card.ejs）。
+   抽成独立文件是因为它不再是 post.css 的私有样式：首页不引 post.css，
+   塞在 post.css 里会让首页要么样式丢失、要么被迫加载整份文章页样式。
+
+   高度是这块的硬约束：.post-side / .home-side 是 sticky + max-height，
+   卡片在里面 flex:0 0 auto 永不压缩 —— 每长 1px 就把目录压 1px。
+   所以各模块的间距都是抠着算的：卡片自然高度必须 ≤ 320px。
+   文章页另有 40% 视口配额兜底（写在 post.css），首页没有目录所以不需要。
+
+   风格约束沿用 main.css：纯浅色扁平，零圆角、零阴影，层级只靠 1px 描边。
+   ========================================================================== */
+
+.side-card {
+	padding: 16px 14px;
+	border: 1px solid var(--c-border);
+	background: var(--c-surface);
+}
+
+/* 身份区：头像靠左、信息竖排在一侧。
+   236px 窄列里要放下四个模块，居中竖排会到 437px，横向布局省掉整整一行。 */
+.side-id {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+}
+
+.side-avatar-link {
+	display: block;
+	flex-shrink: 0;
+	/* 行内元素默认带基线间隙，头像和昵称顶边会差几像素。block + 0 行高消除。 */
+	line-height: 0;
+}
+
+.side-avatar {
+	display: block;
+	width: 48px;
+	height: 48px;
+	object-fit: cover;
+	border: 1px solid var(--c-border-strong);
+	transition: border-color .15s ease;
+}
+
+/* 头像即入口：悬停时描边变主色。不用缩放/阴影 —— 扁平风格约束。 */
+.side-avatar-link:hover .side-avatar {
+	border-color: var(--c-primary);
+}
+
+.side-id-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.side-name {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--c-title);
+	line-height: 1.4;
+}
+
+/* 昵称是链接：颜色继承 .side-name，别让浏览器默认的蓝色链接着色漏进来。 */
+.side-name a {
+	color: inherit;
+}
+
+.side-name a:hover {
+	color: var(--c-primary);
+}
+
+.side-motto {
+	margin-top: 4px;
+	font-size: 12px;
+	color: var(--c-muted);
+	line-height: 1.6;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.side-social {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 8px;
+}
+
+.side-social a {
+	display: block;
+	font-size: 13px;
+	color: var(--c-muted);
+	transition: color .15s ease;
+}
+
+.side-social a:hover {
+	color: var(--c-primary);
+}
+
+/* 三个后续模块共用 10px 间距 + 9px 内边距 + 1px 上边框。
+   分隔靠「上边框」而不是各自套外框：整卡已有一个边框，
+   块内再套边框会显得碎。这组数字是高度预算的一部分，
+   改之前先想清楚能不能塞进 320px。 */
+.side-stats,
+.side-pick,
+.side-about {
+	margin-top: 10px;
+	padding-top: 9px;
+	border-top: 1px solid var(--c-border);
+}
+
+/* 概览：两项时按内容宽度居中，而不是 flex:1 各占半边 ——
+   两格撑满 236px 会显得很空，中间留白也更自然。 */
+.side-stats {
+	display: flex;
+	justify-content: center;
+	gap: 28px;
+}
+
+.side-stats li {
+	text-align: center;
+}
+
+.side-stats b {
+	display: block;
+	font-size: 15px;
+	color: var(--c-primary);
+	line-height: 1.3;
+}
+
+.side-stats span {
+	font-size: 11px;
+	color: var(--c-muted);
+}
+
+/* 「随便看看」标签与文章标题并成一行，省下一整行的高度。
+   用 flex 而不是把标签塞进链接里，是为了让可点击区域仍然只覆盖文章标题。 */
+.side-pick {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+}
+
+.side-cap {
+	flex-shrink: 0;
+	font-size: 11px;
+	color: var(--c-faint);
+	letter-spacing: .08em;
+}
+
+.side-pick-link {
+	display: -webkit-box;
+	font-size: 13px;
+	color: var(--c-title);
+	line-height: 1.5;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.side-pick-link:hover {
+	color: var(--c-primary);
+}
+
+/* 摘要：进关于页的入口已经挪到头像和昵称上，这里只剩文字，
+   所以不再需要 flex 把「摘要 + 链接」拼成一行。
+   上边框/间距沿用上面 .side-stats / .side-pick / .side-about 那组规则，不重复声明。 */
+.side-about-text {
+	font-size: 12px;
+	color: var(--c-muted);
+	line-height: 1.6;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* 头像占位（profile.avatar 没配时）。
+   48×48 的方块里放作者名首字，缩到 24px 仍能看清是哪一位。 */
+.side-avatar-fallback {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 20px;
+	font-weight: 600;
+	color: var(--c-muted);
+	background: var(--c-bg);
+	border: 1px solid var(--c-border-strong);
+}

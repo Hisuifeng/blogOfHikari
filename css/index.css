@@ -1,376 +1,367 @@
-/* ===== 原有动画与基础样式（保留） ===== */
-@keyframes animate-up {
-    0% {
-        transform: translateY(900px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
+/* ===== 首页 hero ===== */
+.hero {
+	position: relative;
+	background: var(--c-surface);
+	border-bottom: 1px solid var(--c-border);
+	padding: 40px 0 32px;
+	text-align: center;
 }
 
-@keyframes animate-upAndDwon {
-    0% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(20px);
-    }
-    100% {
-        transform: translateY(0px);
-    }
+/* 首页 hero 顶到固定导航之下。
+   main.css 原本给 #content 留了 var(--nav-h) 的顶部空间，这里取消掉，
+   让 wallpaper 一直铺到页面最顶端、被导航盖住，导航的毛玻璃才有东西可模糊。
+   导航仍然是 fixed，所以 hero 文字必须自己让出这段高度，否则会被压在导航下面。 */
+#content.has-hero {
+	padding-top: 0;
 }
 
-@keyframes animate-opacity {
-    0% {
-        background-color: #ffffff00;
-    }
-    100% {
-        background-color: #ffffff8a;
-    }
+#content.has-hero .hero {
+	padding-top: calc(var(--nav-h) + 40px);
 }
 
-.animate-up {
-    animation: animate-up 1s;
+/* hero 与首页正文之间留出呼吸空间。
+   间距加在 .home-wrap 容器上，而不是 .stat-bar 上：
+   统计条和右侧名片是同一行的两列，间距只加给统计条的话，
+   名片不会跟着下移，会直接顶到 hero 的底边上。
+   选择器限定 .hero + .home-wrap：只有首页的正文紧跟 hero，
+   归档等页面顶部本来就有标题，再加间距会多出一段空白。 */
+.hero + .home-wrap {
+	padding-top: 40px;
 }
 
-.animate-opacity {
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    animation: animate-opacity 2s;
+/* 背景图层：图片自身比 hero 高 18%，通过 background-position 从下往上循环平移，
+   溢出部分由 .hero 的 overflow:hidden 裁掉，视觉上是「由下往上流动」。
+   background-attachment/position 是唯一不触发重排的做法，别用 transform 移动 img。 */
+.hero-has-bg {
+	overflow: hidden;
 }
 
-.svg-midlle {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.hero-bg {
+	position: absolute;
+	left: 0;
+	right: 0;
+	/* 底边对齐 hero 底边并向下延伸，保证上移时有内容可露出来 */
+	top: -18%;
+	bottom: 0;
+	background-repeat: repeat-x;
+	background-size: cover;
+	background-position: center bottom;
+	pointer-events: none;
+	animation: hero-flow var(--hero-speed, 28s) linear infinite;
+	will-change: background-position;
 }
 
-#page {
-    display: none;
+/* 两个 .hero-bg 副本上下拼接，位移 -50% 时首尾无缝衔接，形成无缝循环。
+   高度各为 hero 的 59%，拼起来正好 118% > 所需的 118% 覆盖。 */
+.hero-bg::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 100%;
+	height: 100%;
+	background: inherit;
+	background-position: center bottom;
 }
 
-#page-main {
-    margin-left: 10%;
-    margin-right: 10%;
+@keyframes hero-flow {
+	from {
+		background-position: center bottom;
+	}
+	to {
+		background-position: center top;
+	}
 }
 
-#page-welcome {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
+/* 图片之上盖一层自上而下渐浓的白色：文字区域亮度被压低以保证对比度。
+   顶部必须完全透明 —— hero 现在顶到导航之下，顶部整段被导航盖住，
+   若这里还给不透明的 --c-surface，导航的毛玻璃就只会糊到一层纯色，白做。 */
+.hero-has-bg::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: linear-gradient(to bottom,
+		rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, .35) 40%,
+		rgba(255, 255, 255, .8) 100%);
+	pointer-events: none;
 }
 
-.saying {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.hero-has-bg .wrap {
+	position: relative;
 }
 
-.saying-next {
-    animation: animate-upAndDwon 3s infinite;
-    position: absolute;
-    top: 80%;
-    left: 50%;
+/* 尊重系统「减少动态效果」设置 */
+@media (prefers-reduced-motion: reduce) {
+	.hero-bg {
+		animation: none;
+	}
 }
 
-#saying {
-    font-size: 35px;
+.hero-sub {
+	font-size: 12px;
+	color: var(--c-muted);
+	letter-spacing: .12em;
+	text-transform: uppercase;
+	margin-bottom: 10px;
 }
 
-#subsaying {
-    font-size: 14px;
+.hero-saying {
+	font-size: 24px;
+	color: var(--c-title);
+	font-weight: 600;
+	line-height: 1.5;
 }
 
-#saying-author {
-    position: absolute;
-    top: 70%;
-    left: 70%;
-    transform: translate(100%, 100%);
+.hero-author {
+	margin-top: 10px;
+	font-size: 13px;
+	color: var(--c-faint);
 }
 
-#index-title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* ===== 首页两栏 ===== */
+/* 与 .post-wrap 同一套写法：右栏固定 236px 宽 + sticky，
+   主栏 flex:1 吃掉剩余空间。不用 grid 是因为文章页已经是 flex，
+   两页保持同一种写法，改断点时只需要改一处经验值。 */
+.home-wrap {
+	display: flex;
+	align-items: flex-start;
+	gap: 24px;
 }
 
-/* ===== 文章卡片核心布局（优化后） ===== */
-#articleList {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;                          /* 使用 gap 替代固定 margin，响应更佳 */
+.home-main {
+	flex: 1;
+	min-width: 0;
 }
 
-#articleList .article-li {
-    flex: 1 1 calc(50% - 16px);         /* 灵活宽度，配合 gap */
-    min-width: 280px;                   /* 保证卡片不会过窄 */
-    background-color: #ffffff8a;
-    backdrop-filter: blur(6px);
-    border-radius: 8px;
-    box-shadow: 1px 1px 8px #999;
-    border: 1px solid #999;
-    display: flex;
-    overflow: hidden;
-    margin: 0;                          /* 外边距由 gap 统一控制 */
-    position: relative;                 /* 为绝对定位的背景图提供参照 */
+/* 首页侧栏不吃文章页那套 40% 配额（那边是为了给目录让位）。
+   这里只约束「不高于视口」，否则卡片底部会滑出视口且永远够不到。 */
+.home-side {
+	width: 236px;
+	flex-shrink: 0;
+	position: sticky;
+	top: calc(var(--nav-h) + 20px);
+	max-height: calc(100vh - var(--nav-h) - 40px);
+	overflow-y: auto;
+	overscroll-behavior: contain;
 }
 
-#articleList .article-li img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 10%;
-    object-fit: cover;
-    pointer-events: none;
+/* ===== 区块标题 ===== */
+/* 标题 + 右侧「更多」并成一行。原来「更多」是文章列表下方独占
+   一行的居中按钮，改成贴在标题行里之后，滚动时它一直在视线高度上，
+   不必滚到列表末尾才找得到。 */
+.section-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-top: 40px;
 }
 
-#article-li-left {
-    flex: 1;
-    padding: 12px 8px 8px 12px;
-    min-width: 0;                       /* 防止 flex 子项溢出 */
+.section-head:first-child {
+	margin-top: 0;
 }
 
-#article-li-right {
-    flex-shrink: 0;
-    width: 70px;
-    background-color: #ffffff8a;
-    border-radius: 5px;
-    margin: 10px 10px 10px 0;
-    transition: all 0.2s ease;
+.section-title {
+	font-size: 16px;
+	margin: 4px 0 16px;
+	padding-left: 10px;
+	border-left: 3px solid var(--c-primary);
+	line-height: 1.2;
 }
 
-#article-li-right:hover {
-    width: 66px;
-    margin-right: 12px;
-    background-color: #ffffff;
+/* 在 .section-head 里，标题的下边距改由 flex 容器的 gap 承担，
+   否则标题会和「更多」一起被 16px 的外边距推离基线。 */
+.section-head .section-title {
+	margin: 0 0 16px;
 }
 
-/* 标题样式，增加文字截断 */
-#articleList .article-title {
-    display: inline-block;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-top: 0;
-    margin-bottom: 8px;
-    color: #555;
-    text-decoration: none;
-    font-size: 24px;
-    font-weight: bold;
+.section-more {
+	flex-shrink: 0;
+	margin-bottom: 16px;
+	font-size: 13px;
+	color: var(--c-muted);
+	white-space: nowrap;
+	transition: color .15s ease;
 }
 
-#articleList .article-title:hover {
-    color: #e06c75;
-    text-decoration: underline;
-    text-underline-offset: 4px;
+.section-more:hover {
+	color: var(--c-primary);
 }
 
-/* 元信息区域（日期、字数） */
-#articleList .about {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px 12px;
-    margin: 5px 0 10px;
-    line-height: 1.5;
-    font-size: 14px;
-    color: #555;
+.section-more i {
+	margin-left: 2px;
+	transition: transform .15s ease;
 }
 
-#articleList .about p {
-    margin: 0;
+.section-more:hover i {
+	transform: translateX(2px);
 }
 
-#articleList .about .article-date,
-#articleList .about .article-words {
-    margin: 0;
-    text-decoration: none;
-    background: #e06c75;
-    stroke: red;
-    padding: 6px 8px;
-    cursor: auto;
-    border-radius: 5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+/* ===== 首页内容块 ===== */
+/* 标签云 / 归档速览共用的白底描边容器。
+   视觉节奏上给的是同一套「1px 描边 + 16px 内边距」，
+   和 .post-item 卡片一致，滚动时横线能对齐。 */
+.home-block {
+	margin-top: 40px;
 }
 
-
-/* 摘要 */
-#articleList .article-digest {
-    margin: 8px 0;
-    word-break: break-word;
+/* ===== 归档速览 ===== */
+/* 竖向时间轴：一条 1px 竖线 + 每个年份一个方点。
+   年份用等宽字体（--font-mono），月份与篇数并排靠右，
+   一眼能看出「哪年文章多」，不用点进归档页。 */
+.home-archive {
+	position: relative;
+	padding: 4px 20px 20px;
+	background: var(--c-surface);
+	border: 1px solid var(--c-border);
 }
 
-#articleList .article-digest .article-digest-a {
-    text-decoration: none;
-    font-size: 14px;
-    color: #555;
+/* 竖线画在容器上，不画在每个年份上。
+   left 是相对容器的 padding box，也就是「边框内侧 1px」再往右算：
+   20(padding-left) + 4.5(9px 方点的一半) = 24.5 是方点圆心，
+   减去边框那 1px，写 23px。
+   这两个数字要一起改 —— 只改一个，圆点就会偏出线外。 */
+.home-archive::before {
+	content: "";
+	position: absolute;
+	left: 23px;
+	top: 30px;
+	bottom: 26px;
+	width: 1px;
+	background: var(--c-border);
 }
 
-/* 标签区域 */
-.post-tags {
-    margin: 8px 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+.home-archive-year {
+	position: relative;
+	margin-top: 22px;
+	padding-left: 26px;
 }
 
-.tag a {
-    display: inline-block;
-    text-decoration: none;
-    color: #ffffff;
-    background: #e06c75;
-    font-size: 14px;
-    border-radius: 5px;
-    padding: 4px 10px;
-    transition: all 0.2s ease;
+/* 顶部留白就是视觉上的「起点」，所以线不从最上面开始画。 */
+.home-archive-year::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 8px;
+	width: 9px;
+	height: 9px;
+	background: var(--c-bg);
+	border: 2px solid var(--c-primary);
 }
 
-.tag a:hover {
-    background: #c66169;
-    color: #cccccc;
+.home-archive-year-link {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	font-family: var(--font-mono);
+	font-size: 17px;
+	font-weight: 600;
+	color: var(--c-title);
+	transition: color .15s ease;
 }
 
-/* ===== 辅助样式（保留原有未使用部分，无影响） ===== */
-#articleList img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.home-archive-year-link:hover {
+	color: var(--c-primary);
 }
 
-.page-resent-left {
-    display: flex;
+.home-archive-count {
+	font-family: var(--font-sans);
+	font-size: 12px;
+	font-weight: 400;
+	color: var(--c-faint);
 }
 
-.canvas .circle {
-    border-radius: 50px;
-    height: 21px;
-    width: 21px;
-    border: 5px solid #ffffff;
+.home-archive-months {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 8px;
 }
 
-.canvas .line {
-    margin-left: 8px;
-    width: 5px;
-    border-right: 5px solid #ffffff;
-    height: 25px;
+/* 月份做成「淡底 + 描边」的小块，hover 反色。
+   不用纯文字链接，是因为一年可能有 12 个月，纯文字行会拉得很长。 */
+.home-archive-months a {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 5px;
+	padding: 3px 9px;
+	font-size: 12px;
+	color: var(--c-muted);
+	background: var(--c-bg);
+	border: 1px solid var(--c-border);
+	transition: all .15s ease;
 }
 
-.article-li-box {
-    margin: 10px;
+.home-archive-months a:hover {
+	color: #fff;
+	background: var(--c-primary);
+	border-color: var(--c-primary);
 }
 
-.article-li {
-    display: flex;
+.home-archive-months a:hover em {
+	color: rgba(255, 255, 255, .75);
 }
 
-.article-li #article-title a {
-    text-decoration: none;
-    color: #555;
+.home-archive-months em {
+	font-family: var(--font-mono);
+	font-style: normal;
+	font-size: 11px;
+	color: var(--c-faint);
 }
 
-#NickAndSlogan {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -100%);
+/* ===== 响应式 ===== */
+@media screen and (max-width: 900px) {
+	/* 900px 而不是 768px：主栏内容最窄到 560px 才舒服，
+	   768~900px 之间挤下 236px 右栏后主栏只剩 500px 出头，
+	   摘要会折成四行，不如直接并回单栏。 */
+	.home-wrap {
+		display: block;
+	}
+
+	/* 单栏时右栏挪到文章列表之后而不是直接删掉：
+	   名片里的「随便看看 / 了解更多」是内容导航，
+	   整块丢掉等于首页少了一处入口。 */
+	.home-side {
+		width: 100%;
+		position: static;
+		max-height: none;
+		overflow: visible;
+		margin-top: 40px;
+	}
 }
 
-#nick {
-    font-size: 15px;
-}
-
-.slogan {
-    font-size: 12px;
-    color: #999;
-    text-decoration: none;
-}
-
-/* ===== 响应式设计（新增融合部分） ===== */
 @media screen and (max-width: 768px) {
-    #page-main {
-        margin-left: 5%;
-        margin-right: 5%;
-    }
+	.hero {
+		padding: 28px 0 22px;
+	}
 
-    #articleList .article-li {
-        flex: 1 1 100%;                /* 强制单列 */
-        flex-direction: column;        /* 内部垂直排列，便于阅读 */
-        min-width: auto;
-    }
+	.hero-saying {
+		font-size: 18px;
+	}
 
-    #article-li-left {
-        padding: 12px;
-    }
+	.hero-sub {
+		font-size: 11px;
+		letter-spacing: .08em;
+	}
 
-    #article-li-right {
-        width: 100%;
-        margin: 0;
-        border-radius: 0 0 8px 8px;
-        height: 48px;
-    }
+	.home-archive {
+		padding: 4px 14px 16px;
+	}
 
-    #article-li-right:hover {
-        width: 100%;
-        margin: 0;
-    }
+	/* padding 从 20 收到 14，竖线和方点要跟着一起收，否则会错开 6px。 */
+	.home-archive::before {
+		left: 17px;
+	}
 
-    .svg-midlle {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+	.home-archive-year {
+		padding-left: 26px;
+	}
 
-    #articleList .article-title {
-        font-size: 20px;
-    }
-
-    #articleList .about {
-        line-height: 1.4;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .saying #saying {
-        font-size: 24px;
-    }
-
-    #saying-author {
-        left: 50%;
-        transform: translateX(-50%);
-        white-space: nowrap;
-        top: auto;
-        bottom: 15%;
-    }
-
-    #articleList .article-title {
-        font-size: 18px;
-    }
-
-    #articleList .about .article-date,
-    #articleList .about .article-words {
-        padding: 4px 6px;
-        font-size: 12px;
-    }
-
-    .tag a {
-        font-size: 13px;
-        padding: 3px 8px;
-    }
-
-    .saying-next {
-        top: 85%;
-    }
+	.section-head {
+		gap: 10px;
+	}
 }

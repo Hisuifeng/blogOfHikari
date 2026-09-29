@@ -1,161 +1,199 @@
-/* ===== 顶部导航基础样式 ===== */
+/* ===== 顶部导航 ===== */
 .topnav {
-  z-index: 100;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 8px;
-  min-height: 60px;
-  background-color: #cdcdcd9a;
-  box-shadow: 0 30px 45px #0000001a;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+	height: var(--nav-h);
+	background: var(--c-bg);
+	border-bottom: 1px solid var(--c-border);
+	/* 背景色/边框色一起过渡，否则 .glass 切换时会硬跳。
+	   backdrop-filter 不参与过渡（无法插值），由下面单独处理。 */
+	transition: transform .25s ease,
+		background-color .25s ease,
+		border-color .25s ease;
+}
+
+/* 停在页面顶部时：半透明 + 背景模糊。首页的 hero 顶在导航之下，
+   所以这里能真实糊出 wallpaper；其他页面背后是纯白 body，效果等同纯白。
+   -webkit- 前缀不能省，Safari 需要它才认 backdrop-filter。
+   rgba 底色不能给全不透明，否则模糊完全看不见。
+   saturate 略微提饱和，抵消 backdrop-filter 常见的发灰。 */
+.topnav.glass {
+	background-color: rgba(255, 255, 255, .72);
+	-webkit-backdrop-filter: saturate(180%) blur(12px);
+	backdrop-filter: saturate(180%) blur(12px);
+	border-bottom-color: var(--c-border);
+}
+
+/* 不支持 backdrop-filter 的浏览器降级为不透明，避免文字压在糊内容上读不清。
+   Chrome/Firefox 只认标准属性，Safari 只认 -webkit- 前缀，所以必须用
+   not ((A) or (B)) —— 少了括号无法与 or 组合，单独写 not (A) 会在
+   Chrome 上误判为不支持（它确实不支持 -webkit- 前缀），导致毛玻璃整个失效。 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+	.topnav.glass {
+		background-color: var(--c-bg);
+	}
+}
+
+.topnav.hidden {
+	transform: translateY(-100%);
+}
+
+.topnav-inner {
+	height: 100%;
+	max-width: var(--wrap);
+	margin: 0 auto;
+	padding: 0 20px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
 }
 
 /* 左侧标题 */
-.topnav_a_left a {
-  display: inline-block;
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 1.2rem;
-  font-weight: 500;
-  padding: 14px 8px;
-  white-space: nowrap;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+.brand {
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--c-title);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-/* 右侧菜单（桌面横向排列，无动画） */
-.topnav_a_right {
-  display: block;
-  align-items: center;
-  gap: 4px;
+.brand:hover {
+	color: var(--c-primary);
 }
 
-.topnav_a_right a {
-  color: #ffffff;
-  text-align: center;
-  padding: 18px;
-  text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
-  white-space: nowrap;
+/* 右侧菜单 */
+.nav-menu {
+	display: flex;
+	align-items: center;
+	gap: 2px;
 }
 
-.topnav_a_right a:hover {
-  background-color: #dddddd64;
-  color: #1e1e1e;
+.nav-menu a {
+	display: inline-flex;
+	align-items: center;
+	height: 34px;
+	padding: 0 12px;
+	font-size: 14px;
+	color: var(--c-text);
+	border: 1px solid transparent;
+	white-space: nowrap;
+	transition: all .15s ease;
 }
 
-/* 汉堡按钮（默认隐藏） */
+.nav-menu a:hover {
+	color: var(--c-primary);
+	background: var(--c-primary-soft);
+}
+
+.nav-menu a.active {
+	color: var(--c-primary);
+	border-color: var(--c-primary);
+}
+
+.nav-menu .nav-external {
+	width: 34px;
+	padding: 0;
+	justify-content: center;
+	font-size: 15px;
+}
+
+/* 汉堡按钮（桌面隐藏） */
 .hamburger {
-  display: none;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 32px;
-  line-height: 1;
-  cursor: pointer;
-  padding: 8px 16px;
-  margin-left: auto;
-  min-width: 60px;
-  min-height: 60px;
-  text-align: center;
-  -webkit-tap-highlight-color: transparent;
+	display: none;
+	width: 34px;
+	height: 34px;
+	padding: 7px 6px;
+	background: transparent;
+	cursor: pointer;
+	flex-direction: column;
+	justify-content: space-between;
+	border: 1px solid transparent;
 }
 
-/* 汉堡图标容器（用于旋转动画） */
-.hamburger span {
-  display: inline-block;
-  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+.hamburger-bar {
+	display: block;
+	width: 100%;
+	height: 1.5px;
+	background: var(--c-text);
+	transition: transform .25s ease, opacity .2s ease;
 }
 
-/* 打开状态时旋转 90 度，同时可以改为 ✕ 符号（仍保留旋转感） */
-.hamburger.is-open span {
-  transform: rotate(90deg);
+.hamburger:hover .hamburger-bar {
+	background: var(--c-primary);
 }
 
-.hamburger:hover {
-  opacity: 0.85;
+.hamburger[aria-expanded="true"] .hamburger-bar:nth-child(1) {
+	transform: translateY(7.75px) rotate(45deg);
 }
 
-/* ===== 移动端适配（≤ 768px） ===== */
+.hamburger[aria-expanded="true"] .hamburger-bar:nth-child(2) {
+	opacity: 0;
+}
+
+.hamburger[aria-expanded="true"] .hamburger-bar:nth-child(3) {
+	transform: translateY(-7.75px) rotate(-45deg);
+}
+
+/* ===== 移动端 ===== */
 @media screen and (max-width: 768px) {
-  .topnav {
-    padding: 0 4px;
-  }
+	.topnav-inner {
+		padding: 0 14px;
+	}
 
-  .hamburger {
-    display: block;
-  }
+	.hamburger {
+		display: flex;
+	}
 
-  /* 移动端菜单：默认隐藏，通过 max-height / opacity / padding 实现滑动淡入动画 */
-  .topnav_a_right {
-    display: flex;
-    /* 保持 flex 布局，但视觉隐藏 */
-    flex-direction: column;
-    align-items: stretch;
-    gap: 2px;
-    width: 100%;
-    border-top: 1px solid transparent;
-    /* 隐藏时透明边框避免占位 */
-    margin-top: 0;
+	.nav-menu {
+		position: absolute;
+		top: var(--nav-h);
+		left: 0;
+		right: 0;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+		padding: 0 14px;
+		background: var(--c-bg);
+		border-bottom: 1px solid var(--c-border);
+		overflow: hidden;
+		max-height: 0;
+		opacity: 0;
+		visibility: hidden;
+		transition: max-height .3s ease, opacity .2s ease, visibility .3s;
+	}
 
-    /* 动画核心属性 */
-    max-height: 0;
-    opacity: 0;
-    padding: 0 0;
-    overflow: hidden;
+	.nav-menu.show {
+		max-height: 60vh;
+		overflow-y: auto;
+		opacity: 1;
+		visibility: visible;
+	}
 
-    /* 过渡效果：max-height 使用较长的贝塞尔曲线保证平滑，opacity 同步 */
-    transition:
-      max-height 0.4s cubic-bezier(0.33, 1, 0.68, 1),
-      opacity 0.3s ease-in-out,
-      padding 0.3s ease-in-out,
-      border-color 0.1s ease;
-  }
+	.nav-menu a {
+		height: 44px;
+		justify-content: flex-start;
+		border: 0;
+		border-bottom: 1px solid var(--c-border);
+	}
 
-  /* 展开状态：恢复可见性与尺寸 */
-  .topnav_a_right.show {
-    max-height: 500px;
-    /* 足够容纳所有菜单项，可根据实际项目调整 */
-    opacity: 1;
-    padding: 8px 0 12px;
-    border-top-color: rgba(255, 255, 255, 0.2);
-    margin-top: 4px;
-    overflow: visible;
-    /* 展开后允许链接悬停效果可见 */
-  }
+	.nav-menu a.active {
+		color: var(--c-primary);
+		background: var(--c-primary-soft);
+	}
 
-  .topnav_a_right a {
-    padding: 16px 20px;
-    border-radius: 12px;
-    margin-right: 6px;
-    font-size: 1.1rem;
-    background-color: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(4px);
-    /* 链接自身的过渡 */
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
+	.nav-menu .nav-external {
+		width: 100%;
+		justify-content: flex-start;
+		padding-left: 10px;
+		border-bottom: 0;
+	}
 
-  .topnav_a_right a:hover {
-    background-color: rgba(220, 220, 220, 0.4);
-  }
-
-  .topnav_a_left a {
-    font-size: 1.1rem;
-    padding: 14px 4px;
-  }
-}
-
-/* 超小屏幕优化 */
-@media screen and (max-width: 400px) {
-  .topnav_a_left a {
-    font-size: 1rem;
-    white-space: normal;
-    word-break: keep-all;
-  }
+	.brand {
+		font-size: 15px;
+	}
 }

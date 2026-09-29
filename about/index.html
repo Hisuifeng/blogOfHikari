@@ -1,190 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 
 <head>
-	<title>Hikari 的博客</title>
-	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<!-- 引入配置文件 -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+	<meta name="theme-color" content="#ffffff">
+	<title>
+		关于我 | Hikari 的博客
+	</title>
+	<meta name="description" content="Hikari 的个人博客，记录小说、技术笔记和随笔。">
+	
+	<meta name="keywords" content="Hexo,博客,随笔,音游">
+	
+	
+	
+	
 	
 <link rel="stylesheet" href="/css/main.css">
 
-
-		<!-- 字体图片库 -->
-		
+	
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-
-			<!-- 代码高亮库 -->
-			
+	
+	
 <link rel="stylesheet" href="/lib/highlight/prism/prism.css">
 
+		
+	
+<link rel="stylesheet" href="/lib/highlight/prism/prism-line-numbers.css">
+
+		
+	
+	
+<link rel="stylesheet" href="/css/topnav.css">
+
+	
+<link rel="stylesheet" href="/css/footer.css">
+
+	
+<link rel="stylesheet" href="/css/code.css">
+
+	
+	
+<link rel="stylesheet" href="/css/anim.css">
+
+	
+	
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
-	<topnav>
+	
+	<a class="skip-link" href="#content">跳到正文</a>
+
+	<header class="topnav" id="top">
+	<div class="topnav-inner">
+		<a class="brand" href="/">
+			Hikari 的博客
+		</a>
+
+		<button class="hamburger" id="hamburger" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="nav-menu">
+			<span class="hamburger-bar"></span>
+			<span class="hamburger-bar"></span>
+			<span class="hamburger-bar"></span>
+		</button>
+
+		<nav class="nav-menu" id="nav-menu" aria-label="主导航">
+			
+				<a href="/" data-nav="/">首页</a>
+			
+				<a href="/archives" data-nav="/archives">归档</a>
+			
+				<a href="/tags" data-nav="/tags">标签</a>
+			
+				<a href="/categories" data-nav="/categories">分类</a>
+			
+				<a href="/links" data-nav="/links">友链</a>
+			
+				<a href="/search" data-nav="/search">搜索</a>
+			
+				<a href="/about" data-nav="/about">关于</a>
+			
+			
+				
+				<a href="https://github.com/Hisuifeng" class="nav-external" target="_blank" rel="noopener noreferrer" title="github">
+					
+<i class="fa fa-github" aria-hidden="true"></i>
+<span class="sr-only">github</span>
+				</a>
+			
+		</nav>
+	</div>
+</header>
+
+
+	
+	
+	<div id="content" tabindex="-1">
 		
-<link rel="stylesheet" href="/css/topnav.css">
+<link rel="stylesheet" href="/css/page.css">
 
-<nav class="topnav" aria-label="主导航">
-  <div class="topnav_a_left">
-    <a href="/">Hikari's Blog - 光的博客</a>
-  </div>
 
-  <!-- 汉堡按钮：内部 span 用于动画和字符切换 -->
-  <button class="hamburger" id="hamburgerBtn" aria-label="菜单" aria-expanded="false" aria-controls="navMenu">
-    <span>☰</span>
-  </button>
+<div class="wrap">
+	<div class="page-head">
+		<h1>关于<span class="en">About</span></h1>
+		<p class="desc">关于我，以及这个博客。</p>
+	</div>
 
-  <!-- 右侧菜单容器 -->
-  <div class="topnav_a_right" id="navMenu">
-    
-      <a href="/about" class="menu-item-link">关于</a>
-    
-      <a href="/archives" class="menu-item-link">归档</a>
-    
-    
-      <a class="trans" href="https://github.com/Hisuifeng" target="_blank" rel="noopener">github</a>
-    
-  </div>
-</nav>
+	
 
-<script>
-  (function() {
-    const navMenu = document.getElementById('navMenu');
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const hamburgerSpan = hamburgerBtn?.querySelector('span');
-    if (!navMenu || !hamburgerBtn || !hamburgerSpan) return;
-
-    const MOBILE_BREAKPOINT = 768;
-    let isMenuOpen = false;
-
-    // 更新图标：切换字符并控制旋转类
-    function updateIcon(open) {
-      hamburgerSpan.textContent = open ? '✕' : '☰';
-      hamburgerBtn.classList.toggle('is-open', open);
-      hamburgerBtn.setAttribute('aria-expanded', open);
-    }
-
-    function closeMenu() {
-      navMenu.classList.remove('show');
-      isMenuOpen = false;
-      updateIcon(false);
-    }
-
-    function openMenu() {
-      if (window.innerWidth <= MOBILE_BREAKPOINT) {
-        navMenu.classList.add('show');
-        isMenuOpen = true;
-        updateIcon(true);
-      }
-    }
-
-    function toggleMenu(e) {
-      e.stopPropagation();
-      if (window.innerWidth > MOBILE_BREAKPOINT) return;
-      isMenuOpen ? closeMenu() : openMenu();
-    }
-
-    function resetForDesktop() {
-      navMenu.classList.remove('show');
-      isMenuOpen = false;
-      updateIcon(false);
-    }
-
-    function handleViewportChange() {
-      if (window.innerWidth > MOBILE_BREAKPOINT) {
-        resetForDesktop();
-      } else {
-        if (isMenuOpen) closeMenu();
-        navMenu.classList.remove('show');
-        updateIcon(false);
-      }
-    }
-
-    hamburgerBtn.addEventListener('click', toggleMenu);
-
-    navMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) closeMenu();
-      });
-    });
-
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(handleViewportChange, 80);
-    });
-
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth <= MOBILE_BREAKPOINT && isMenuOpen) {
-        if (!hamburgerBtn.contains(e.target) && !navMenu.contains(e.target)) {
-          closeMenu();
-        }
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isMenuOpen && window.innerWidth <= MOBILE_BREAKPOINT) {
-        closeMenu();
-        hamburgerBtn.focus();
-      }
-    });
-
-    handleViewportChange();
-  })();
-</script>
-	</topnav>
-	<!-- 引入正文 -->
-	<div id="content">
-		<div class="background">
-			<div id="background-overlay" class="background-overlay">
-				<div id="img_background"></div>
-			</div>
-
+	<div class="profile">
+		
+			<img class="profile-avatar" src="/images/head.jpg" alt="Hikari">
+		
+		<div class="profile-info">
+			<h2 class="profile-name">Hikari</h2>
+			
+				<p class="profile-motto">何为坚强？</p>
+			
+			
+				<div class="rich profile-intro">Hikari (ひかり)<br>
+有朋自远方来，不亦乐乎。<br>
+欢迎你，我的朋友！ヾ(≧▽≦*)o<br>
+</div>
+			
 		</div>
-		
-<link rel="stylesheet" href="/css/post.css">
+	</div>
 
-<div id="page">
-    <div id="page-main-left">
-        <div id="toc">
-            <p class="progress-bar"></p>
-            <div id="page-main-person">
-                <div id="person">
-                    <img class="head" src="/about/images/head.jpg">
-                    <div id="NickAndSlogan">
-                        <b>
-                            <p id="nick"><a href="/about"><ruby>Hikari <rt>ひかり</rt></ruby> - 光</a></p>
-                        </b>
-                        <p class="slogan">有朋自远方来，不亦乐乎。</p>
-                        <p class="slogan">欢迎你，我的朋友！ヾ(≧▽≦*)o</p>
-                    </div>
-                </div>
-            </div>
-            <div class="toc-title">目录</div>
-            <div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%B2%E5%AD%A6%E4%B8%89%E9%97%AE"><span class="toc-text">哲学三问</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E6%98%AF%E8%B0%81%EF%BC%9F"><span class="toc-text">我是谁？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B4%E8%B6%A3%E7%88%B1%E5%A5%BD"><span class="toc-text">兴趣爱好</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%92%8C%E5%AD%A6%E4%B9%A0"><span class="toc-text">工作和学习</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%89%8D%E5%9C%A8%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-text">目前在做什么</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E4%BB%8E%E5%93%AA%E9%87%8C%E6%9D%A5"><span class="toc-text">我从哪里来?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E5%88%B0%E5%93%AA%E9%87%8C%E5%8E%BB%EF%BC%9F"><span class="toc-text">我到哪里去？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%95%B4%E4%B8%AA%E5%8D%9A%E5%AE%A2%EF%BC%9F"><span class="toc-text">为什么整个博客？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F"><span class="toc-text">联系方式</span></a></li></ol></div>
-        </div>
-    </div>
-    <div id="page-main-right">
-        <div class="banner" name="top">
-            <div class="blank"></div>
-            <h id="title">关于我</h>
-            <h3>本文全文共 992 字，预计阅读： 1 mins.</h3>
-        </div>
-        <div id="article">
-            <h2 id="哲学三问"><a href="#哲学三问" class="headerlink" title="哲学三问"></a>哲学三问</h2><p>经典的哲学三问是：我是谁？我从哪里来？我到哪里去？<br>这是个好问题。早些年可能我会这么回答：我是人，想几把来就几把来，想几把到哪里去就到哪里。<br>现在我觉得得好好回答这个问题。</p>
+	
+		<ul class="fact-list">
+			
+				<li><span class="fact-key">正在开发</span><span class="fact-val">红石镇主页 / re Theme</span></li>
+			
+				<li><span class="fact-key">最近在玩</span><span class="fact-val">抖音 / cs2</span></li>
+			
+		</ul>
+	
+
+	
+	
+		<div class="rich page-body"><h2 id="哲学三问"><a href="#哲学三问" class="headerlink" title="哲学三问"></a>哲学三问</h2><p>经典的哲学三问是：我是谁？我从哪里来？我到哪里去？<br>这是个好问题。早些年可能我会这么回答：我是人，想几把来就几把来，想几把到哪里去就到哪里。<br>现在我觉得得好好回答这个问题。</p>
 <h3 id="我是谁？"><a href="#我是谁？" class="headerlink" title="我是谁？"></a>我是谁？</h3><p>我是Hikari，Hikari是我！<br>表面上文静，性格上处于魔丸，之前别人都说我闷骚，现在我是le。<br>兴趣广泛，但除了运动。因为从小体弱多病，所以体力非常差，哪怕是do都觉得累（事实上也没do过，招女友）。好事情是现在能够医院陪诊全流程（哪怕是手术）。<br>说到手术，也是被朋友造黄谣了。</p>
 <blockquote>
 <p>“你做包皮手术了啊？”<br>“听说你做包皮手术了。”</p>
 </blockquote>
 <p>刚出手术室看到这些笑得我线裂了，重新上药痛死老子了！<del>我要曹你们所有造我黄谣的人！</del></p>
-<h4 id="兴趣爱好"><a href="#兴趣爱好" class="headerlink" title="兴趣爱好"></a>兴趣爱好</h4><p>不难看出此人是个音游痴，喜欢打Arcaea（源神），事实上音游除了Arcaea其他也都在玩。最近也在重回osu!，不过因为腱鞘炎容易老实。<br>注意力惊人的同学还能看出此人是个二次元，但现在已经脱宅很久了。因此现在最喜欢的事情是睡觉，也许是因为神经衰弱吧。</p>
+<h4 id="兴趣爱好"><a href="#兴趣爱好" class="headerlink" title="兴趣爱好"></a>兴趣爱好</h4><p>不难看出这个吊人是个音游痴，喜欢打Arcaea（源神），事实上音游除了Arcaea其他也都在玩。最近也在重回osu!，不过因为腱鞘炎容易老实。<br>注意力惊人的同学还能看出此人是个二次元，但现在已经脱宅很久了。因此现在最喜欢的事情是睡觉，也许是因为神经衰弱吧。</p>
 <h4 id="工作和学习"><a href="#工作和学习" class="headerlink" title="工作和学习"></a>工作和学习</h4><p>对于工作和学习，只喜欢学自己喜欢的，小时候以为自己不喜欢学习，长大后发现学习是我最喜欢的事情，我讨厌的仅仅是考试罢了。最可惜的是自己对计算机有瘾，感觉跟工蜂一样这辈子到头了。</p>
 <blockquote>
 <p>“不感觉学机的过程快乐又痛苦吗？”<br>—— Hikari 《悲伤回忆录》</p>
 </blockquote>
 <p>但是有瘾是有瘾，不代表我不懒，<del>除了感觉有意思的项目其他都当完成任务</del>。<br><del>怎么看起来跟嘉豪写的一样，无所谓了写爽了就行了(</del></p>
-<h4 id="目前在做什么"><a href="#目前在做什么" class="headerlink" title="目前在做什么"></a>目前在做什么</h4><p>目前在更新小说中，因为从来没写过所以随时可能会被重排版甚至删除。</p>
+<h4 id="关于小说"><a href="#关于小说" class="headerlink" title="关于小说"></a>关于小说</h4><p>目前在更新小说中，因为从来没写过所以随时可能会被重排版甚至删除。</p>
 <h3 id="我从哪里来"><a href="#我从哪里来" class="headerlink" title="我从哪里来?"></a>我从哪里来?</h3><p>？！来来！？.jpg<br>地理上处于四川。</p>
 <h3 id="我到哪里去？"><a href="#我到哪里去？" class="headerlink" title="我到哪里去？"></a>我到哪里去？</h3><p>曾经想到人民群众中去，现在发现已经实现了。（赞助发女装）</p>
 <h2 id="为什么整个博客？"><a href="#为什么整个博客？" class="headerlink" title="为什么整个博客？"></a>为什么整个博客？</h2><p>从小学开始就想整个博客记录自己，但是发现不是没办法整出一个属于自己的博客，而是懒得写博客。<br>当初中技术力够了，整了个博客，但是没有写一篇文章（除了hello world），不如扣扣空间方便。</p>
@@ -192,83 +158,64 @@
 <p>小时候在扣扣空间写，年少时在扣扣空间写，一句话喜欢扣。</p>
 </blockquote>
 <p>最近突然想写小说，重新想起了整个博客的计划，感觉还是要有个地方来存下自己的记录比较好吧。<br>PS：小说可以在博客读</p>
-<h2 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h2><p>居然想要我的联系方式吗？<br><a href="mailto:minecraftsuifeng@qq.com">电子邮箱📧</a><br><a target="_blank" rel="noopener" href="https://github.com/Hisuifeng">github🐙 @Suifeng</a><br><img src="/about/images/wechatcode.png" alt="加我微信"><br>只有妹妹才能加我的微信，帅哥勿扰🤫</p>
+<h2 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h2><p>居然想要我的联系方式吗？<br><a href="mailto:minecraftsuifeng@qq.com">电子邮箱📧</a><br><a target="_blank" rel="noopener" href="https://github.com/Hisuifeng">github🐙 @Suifeng</a><br><img src="/images/wechatcode.png" alt="加我微信"><br>只有妹妹才能加我的微信，帅哥勿扰🤫</p>
 <blockquote>
 <p>当你想扫二维码骚扰我的时候会发现，你会发现这是个收款码。<br>当你在读这个文字的时候，你会发现你在读这段文字。</p>
 </blockquote>
-
-            <div>
-                <h1></h1>
-                <p>Hikari 作于 2025-10-14 23:18:18 ，转载时请附上链接和作者。</p>
-                <p>『善待生活，热爱一切，常开怀大笑。』</p>
-                <h1></h1>
-            </div>
-            <section class="post-tags">
-                <div>
-                    <span>标签:</span>
-                    <span class="tag">
-                        
-                            
-                                <a href="/#"># </a>
-                            
-                        
-                    </span>
-                </div>
-            </section>
-            <div class="blank"></div>
-        </div>
-    </div>
 </div>
+	
 
-<!-- 移动端目录抽屉 -->
-<div id="mobile-toc-overlay" class="mobile-toc-overlay">
-    <div class="mobile-toc-panel">
-        <div class="mobile-toc-header">
-            <span class="toc-title">目录</span>
-            <span class="mobile-toc-close">✕</span>
-        </div>
-        <div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%B2%E5%AD%A6%E4%B8%89%E9%97%AE"><span class="toc-text">哲学三问</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E6%98%AF%E8%B0%81%EF%BC%9F"><span class="toc-text">我是谁？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B4%E8%B6%A3%E7%88%B1%E5%A5%BD"><span class="toc-text">兴趣爱好</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%92%8C%E5%AD%A6%E4%B9%A0"><span class="toc-text">工作和学习</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%89%8D%E5%9C%A8%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-text">目前在做什么</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E4%BB%8E%E5%93%AA%E9%87%8C%E6%9D%A5"><span class="toc-text">我从哪里来?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E5%88%B0%E5%93%AA%E9%87%8C%E5%8E%BB%EF%BC%9F"><span class="toc-text">我到哪里去？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%95%B4%E4%B8%AA%E5%8D%9A%E5%AE%A2%EF%BC%9F"><span class="toc-text">为什么整个博客？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F"><span class="toc-text">联系方式</span></a></li></ol></div>
-    </div>
-</div>
-
-<!-- 悬浮操作菜单（自适应：大屏直接返回顶部，小屏展开菜单） -->
-<div id="floating-menu" class="floating-action-menu">
-    <!-- 主按钮（带进度条） -->
-    <div class="menu-trigger">
-        <img src="/images/to_top.png" alt="返回顶部">
-        <p class="progress-bar"></p>
-    </div>
-    <!-- 子按钮组（仅小屏有效） -->
-    <div class="menu-actions">
-        <a class="menu-item back-to-top" href="#top" title="返回顶部">
-            <span>↑</span>
-        </a>
-        <div class="menu-item show-toc" id="btn-show-toc" title="显示目录">
-            <span>☰</span>
-        </div>
-    </div>
-</div>
-
-
-<script src="/lib/highlight/prism/prism.js"></script>
-
-
-<script src="/js/post.js"></script>
-
-	</div>
-
-	</div>
-
-
-			<!-- 引入 js 文件 -->
+	
+		<h3 class="box-title plain">联系方式</h3>
+		<ul class="contact-list">
 			
+				<li>
+					<i class="fa fa-envelope-o" aria-hidden="true"></i>
+					<span class="contact-key">邮箱</span>
+					<a href="mailto:minecraftsuifeng@outlook.com">minecraftsuifeng@outlook.com</a>
+				</li>
+			
+			
+			
+			
+		</ul>
+	
+</div>
+
+	</div>
+
+	<footer class="footer">
+	<div class="wrap">
+		<div class="footer-main">
+			<p class="footer-copy">
+				
+					&copy; 2025&ndash;2026
+				
+				Hikari
+			</p>
+			
+			
+				<p class="footer-meta">
+					Powered by <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+					&middot; Theme restart
+				</p>
+			
+		</div>
+		
+			<p class="footer-saying">&ldquo;善待生活，热爱一切，常开怀大笑。&rdquo;</p>
+		
+	</div>
+</footer>
+
+
+	<a href="#top" id="back-to-top" aria-label="回到顶部">
+		<i class="fa fa-angle-up" aria-hidden="true"></i>
+	</a>
+
+	
 <script src="/js/main.js"></script>
 
-
-					<script type="text/javascript">
-						L2Dwidget.init();
-					</script>
-
+	
 </body>
 
 </html>

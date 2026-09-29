@@ -1,0 +1,387 @@
+/* ==========================================================
+   全局动效
+   ----------------------------------------------------------
+   约定：
+   1. 只用 transform / opacity / background-color / border-color。
+      主题是扁平风格（无圆角、无阴影），动效不能引入 box-shadow，
+      也不能给元素加边框宽度变化，否则会引发布局跳动。
+   2. 「滚动进场」全部挂在 html.has-reveal 下。这个类由 main.js 在确认
+      浏览器支持 IntersectionObserver 之后才加上；不支持的浏览器拿不到该类，
+      内容保持原样可见，不会出现「等动画才显示、结果动画不跑」的故障。
+   3. 带 fill 的动画只放在没有 transform 状态类的元素上。CSS 动画的
+      优先级高于普通声明，会永久覆盖 .hidden 之类的状态样式。
+      .topnav（靠 transform 隐藏）和 #back-to-top 因此只用 opacity 动画。
+   4. 文件末尾用 prefers-reduced-motion 统一关闭。
+   ========================================================== */
+
+/* ---------- 关键帧 ---------- */
+@keyframes fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes pop-in {
+	from {
+		opacity: 0;
+		transform: scale(.92);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@keyframes glow-pulse {
+	0%, 100% {
+		opacity: .5;
+	}
+
+	50% {
+		opacity: 1;
+	}
+}
+
+@keyframes float-y {
+	0%, 100% {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(-4px);
+	}
+}
+
+/* ---------- 首屏进场（纯 CSS，不依赖 JS） ---------- */
+.topnav {
+	/* 只能动 opacity：.hidden 是靠 transform 实现的 */
+	animation: fade-in .3s ease both;
+}
+
+.hero-sub {
+	animation: fade-up .5s ease both .05s;
+}
+
+.hero-saying {
+	animation: fade-up .5s ease both .13s;
+}
+
+.hero-author {
+	animation: fade-up .5s ease both .21s;
+}
+
+.stat-bar {
+	animation: fade-up .5s ease both .1s;
+}
+
+.section-title {
+	animation: fade-up .5s ease both .16s;
+}
+
+/* 除首页外的各页面标题区 */
+.page-head {
+	animation: fade-up .5s ease both .06s;
+}
+
+.post-header {
+	animation: fade-up .5s ease both .06s;
+}
+
+/* 文章正文：接在标题之后进场。
+   整块只播一次，不按段落逐个触发 —— 长文逐块播的话，读者会先看到
+   半透明的正文。 */
+.post-content {
+	animation: fade-up .55s ease both .14s;
+}
+
+.notfound-code {
+	animation: pop-in .6s ease both;
+}
+
+.empty i {
+	display: inline-block;
+	animation: float-y 2.4s ease-in-out infinite;
+}
+
+/* ---------- 进场 ---------- */
+/* 首屏可见的条目：直接用 CSS 动画。
+   不用补间的原因见 main.js 里的说明 —— 补间需要先有一帧真实的 opacity:0，
+   而首屏元素等不到那一帧，动画会静默不播。CSS 动画自带起始帧，必定播放。
+   错峰延迟沿用 --d，与下面补间那套保持一致。 */
+html.has-reveal [data-reveal-now] {
+	animation: fade-up .5s ease both;
+	animation-delay: var(--d, 0s);
+}
+
+/* 视口外的条目：等滚进来再用补间播 */
+html.has-reveal [data-reveal] {
+	opacity: 0;
+	transform: translateY(14px);
+	transition-property: opacity, transform, background-color;
+	transition-timing-function: ease, ease, ease;
+	/* 标记加上的瞬间必须「直接」隐藏，不能放补间。
+	   否则加标记本身就是一次 opacity 1 -> 0 的样式变化，会被下面的
+	   transition 捕获，元素先淡出、滚入视口时再淡入 ——
+	   表现是列表加载时先消失一遍，很难看。
+	   补间只在 .is-in 那一刻启用。 */
+	transition-duration: 0s, 0s, 0s;
+}
+
+html.has-reveal [data-reveal].is-in {
+	opacity: 1;
+	transform: none;
+	/* 逐属性配置：进场用的 opacity/transform 走 --d 延迟做错峰，
+	   hover 的 background-color 延迟固定为 0。
+	   如果直接写 transition-delay: .25s，那第 6 条的悬停背景色
+	   也要等 250ms 才变色，鼠标划过会感觉发木。
+	   .is-in 会一直留着，所以进场结束后 background-color 仍是 .15s。 */
+	transition-duration: .5s, .5s, .15s;
+	transition-delay: var(--d, 0s), var(--d, 0s), 0s;
+}
+
+/* 这几个只淡入、不位移：
+   - .side-card / .toc-box 在 sticky + flex 的 .post-side 里，side-card 在最底部，
+     整块 translateY 会让它短暂溢出容器并压到页脚上。
+   - .archive-year 是分组标题，内部还嵌着 .archive-item，父子同时位移会叠加，
+     看起来像抖了两下。
+   注意 CSS 动画的优先级高于普通声明，transform: none 压不住动画，
+   必须换成只动 opacity 的 fade-in 关键帧。 */
+html.has-reveal .side-card[data-reveal],
+html.has-reveal .toc-box[data-reveal],
+html.has-reveal .archive-year[data-reveal] {
+	transform: none;
+}
+
+html.has-reveal .side-card[data-reveal-now],
+html.has-reveal .toc-box[data-reveal-now],
+html.has-reveal .archive-year[data-reveal-now] {
+	animation-name: fade-in;
+}
+
+/* 同屏多个条目依次进场。只给前几个加延迟，再多就拖沓了。
+   这里设 --d（而不是 transition-delay），原因见上面那条规则的注释。 */
+html.has-reveal .post-item:nth-child(2) {
+	--d: .05s;
+}
+
+html.has-reveal .post-item:nth-child(3) {
+	--d: .1s;
+}
+
+html.has-reveal .post-item:nth-child(4) {
+	--d: .15s;
+}
+
+html.has-reveal .post-item:nth-child(5) {
+	--d: .2s;
+}
+
+html.has-reveal .post-item:nth-child(6) {
+	--d: .25s;
+}
+
+html.has-reveal .cloud-item:nth-child(2),
+html.has-reveal .cat-item:nth-child(2),
+html.has-reveal .friend-item:nth-child(2),
+html.has-reveal .qr-item:nth-child(2),
+html.has-reveal .archive-item:nth-child(2) {
+	--d: .05s;
+}
+
+html.has-reveal .cloud-item:nth-child(3),
+html.has-reveal .cat-item:nth-child(3),
+html.has-reveal .friend-item:nth-child(3),
+html.has-reveal .qr-item:nth-child(3),
+html.has-reveal .archive-item:nth-child(3) {
+	--d: .1s;
+}
+
+html.has-reveal .cloud-item:nth-child(4),
+html.has-reveal .cat-item:nth-child(4),
+html.has-reveal .friend-item:nth-child(4),
+html.has-reveal .qr-item:nth-child(4),
+html.has-reveal .archive-item:nth-child(4) {
+	--d: .15s;
+}
+
+/* 首页归档速览的年份节点。同一组规则里带上 .archive-year，
+   两处 stagger 逻辑相同，合并成一条选择器更不容易改漏一边。 */
+html.has-reveal .home-archive-year:nth-child(2),
+html.has-reveal .archive-year:nth-child(2) {
+	--d: .06s;
+}
+
+html.has-reveal .home-archive-year:nth-child(3),
+html.has-reveal .archive-year:nth-child(3) {
+	--d: .12s;
+}
+
+html.has-reveal .home-archive-year:nth-child(4),
+html.has-reveal .archive-year:nth-child(4) {
+	--d: .18s;
+}
+
+/* ---------- 微交互 ---------- */
+/* 导航下划线从中间长出来 */
+.nav-menu a {
+	position: relative;
+}
+
+.nav-menu a::after {
+	content: "";
+	position: absolute;
+	left: 12px;
+	right: 12px;
+	bottom: 4px;
+	height: 1px;
+	background: var(--c-primary);
+	transform: scaleX(0);
+	transform-origin: center;
+	transition: transform .2s ease;
+}
+
+.nav-menu a:hover::after,
+.nav-menu a.active::after {
+	transform: scaleX(1);
+}
+
+/* 列表项悬停时内容轻微右移。挂在 .post-item-main 上而不是 .post-item：
+   .post-item 是进场动画的载体，往它身上加 hover 位移会被
+   [data-reveal].is-in 的 transform 覆盖掉 */
+.post-item-main {
+	transition: transform .18s ease, background-color .15s ease;
+}
+
+.post-item:hover .post-item-main {
+	transform: translateX(4px);
+}
+
+.btn {
+	transition: transform .15s ease, background-color .15s ease,
+		color .15s ease, border-color .15s ease;
+}
+
+.btn:hover {
+	transform: translateY(-1px);
+}
+
+.chip {
+	transition: transform .15s ease, background-color .15s ease,
+		color .15s ease, border-color .15s ease;
+}
+
+.chip:hover {
+	transform: translateY(-1px);
+}
+
+.cloud-item,
+.cat-item,
+.friend-item,
+.qr-item,
+.archive-item {
+	transition: transform .18s ease, background-color .15s ease,
+		border-color .15s ease, color .15s ease;
+}
+
+.cloud-item:hover,
+.cat-item:hover,
+.friend-item:hover,
+.qr-item:hover,
+.archive-item:hover {
+	transform: translateY(-2px);
+	border-color: var(--c-primary);
+}
+
+.archive-month-title {
+	transition: color .15s ease;
+}
+
+.archive-item:hover .archive-month-title {
+	color: var(--c-primary);
+}
+
+/* 回到顶部：动效加在内层图标上，避开 .show 用的 transform */
+#back-to-top i {
+	display: inline-block;
+	transition: transform .2s ease;
+}
+
+#back-to-top:hover i {
+	transform: translateY(-2px);
+}
+
+/* 侧栏卡片的微交互。挂在 .side-id 上而不是整张卡：
+   卡片现在有社交、统计、随机推荐等多个区域，鼠标停在任意一处就把昵称染成主色
+   会显得莫名其妙，只在身份区悬停时才提示「这是作者」。 */
+.side-id:hover .side-name,
+.toc-box:hover .box-title {
+	color: var(--c-primary);
+	transition: color .15s ease;
+}
+
+/* 归档速览的年份节点：悬停时圆点从 9px 撑到 11px。
+   用 scale 而不是改 width/height，圆点尺寸是 1px 描边 + 2px 边框，
+   改尺寸会连带重排整条竖线的位置。 */
+.home-archive-year::before {
+	transition: transform .15s ease, background-color .15s ease;
+}
+
+.home-archive-year:hover::before {
+	transform: scale(1.22);
+	background: var(--c-primary-soft);
+}
+
+/* 月份小块：只反色，不位移。
+   年份节点已经有一个「圆点长大」的反馈，同一个 hover 里再叠位移会过火。 */
+.home-archive-months a {
+	transition: color .15s ease, background-color .15s ease,
+		border-color .15s ease;
+}
+
+/* 「更多」箭头跟着文字走：链接整体位移，箭头只做 translateX。
+   挂在链接上整体位移会和 .post-item-main 的右移叠加，两处一起
+   触发时鼠标下的东西会移动两次。 */
+.section-more:hover i {
+	transform: translateX(2px);
+}
+
+/* ---------- 关闭全部动效 ---------- */
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto !important;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: .001ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: .001ms !important;
+	}
+
+	html.has-reveal [data-reveal] {
+		opacity: 1 !important;
+		transform: none !important;
+	}
+
+	html.has-reveal [data-reveal-now] {
+		opacity: 1 !important;
+	}
+}

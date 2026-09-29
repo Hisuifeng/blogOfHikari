@@ -1,0 +1,96 @@
+/* ==========================================================================
+   blocks.css — 跨页复用的小块组件
+   只有「同一个 class 在两个以上 layout 出现」才放这里：
+   标签云（tags 页 + 首页）、分类列表（categories 页）。
+   页面独占的样式留在各自的文件里，避免这个文件变成第二个 page.css。
+
+   风格约束沿用 main.css：纯浅色扁平，零圆角、零阴影。
+   ========================================================================== */
+
+/* ===== 标签云 ===== */
+/* 不用权重色阶，只靠字号表达词频：颜色是主题唯一的强调色，
+   一旦按词频分档，页面上就会出现第二套主色，扁平风格立刻被破坏。 */
+.cloud {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 10px 14px;
+	padding: 24px 20px;
+	background: var(--c-surface);
+	border: 1px solid var(--c-border);
+}
+
+.cloud-item {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 3px;
+	color: var(--c-text);
+	border-bottom: 1px solid transparent;
+	transition: color .15s ease, border-color .15s ease;
+}
+
+.cloud-item:hover {
+	color: var(--c-primary);
+	border-bottom-color: var(--c-primary);
+}
+
+.cloud-item sup {
+	font-size: 10px;
+	color: var(--c-faint);
+}
+
+/* 首页里的标签云不套盒子：外层 .home-block 已经是 1px 描边的白底，
+   再套一层同样的盒子会出现双层描边，页面上一下多出三个横条。 */
+.home-cloud {
+	padding: 18px 20px 20px;
+	background: var(--c-surface);
+	border: 1px solid var(--c-border);
+}
+
+/* 词频权重 --w 是 .82~1.42 的线性映射值，由 index.ejs 算出后内联。
+   不写死 px 是因为站点文章数会变，字号跟着量级走才不会出现
+   「一个标签独占一行」或「全部一样大」两种极端。 */
+.home-cloud .cloud-item {
+	font-size: calc(15px * var(--w, 1));
+}
+
+/* ===== 分类列表 ===== */
+.cat-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.cat-item a {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 16px;
+	font-size: 14px;
+	color: var(--c-text);
+	background: var(--c-bg);
+	border: 1px solid var(--c-border-strong);
+	transition: all .15s ease;
+}
+
+.cat-item a:hover {
+	color: #fff;
+	background: var(--c-primary);
+	border-color: var(--c-primary);
+}
+
+.cat-item a:hover i,
+.cat-item a:hover .cat-count {
+	color: var(--c-primary-soft);
+}
+
+.cat-item i {
+	color: var(--c-faint);
+	font-size: 13px;
+}
+
+.cat-count {
+	font-size: 12px;
+	color: var(--c-faint);
+	font-family: var(--font-mono);
+}
