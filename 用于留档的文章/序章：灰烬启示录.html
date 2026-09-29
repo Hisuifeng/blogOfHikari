@@ -5,6 +5,17 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 	<meta name="theme-color" content="#ffffff">
+	
+	<script>
+		(function () {
+			try {
+				var t = localStorage.getItem('theme');
+				if (t === 'light' || t === 'dark') {
+					document.documentElement.setAttribute('data-theme', t);
+				}
+			} catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略即可 */ }
+		})();
+	</script>
 	<title>
 		序章：灰烬启示录 | Hikari 的博客
 	</title>
@@ -58,37 +69,46 @@
 			Hikari 的博客
 		</a>
 
-		<button class="hamburger" id="hamburger" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="nav-menu">
-			<span class="hamburger-bar"></span>
-			<span class="hamburger-bar"></span>
-			<span class="hamburger-bar"></span>
-		</button>
+		<div class="nav-right">
+			<button class="hamburger" id="hamburger" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="nav-menu">
+				<span class="hamburger-bar"></span>
+				<span class="hamburger-bar"></span>
+				<span class="hamburger-bar"></span>
+			</button>
 
-		<nav class="nav-menu" id="nav-menu" aria-label="主导航">
-			
-				<a href="/" data-nav="/">首页</a>
-			
-				<a href="/archives" data-nav="/archives">归档</a>
-			
-				<a href="/tags" data-nav="/tags">标签</a>
-			
-				<a href="/categories" data-nav="/categories">分类</a>
-			
-				<a href="/links" data-nav="/links">友链</a>
-			
-				<a href="/search" data-nav="/search">搜索</a>
-			
-				<a href="/about" data-nav="/about">关于</a>
-			
-			
+			<nav class="nav-menu" id="nav-menu" aria-label="主导航">
 				
-				<a href="https://github.com/Hisuifeng" class="nav-external" target="_blank" rel="noopener noreferrer" title="github">
+					<a href="/" data-nav="/">首页</a>
+				
+					<a href="/archives" data-nav="/archives">归档</a>
+				
+					<a href="/tags" data-nav="/tags">标签</a>
+				
+					<a href="/categories" data-nav="/categories">分类</a>
+				
+					<a href="/links" data-nav="/links">友链</a>
+				
+					<a href="/search" data-nav="/search">搜索</a>
+				
+					<a href="/about" data-nav="/about">关于</a>
+				
+				
 					
+					<a href="https://github.com/Hisuifeng" class="nav-external" target="_blank" rel="noopener noreferrer" title="github">
+						
 <i class="fa fa-github" aria-hidden="true"></i>
 <span class="sr-only">github</span>
-				</a>
+					</a>
+				
+			</nav>
+
 			
-		</nav>
+			<button class="theme-toggle" id="theme-toggle" type="button" aria-label="切换主题（当前：跟随系统）" title="切换主题">
+				<i class="fa fa-adjust toggle-auto" aria-hidden="true"></i>
+				<i class="fa fa-sun-o toggle-light" aria-hidden="true"></i>
+				<i class="fa fa-moon-o toggle-dark" aria-hidden="true"></i>
+			</button>
+		</div>
 	</div>
 </header>
 

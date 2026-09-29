@@ -5,6 +5,17 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 	<meta name="theme-color" content="#ffffff">
+	
+	<script>
+		(function () {
+			try {
+				var t = localStorage.getItem('theme');
+				if (t === 'light' || t === 'dark') {
+					document.documentElement.setAttribute('data-theme', t);
+				}
+			} catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略即可 */ }
+		})();
+	</script>
 	<title>
 		AI编程耍起嘛（上） | Hikari 的博客
 	</title>
@@ -58,37 +69,46 @@
 			Hikari 的博客
 		</a>
 
-		<button class="hamburger" id="hamburger" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="nav-menu">
-			<span class="hamburger-bar"></span>
-			<span class="hamburger-bar"></span>
-			<span class="hamburger-bar"></span>
-		</button>
+		<div class="nav-right">
+			<button class="hamburger" id="hamburger" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="nav-menu">
+				<span class="hamburger-bar"></span>
+				<span class="hamburger-bar"></span>
+				<span class="hamburger-bar"></span>
+			</button>
 
-		<nav class="nav-menu" id="nav-menu" aria-label="主导航">
-			
-				<a href="/" data-nav="/">首页</a>
-			
-				<a href="/archives" data-nav="/archives">归档</a>
-			
-				<a href="/tags" data-nav="/tags">标签</a>
-			
-				<a href="/categories" data-nav="/categories">分类</a>
-			
-				<a href="/links" data-nav="/links">友链</a>
-			
-				<a href="/search" data-nav="/search">搜索</a>
-			
-				<a href="/about" data-nav="/about">关于</a>
-			
-			
+			<nav class="nav-menu" id="nav-menu" aria-label="主导航">
 				
-				<a href="https://github.com/Hisuifeng" class="nav-external" target="_blank" rel="noopener noreferrer" title="github">
+					<a href="/" data-nav="/">首页</a>
+				
+					<a href="/archives" data-nav="/archives">归档</a>
+				
+					<a href="/tags" data-nav="/tags">标签</a>
+				
+					<a href="/categories" data-nav="/categories">分类</a>
+				
+					<a href="/links" data-nav="/links">友链</a>
+				
+					<a href="/search" data-nav="/search">搜索</a>
+				
+					<a href="/about" data-nav="/about">关于</a>
+				
+				
 					
+					<a href="https://github.com/Hisuifeng" class="nav-external" target="_blank" rel="noopener noreferrer" title="github">
+						
 <i class="fa fa-github" aria-hidden="true"></i>
 <span class="sr-only">github</span>
-				</a>
+					</a>
+				
+			</nav>
+
 			
-		</nav>
+			<button class="theme-toggle" id="theme-toggle" type="button" aria-label="切换主题（当前：跟随系统）" title="切换主题">
+				<i class="fa fa-adjust toggle-auto" aria-hidden="true"></i>
+				<i class="fa fa-sun-o toggle-light" aria-hidden="true"></i>
+				<i class="fa fa-moon-o toggle-dark" aria-hidden="true"></i>
+			</button>
+		</div>
 	</div>
 </header>
 
@@ -167,7 +187,7 @@
     
 		<div class="side-pick">
 			<span class="side-cap">随便看看</span>
-			<a class="side-pick-link" href="/2025/10/14/%E4%B8%BB%E9%A2%98%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/">主题测试文章</a>
+			<a class="side-pick-link" href="/2025/10/20/%E4%BA%A1%E5%A6%BB%E5%9B%9E%E5%BF%86%E5%BD%95(%E8%93%9D%E6%A1%A5%E6%9D%AF)/">亡妻回忆录(蓝桥杯)</a>
 		</div>
 	
 
@@ -205,7 +225,7 @@
 		</header>
 
 		<article class="post-content">
-			<h2 id="野人时代"><a href="#野人时代" class="headerlink" title="野人时代"></a>野人时代</h2><p>如果是在2024年前，那你可能会认为是写汇编写C就是古法编程。<br>但在today，这个说法已经扩展到用编辑器敲任何代码都叫古法编程了。在这个连牢理<code>@Mashiro_Neri</code>都能靠大肥鱼写出复杂逻辑的代码的今天（能不能用你别管），坚持手敲代码，看起来就像是原始人。<br>本人在25年是一个合格的古人，古到哪种程度呢？古到什么都是自己写。红石镇的bot是我手写的，说实话我真佩服以前的我，在牢理<code>@Mashiro_Neri</code>套doker，使用nas和不稳定的环境，无本地bot框架和测试环境的情况下半天内完成了对插件基础功能的开发。<br>在学校中在同学豆包play完成实验报告的情况下我依旧手写，发挥匠人精神，可惜这种日子将在下半年结束……</p>
+			<h2 id="野人时代"><a href="#野人时代" class="headerlink" title="野人时代"></a>野人时代</h2><p>如果是在2024年前，那你可能会认为是写汇编写C就是古法编程。<br>但在today，这个说法已经扩展到用编辑器敲任何代码都叫古法编程了。在这个连牢理<code>@Mashiro_Neri</code>都能靠大肥鱼写出复杂逻辑的代码的今天（能不能用你别管），坚持手敲代码，看起来就像是原始人。<br>本人在25年是一个合格的古人，古到哪种程度呢？古到什么都是自己写。红石镇的bot是我手写的，说实话我真佩服以前的我，在牢理<code>@Mashiro_Neri</code>套docker，使用nas和不稳定的环境，无本地bot框架和测试环境的情况下半天内完成了对插件基础功能的开发。<br>在学校中在同学豆包play完成实验报告的情况下我依旧手写，发挥匠人精神，可惜这种日子将在下半年结束……</p>
 <h2 id="【光神个人汉化】ひかり君のインテリジェントエージェントプログラミング初体験"><a href="#【光神个人汉化】ひかり君のインテリジェントエージェントプログラミング初体験" class="headerlink" title="【光神个人汉化】ひかり君のインテリジェントエージェントプログラミング初体験"></a>【光神个人汉化】ひかり君のインテリジェントエージェントプログラミング初体験</h2><p>在25年之前，我一直想着手写代码来训练自己的基本能力，毕竟AI是黑奴，指挥黑奴你得学会怎么指挥，光拿鞭子抽只会事倍功半。<br>直到寒假过后，嵌入式课程，他来了……<br>我们的嵌入式是我们前院长（现在是副院长，大佬实在太忙碌了所以退去了院长职位），他告诉我们：</p>
 <blockquote>
 <p>“AI编程是要搞的，不搞不行！”</p>
