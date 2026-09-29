@@ -120,6 +120,80 @@
 		});
 	}
 
+	/* ---------- 主题切换（跟随系统 / 浅色 / 暗色） ----------
+	   初始 data-theme 由 layout.ejs 里的内联脚本写好（防止白闪），
+	   这里只处理点击循环、系统变化和按钮提示文案。
+	   档位不写进 DOM 之外的地方：data-theme 有值 = 手动档，没有 = 跟随系统，
+	   这样 CSS 那份 prefers-color-scheme 兜底才能继续生效。 */
+	(function () {
+		var root = document.documentElement;
+		var btn = document.getElementById('theme-toggle');
+		if (!btn) return;
+
+		var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+		function currentMode() {
+			var t = root.getAttribute('data-theme');
+			return (t === 'light' || t === 'dark') ? t : 'auto';
+		}
+
+		/* 实际生效的明暗：auto 时看系统。只用于主题色 meta 和提示文案。 */
+		function effective() {
+			var m = currentMode();
+			if (m !== 'auto') return m;
+			return systemDark() ? 'dark' : 'light';
+		}
+
+		/* 系统的明暗，和用户当前档位无关。 */
+		function systemDark() {
+			return !!(mq && mq.matches);
+		}
+
+		var LABEL = { auto: '跟随系统', light: '浅色', dark: '暗色' };
+		var meta = document.querySelector('meta[name="theme-color"]');
+
+		function syncChrome() {
+			btn.setAttribute('aria-label', '切换主题（当前：' + LABEL[currentMode()] + '）');
+			btn.setAttribute('title', '当前：' + LABEL[currentMode()] + '，点击切换');
+			/* 地址栏/状态栏颜色跟着走，不然暗色页面顶着一条白边。 */
+			if (meta) meta.setAttribute('content', effective() === 'dark' ? '#16181d' : '#ffffff');
+		}
+
+		/* 三档循环：auto → 系统反面 → 另一档 → auto。
+		   先跳「系统的反面」，保证从 auto 出发第一下就有肉眼可见的变化；
+		   第二档再走到另一个显式档，浅色/暗色两个图标都点得到 ——
+		   如果这里用 effective() 取「反面」，那切到暗色后 effective() 就变成
+		   暗色本身，再也算不出系统的反面，循环会塌成 auto ↔ 暗色，
+		   太阳图标永远点不出来。所以必须用 systemDark() 而不是 effective()。
+		   例：系统浅色时顺序是 auto → 暗 → 浅 → auto。 */
+		function nextMode() {
+			var m = currentMode();
+			var mid = systemDark() ? 'light' : 'dark';
+			var other = mid === 'light' ? 'dark' : 'light';
+			if (m === 'auto') return mid;
+			if (m === mid) return other;
+			return 'auto';
+		}
+
+		btn.addEventListener('click', function () {
+			var next = nextMode();
+			if (next === 'auto') root.removeAttribute('data-theme');
+			else root.setAttribute('data-theme', next);
+			try { localStorage.setItem('theme', next); } catch (e) {}
+			syncChrome();
+		});
+
+		/* 跟随系统那一档下系统切换时，要更新主题色和提示
+		   （颜色本身由 CSS 媒体查询自动跟，不需要这里动手）。 */
+		if (mq) {
+			var onChange = function () { if (currentMode() === 'auto') syncChrome(); };
+			if (mq.addEventListener) mq.addEventListener('change', onChange);
+			else if (mq.addListener) mq.addListener(onChange);
+		}
+
+		syncChrome();
+	})();
+
 	/* ---------- 进场动画 ----------
 	   下面这些块分两种处理，原因是实测出来的，不是设计偏好：
 

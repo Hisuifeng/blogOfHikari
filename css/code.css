@@ -12,7 +12,7 @@
 /* ---------- 链路 1：Hexo 内置高亮 ---------- */
 figure.highlight {
 	margin: 18px 0;
-	background: #fbfbfb;
+	background: var(--c-code-bg);
 	border: 1px solid var(--c-border);
 	overflow-x: auto;
 	font-size: 13px;
@@ -149,7 +149,7 @@ figure.highlight .strong {
 pre[class*="language-"] {
 	margin: 18px 0;
 	padding: 14px 16px;
-	background: #fbfbfb;
+	background: var(--c-code-bg);
 	border: 1px solid var(--c-border);
 	overflow-x: auto;
 	font-size: 13px;
@@ -192,6 +192,76 @@ pre[class*="language-"].line-numbers > code {
 /* 行内代码（不是代码块） */
 :not(pre) > code[class*="language-"] {
 	background: var(--c-primary-soft);
+	/* prism 给带语言 class 的 code 定了纯黑 + 白描边，
+	   暗色下纯黑压深底会看不见，这里连同描边一起收回主题色。 */
+	color: var(--c-primary-dark);
+	text-shadow: none;
+}
+
+/* ---------- prism 语法着色 ----------
+   色值全部走 --sx-* 变量（定义在 main.css 的设计令牌里）。
+   整组重写而不是只补暗色：浅色那组变量就等于 prism.css 的默认原值，
+   所以浅色外观一个像素都不变，而暗色只需换变量、不必再复制一份规则。 */
+pre[class*="language-"] .token.comment,
+pre[class*="language-"] .token.prolog,
+pre[class*="language-"] .token.doctype,
+pre[class*="language-"] .token.cdata {
+	color: var(--sx-comment);
+}
+
+pre[class*="language-"] .token.punctuation {
+	color: var(--sx-punct);
+}
+
+pre[class*="language-"] .token.boolean,
+pre[class*="language-"] .token.constant,
+pre[class*="language-"] .token.deleted,
+pre[class*="language-"] .token.number,
+pre[class*="language-"] .token.property,
+pre[class*="language-"] .token.symbol,
+pre[class*="language-"] .token.tag {
+	color: var(--sx-number);
+}
+
+pre[class*="language-"] .token.attr-name,
+pre[class*="language-"] .token.builtin,
+pre[class*="language-"] .token.char,
+pre[class*="language-"] .token.inserted,
+pre[class*="language-"] .token.selector,
+pre[class*="language-"] .token.string {
+	color: var(--sx-string);
+}
+
+pre[class*="language-"] .token.entity,
+pre[class*="language-"] .token.operator,
+pre[class*="language-"] .token.url,
+pre[class*="language-"] .language-css .token.string,
+pre[class*="language-"] .style .token.string {
+	color: var(--sx-operator);
+}
+
+pre[class*="language-"] .token.atrule,
+pre[class*="language-"] .token.attr-value,
+pre[class*="language-"] .token.keyword {
+	color: var(--sx-keyword);
+}
+
+pre[class*="language-"] .token.class-name,
+pre[class*="language-"] .token.function {
+	color: var(--sx-func);
+}
+
+pre[class*="language-"] .token.important,
+pre[class*="language-"] .token.regex,
+pre[class*="language-"] .token.variable {
+	color: var(--sx-special);
+}
+
+/* prism 给整块加了 1px 白色 text-shadow：浅色下是极轻的浮雕，
+   暗色下会在字底透出一圈白光。主题本就零阴影，统一去掉。 */
+pre[class*="language-"],
+pre[class*="language-"] > code {
+	text-shadow: none;
 }
 
 /* ---------- 代码语言角标 ----------

@@ -16,12 +16,12 @@
 }
 
 /* 停在页面顶部时：半透明 + 背景模糊。首页的 hero 顶在导航之下，
-   所以这里能真实糊出 wallpaper；其他页面背后是纯白 body，效果等同纯白。
+   所以这里能真实糊出 wallpaper；其他页面背后是纯色 body，效果等同纯色。
    -webkit- 前缀不能省，Safari 需要它才认 backdrop-filter。
    rgba 底色不能给全不透明，否则模糊完全看不见。
-   saturate 略微提饱和，抵消 backdrop-filter 常见的发灰。 */
+   色值走 --c-nav-glass：浅色下是半透明白，暗色下是半透明黑。 */
 .topnav.glass {
-	background-color: rgba(255, 255, 255, .72);
+	background-color: var(--c-nav-glass);
 	-webkit-backdrop-filter: saturate(180%) blur(12px);
 	backdrop-filter: saturate(180%) blur(12px);
 	border-bottom-color: var(--c-border);
@@ -137,6 +137,60 @@
 
 .hamburger[aria-expanded="true"] .hamburger-bar:nth-child(3) {
 	transform: translateY(-7.75px) rotate(-45deg);
+}
+
+/* ===== 右侧一组：菜单 + 主题切换 ===== */
+/* 包一层 flex 是为了让 .topnav-inner 的 space-between 仍然是
+   「品牌靠左、其余靠右」；三个子元素直接摊在 .topnav-inner 里
+   space-between 会把他们均匀分开，按钮跑到中间去。 */
+.nav-right {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
+
+/* 主题切换按钮：与 .nav-external 同尺寸（34×34），一排图标才对得齐。 */
+.theme-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	font-size: 15px;
+	color: var(--c-text);
+	background: transparent;
+	border: 1px solid transparent;
+	cursor: pointer;
+	transition: color .15s ease, background-color .15s ease, border-color .15s ease;
+}
+
+.theme-toggle:hover {
+	color: var(--c-primary);
+	background: var(--c-primary-soft);
+}
+
+/* 三个状态图标，只显示当前设置对应的那个。
+   这一步交给 CSS 而不是 JS：首屏内联脚本已经把 data-theme 写好了，
+   纯选择器就能对上，JS 里少维护一份「图标该是哪个」的状态。 */
+.toggle-auto,
+.toggle-light,
+.toggle-dark {
+	display: none;
+}
+
+/* 「跟随系统」= html 上没有显式 data-theme（内联脚本只在这一档不写属性），
+   或者显式写了 auto。两个选择器都要留，否则从手动切回 auto 时图标会消失。 */
+:root:not([data-theme="light"]):not([data-theme="dark"]) .toggle-auto,
+:root[data-theme="auto"] .toggle-auto {
+	display: inline;
+}
+
+:root[data-theme="light"] .toggle-light {
+	display: inline;
+}
+
+:root[data-theme="dark"] .toggle-dark {
+	display: inline;
 }
 
 /* ===== 移动端 ===== */

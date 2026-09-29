@@ -68,7 +68,7 @@
 	padding: 14px 16px;
 	overflow-x: auto;
 	font-size: 13px;
-	background: #fbfbfb;
+	background: var(--c-code-bg);
 	border: 1px solid var(--c-border);
 }
 

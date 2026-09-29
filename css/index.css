@@ -73,9 +73,10 @@
 	}
 }
 
-/* 图片之上盖一层自上而下渐浓的白色：文字区域亮度被压低以保证对比度。
+/* 图片之上盖一层渐浓的遮罩：文字区域亮度被压低以保证对比度。
    顶部必须完全透明 —— hero 现在顶到导航之下，顶部整段被导航盖住，
-   若这里还给不透明的 --c-surface，导航的毛玻璃就只会糊到一层纯色，白做。 */
+   若这里还给不透明的底色，导航的毛玻璃就只会糊到一层纯色，白做。
+   遮罩色值走 --c-hero-veil：浅色下是白纱，暗色下是黑纱。 */
 .hero-has-bg::before {
 	content: "";
 	position: absolute;
@@ -83,10 +84,7 @@
 	right: 0;
 	top: 0;
 	bottom: 0;
-	background: linear-gradient(to bottom,
-		rgba(255, 255, 255, 0) 0%,
-		rgba(255, 255, 255, .35) 40%,
-		rgba(255, 255, 255, .8) 100%);
+	background: var(--c-hero-veil);
 	pointer-events: none;
 }
 

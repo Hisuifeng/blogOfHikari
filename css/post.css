@@ -299,7 +299,7 @@
 	overflow-x: auto;
 	font-size: 13px;
 	line-height: 1.6;
-	background: #fbfbfb;
+	background: var(--c-code-bg);
 	border: 1px solid var(--c-border);
 }
 

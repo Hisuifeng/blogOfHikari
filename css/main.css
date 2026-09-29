@@ -1,12 +1,16 @@
 /* ==========================================================================
    main.css — 设计令牌 / 全局重置 / 通用组件
-   风格约束：纯浅色扁平。零圆角、零阴影、零毛玻璃。
-   层级只靠「1px 描边 + 色块」表达。
+   风格约束：扁平。零圆角、零阴影。层级只靠「1px 描边 + 色块」表达。
+   浅色/暗色双主题，颜色一律走下面的 CSS 变量，不要在组件里写死色值。
    本文件在 prism.css 之前加载；圆角/阴影靠 !important 兜底覆盖第三方样式。
    ========================================================================== */
 
 /* ---------- 设计令牌 ---------- */
 :root {
+	/* 告诉浏览器本页是浅色：表单控件、滚动条、系统 UI 会跟着走。
+	   暗色下由下面的 [data-theme="dark"] / 媒体查询改写成 dark。 */
+	color-scheme: light;
+
 	/* 主色 */
 	--c-primary: #e06c75;
 	--c-primary-dark: #c66169;
@@ -22,6 +26,27 @@
 	--c-border: #e5e5e5;
 	--c-border-strong: #d2d2d2;
 
+	/* 这三处原先散着字面色值（#fbfbfb / rgba 白 / hero 渐变），
+	   提成变量是为了让暗色能跟着一起换，不必在暗色里逐条覆盖字面色。 */
+	--c-code-bg: #fbfbfb;
+	--c-nav-glass: rgba(255, 255, 255, .72);
+	--c-hero-veil: linear-gradient(to bottom,
+		rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, .35) 40%,
+		rgba(255, 255, 255, .8) 100%);
+
+	/* 代码语法着色。浅色这一组取的就是 prism.css 默认主题的原值，
+	   收进变量只是为了让暗色能整组替换；色调和明暗无关的那几个
+	   （注释、标点）在暗色里会略微提亮，保证压在深底上还看得清。 */
+	--sx-comment: #708090;
+	--sx-punct: #999999;
+	--sx-number: #990055;
+	--sx-string: #669900;
+	--sx-operator: #9a6e3a;
+	--sx-keyword: #0077aa;
+	--sx-func: #dd4a68;
+	--sx-special: #ee9900;
+
 	/* 尺寸 */
 	--nav-h: 56px;
 	--wrap: 1080px;
@@ -31,6 +56,74 @@
 	--font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
 		"Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
 	--font-mono: Consolas, Monaco, "Courier New", "Courier", monospace;
+}
+
+/* ---------- 暗色令牌 ----------
+   同一组取值写两遍，必须同步修改，原因是选择器没法「或」：
+     · :root[data-theme="dark"]  —— 用户手动切到暗色（存 localStorage）
+     · @media prefers-color-scheme: dark —— 跟随系统，且 JS 未启用时也生效
+   之所以不用更省事的 light-dark()：它要 Chrome 123+ / Safari 17.5+，
+   不支持时整组颜色会失效、页面直接变透明底黑字，宁可多写一份。
+
+   配色原则：主色保持不变（品牌色不因主题漂移），中性色整体反相，
+   层级仍只靠 1px 描边。--c-primary-dark 在浅色下是「更深的强调色」，
+   到了暗色要反过来变成「更亮的强调色」，否则压在深底上会糊。 */
+:root[data-theme="dark"] {
+	color-scheme: dark;
+	--c-primary-dark: #f0818a;
+	--c-primary-soft: #2b1f22;
+	--c-title: #e8eaed;
+	--c-text: #c2c6cc;
+	--c-muted: #8b9099;
+	--c-faint: #6b7078;
+	--c-bg: #16181d;
+	--c-surface: #1e2127;
+	--c-border: #2c3037;
+	--c-border-strong: #3a3f47;
+	--c-code-bg: #1b1e24;
+	--c-nav-glass: rgba(22, 24, 29, .72);
+	--c-hero-veil: linear-gradient(to bottom,
+		rgba(22, 24, 29, 0) 0%,
+		rgba(22, 24, 29, .45) 40%,
+		rgba(22, 24, 29, .85) 100%);
+	--sx-comment: #7f848e;
+	--sx-punct: #9aa0a6;
+	--sx-number: #d19a66;
+	--sx-string: #98c379;
+	--sx-operator: #56b6c2;
+	--sx-keyword: #c678dd;
+	--sx-func: #61afef;
+	--sx-special: #e06c75;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		color-scheme: dark;
+		--c-primary-dark: #f0818a;
+		--c-primary-soft: #2b1f22;
+		--c-title: #e8eaed;
+		--c-text: #c2c6cc;
+		--c-muted: #8b9099;
+		--c-faint: #6b7078;
+		--c-bg: #16181d;
+		--c-surface: #1e2127;
+		--c-border: #2c3037;
+		--c-border-strong: #3a3f47;
+		--c-code-bg: #1b1e24;
+		--c-nav-glass: rgba(22, 24, 29, .72);
+		--c-hero-veil: linear-gradient(to bottom,
+			rgba(22, 24, 29, 0) 0%,
+			rgba(22, 24, 29, .45) 40%,
+			rgba(22, 24, 29, .85) 100%);
+		--sx-comment: #7f848e;
+		--sx-punct: #9aa0a6;
+		--sx-number: #d19a66;
+		--sx-string: #98c379;
+		--sx-operator: #56b6c2;
+		--sx-keyword: #c678dd;
+		--sx-func: #61afef;
+		--sx-special: #e06c75;
+	}
 }
 
 /* ---------- 扁平化强制规则（唯一样板开关） ----------
