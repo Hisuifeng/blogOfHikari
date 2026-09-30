@@ -43,8 +43,10 @@
 }
 
 /* ===== 侧栏目录 ===== */
-/* 目录框占满侧栏剩余高度，作为 flex 子项才可被压缩；
-   min-height:0 是必需的，否则 flex 子项不会收缩到内容高度以下，滚动条不会出现。 */
+/* 目录是侧栏里唯一肯让位的部分：flex:0 1 auto + min-height:0，
+   空间不够时先压它（见下面 .post-side .side-card 那段说明）。
+   overflow:hidden 是为了压到极扁时把标题一起裁掉，
+   而不是让内容溢出到卡片外面。 */
 .toc-box {
 	border: 1px solid var(--c-border);
 	background: var(--c-bg);
@@ -52,17 +54,11 @@
 	flex-direction: column;
 	flex: 0 1 auto;
 	min-height: 0;
+	overflow: hidden;
 }
 
-.box-title {
-	flex: 0 0 auto;
-	padding: 10px 14px;
-	font-size: 13px;
-	font-weight: 600;
-	color: var(--c-title);
-	background: var(--c-surface);
-	border-bottom: 1px solid var(--c-border);
-}
+/* .box-title / .card 的样式统一放在 main.css，目录标题与侧栏名片标题栏共用一份，
+   这里不再重复声明 —— 之前两处各写一遍，改一处就会漂移。 */
 
 .toc-content {
 	flex: 1 1 auto;
@@ -119,23 +115,17 @@
 	font-weight: 600;
 }
 
-/* ===== 侧栏配额（卡片本体在 side-card.css，文章页/首页共用） ===== */
-/* 卡片自身样式已抽到 css/side-card.css，因为首页也用同一份 partial。
-   这里只留文章页独有的部分：侧栏整块是 sticky + max-height，卡片
-   flex:0 0 auto 永远压不掉目录，所以给卡片一个「最多占侧栏 40%」的上限，
-   超出部分在卡片内部滚动。
-   用 calc 换算而不是百分比 —— 百分比要解析 .post-side 的高度，
-   而那边是 height:auto + max-height 约束，百分比 max-height 解析不可靠。
-   配额只在视口矮到 96px + 2.5×自然高(当前约 269px)≈768px 时才启动，
-   也就是只有笔记本横屏/分屏这类场景才会看到卡片内部滚动条。
-   269px 是 profile 填了 motto + email 之后的实测值，改配置会变，
-   改这里的注释前先量一遍，别照抄旧数字。
-   选择器带上 .post-side：首页侧栏没有目录竞争，不吃这个配额。 */
+/* ===== 侧栏空间分配（卡片本体在 side-card.css，文章页/首页共用） ===== */
+/* 侧栏整块是 sticky + max-height，空间不够时得有人让位，规则是「目录让，名片不让」：
+     · 名片 flex-shrink:0，且不再设 max-height —— 它永远不会内部滚动。
+       名片里全是「一眼看完」的信息，一旦要拖动才能看全就等于没放；
+     · 目录 flex-shrink:1 且 min-height:0，空间不足时它先被压扁，
+       而目录本来就能内部滚动，压扁只是少显示几行，功能不丢。
+   反过来的做法（给名片设百分比上限）在 750px 上下的窗口就会冒滚动条，
+   所以这里把配额彻底去掉，改用收缩优先级来分空间。
+   选择器带上 .post-side：首页侧栏没有目录竞争，不参与这套分配。 */
 .post-side .side-card {
 	flex: 0 0 auto;
-	max-height: calc((100vh - var(--nav-h) - 40px) * .4);
-	overflow-y: auto;
-	overscroll-behavior: contain;
 	margin-top: 16px;
 }
 
@@ -508,14 +498,27 @@ div.code-toolbar > .toolbar > .toolbar-item > a {
 	border-bottom: 1px solid var(--c-border);
 }
 
+/* 关闭按钮用文本 ×，不用 font-awesome 图标：
+   图标字形在 15px 上偏细偏小，正文体的 × 更容易点中，也和播放器、
+   其他纯文字按钮保持同一套表达。 */
 #toc-drawer-close {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 28px;
 	height: 28px;
-	font-size: 15px;
+	font-size: 20px;
+	line-height: 1;
 	color: var(--c-muted);
 	background: transparent;
 	border: 0;
 	cursor: pointer;
+}
+
+#toc-drawer-close span {
+	display: block;
+	/* 文本 × 的视觉重心比字形框略低，抬 1px 才和左侧标题对齐 */
+	transform: translateY(-1px);
 }
 
 #toc-drawer-close:hover {

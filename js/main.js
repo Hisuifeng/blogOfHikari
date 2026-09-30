@@ -1,7 +1,12 @@
 /* ==========================================================
    main.js — 全站通用交互
-   导航高亮 / 汉堡菜单 / 滚动隐藏导航 / 回到顶部
-   无依赖，原生实现
+   导航高亮 / 汉堡菜单 / 滚动隐藏导航 / 回到顶部 / 主题切换 / 进场动画
+
+   分成两段，是因为站内换页走的是 pjax（js/pjax.js）：导航、页脚、播放器
+   都在 #content 之外，不会随换页重建，所以
+     · 「只绑一次」的部分：导航、汉堡、回到顶部、主题切换、滚动监听；
+     · 「每次换页都要重跑」的部分：进场动画。
+   后者挂到 window.__restartInitPage 上，pjax 换完内容直接调用。
    ========================================================== */
 (function () {
 	'use strict';
@@ -11,22 +16,28 @@
 	var burger = document.getElementById('hamburger');
 	var toTop = document.getElementById('back-to-top');
 
-	/* ---------- 当前项高亮 ---------- */
+	/* ---------- 当前项高亮 ----------
+	   换页后导航是旧的，必须能重新点亮，所以单独抽成函数并挂到 window 上。
+	   用 toggle 而不是 add：换页时上一页的 active 还挂在同一个 <a> 上。 */
 	function normalize(p) {
 		return p.replace(/\/+$/, '') || '/';
 	}
 
-	var here = normalize(location.pathname);
+	function markNav(pathname) {
+		if (!menu) return;
+		var here = normalize(pathname || location.pathname);
 
-	if (menu) {
 		menu.querySelectorAll('a[data-nav]').forEach(function (a) {
 			var target = normalize(a.getAttribute('data-nav') || '/');
 			var isRoot = target === '/';
 			var hit = target === here ||
 				(!isRoot && here.indexOf(target + '/') === 0);
-			if (hit) a.classList.add('active');
+			a.classList.toggle('active', hit);
 		});
 	}
+
+	markNav();
+	window.__restartMarkNav = markNav;
 
 	/* ---------- 汉堡菜单（≤768px） ---------- */
 	function setMenu(open) {
@@ -108,6 +119,12 @@
 				ticking = true;
 			}
 		}, { passive: true });
+
+		/* 换页后滚动位置归零，导航的显隐/毛玻璃要跟着回到初始状态 */
+		window.__restartResetScroll = function () {
+			lastY = window.scrollY;
+			onScroll();
+		};
 
 		onScroll();
 	}
@@ -194,7 +211,7 @@
 		syncChrome();
 	})();
 
-	/* ---------- 进场动画 ----------
+	/* ---------- 进场动画（每次换页都要重跑） ----------
 	   下面这些块分两种处理，原因是实测出来的，不是设计偏好：
 
 	   1) 加载时已在视口内 -> 直接用纯 CSS 动画（data-reveal-now）。
@@ -216,37 +233,42 @@
 		'.home-archive-year'
 	].join(', ');
 
-	if (!('IntersectionObserver' in window)) return;
+	function initPage() {
+		if (!('IntersectionObserver' in window)) return;
 
-	var revealTargets = document.querySelectorAll(REVEAL_SEL);
+		var revealTargets = document.querySelectorAll(REVEAL_SEL);
 
-	if (!revealTargets.length) return;
+		if (!revealTargets.length) return;
 
-	document.documentElement.classList.add('has-reveal');
+		document.documentElement.classList.add('has-reveal');
 
-	var revealIO = new IntersectionObserver(function (entries) {
-		entries.forEach(function (entry) {
-			if (!entry.isIntersecting) return;
-			entry.target.classList.add('is-in');
-			/* 只播一次，播完就取消观察，减少回调开销 */
-			revealIO.unobserve(entry.target);
+		var revealIO = new IntersectionObserver(function (entries) {
+			entries.forEach(function (entry) {
+				if (!entry.isIntersecting) return;
+				entry.target.classList.add('is-in');
+				/* 只播一次，播完就取消观察，减少回调开销 */
+				revealIO.unobserve(entry.target);
+			});
+		}, {
+			/* 底部收一点，让元素真正进入视口再播，而不是刚露头就动 */
+			rootMargin: '0px 0px -6% 0px',
+			threshold: 0.04
 		});
-	}, {
-		/* 底部收一点，让元素真正进入视口再播，而不是刚露头就动 */
-		rootMargin: '0px 0px -6% 0px',
-		threshold: 0.04
-	});
 
-	/* 放宽到 1.2 屏：略微在折叠线下方的元素，滚一点点就能看到，
-	   提前按首屏处理观感更连贯。 */
-	var fold = window.innerHeight * 1.2;
+		/* 放宽到 1.2 屏：略微在折叠线下方的元素，滚一点点就能看到，
+		   提前按首屏处理观感更连贯。 */
+		var fold = window.innerHeight * 1.2;
 
-	Array.prototype.forEach.call(revealTargets, function (el) {
-		if (el.getBoundingClientRect().top < fold) {
-			el.setAttribute('data-reveal-now', '');
-			return;
-		}
-		el.setAttribute('data-reveal', '');
-		revealIO.observe(el);
-	});
+		Array.prototype.forEach.call(revealTargets, function (el) {
+			if (el.getBoundingClientRect().top < fold) {
+				el.setAttribute('data-reveal-now', '');
+				return;
+			}
+			el.setAttribute('data-reveal', '');
+			revealIO.observe(el);
+		});
+	}
+
+	window.__restartInitPage = initPage;
+	initPage();
 })();

@@ -47,8 +47,13 @@
 	background-size: cover;
 	background-position: center bottom;
 	pointer-events: none;
-	animation: hero-flow var(--hero-speed, 28s) linear infinite;
-	will-change: background-position;
+	/* 淡入淡出的目标值走变量，透明度仍然由 _config.yml 的 hero.opacity 决定；
+	   动画里读 var() 就能既保住配置值，又不被关键帧写死。 */
+	opacity: var(--hero-opacity, .32);
+	animation:
+		hero-flow var(--hero-speed, 28s) linear infinite,
+		hero-fade var(--hero-speed, 28s) linear infinite;
+	will-change: background-position, opacity;
 }
 
 /* 两个 .hero-bg 副本上下拼接，位移 -50% 时首尾无缝衔接，形成无缝循环。
@@ -70,6 +75,29 @@
 	}
 	to {
 		background-position: center top;
+	}
+}
+
+/* 图片流到顶之后必须先淡出、回到底部再淡入：
+   background-position 从 top 跳回 bottom 是同一帧内完成的，直接循环会看到一次
+   「啪」地闪回。把归位那一帧压在 opacity:0 上就看不见了，循环也就接得上。
+   两段渐变各自带缓动 —— 整段 linear 会让首尾的透明度变化慢得像掉帧。
+   首尾都取 0，循环点两侧才连续。 */
+@keyframes hero-fade {
+	0% {
+		opacity: 0;
+		animation-timing-function: ease-out;
+	}
+	10% {
+		opacity: var(--hero-opacity, .32);
+		animation-timing-function: linear;
+	}
+	82% {
+		opacity: var(--hero-opacity, .32);
+		animation-timing-function: ease-in;
+	}
+	100% {
+		opacity: 0;
 	}
 }
 

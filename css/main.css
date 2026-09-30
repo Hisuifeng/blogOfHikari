@@ -205,8 +205,10 @@ ul, ol {
 .friend-list,
 .fact-list,
 .contact-list,
-.side-social,
+.icon-links,
+.side-tags,
 .side-stats,
+.stat-list,
 .cloud,
 .home-cloud,
 .home-archive,
@@ -307,6 +309,84 @@ hr {
 	margin-top: 10px;
 	font-size: 14px;
 	color: var(--c-muted);
+}
+
+/* ---------- 卡片基元 ----------
+   全站只有一种卡片：1px 描边 + 白底，标题栏 = 浅色底 + 3px 主色强调条。
+   侧栏名片、目录、关于页的每一块都走这套，避免每页各写一份近似的样式，
+   也就不会出现「有的框有标题栏、有的没有」这种不统一。 */
+.card {
+	border: 1px solid var(--c-border);
+	background: var(--c-bg);
+}
+
+.card-body {
+	padding: 16px 14px;
+}
+
+/* 卡片 / 区块标题。flex:0 0 auto 是给 .toc-box 用的：
+   那里标题是 flex 子项，不能被下面的目录内容挤扁。 */
+.box-title {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 14px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--c-title);
+	background: var(--c-surface);
+	border-bottom: 1px solid var(--c-border);
+}
+
+/* 强调条：与 .page-head h1、.section-title、.rich h2 的左竖线同一套语言。 */
+.box-title::before {
+	content: "";
+	flex-shrink: 0;
+	width: 3px;
+	height: 13px;
+	background: var(--c-primary);
+}
+
+.box-title i {
+	font-size: 12px;
+	color: var(--c-muted);
+}
+
+/* 标题栏右端的英文小字，用来平衡左重右空的标题行。 */
+.box-title .en {
+	margin-left: auto;
+	font-size: 11px;
+	font-weight: 400;
+	color: var(--c-muted);
+	letter-spacing: .08em;
+	text-transform: uppercase;
+}
+
+/* 方形图标按钮组：侧栏名片与关于页共用，保证社交入口长得一样。 */
+.icon-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.icon-links a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	font-size: 14px;
+	color: var(--c-muted);
+	background: var(--c-surface);
+	border: 1px solid var(--c-border);
+	transition: all .15s ease;
+}
+
+.icon-links a:hover {
+	color: #fff;
+	background: var(--c-primary);
+	border-color: var(--c-primary);
 }
 
 /* 统计条 */

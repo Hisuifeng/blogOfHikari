@@ -13,6 +13,9 @@
 		var ticking = false;
 
 		function updateProgress() {
+			/* pjax 换页后这个节点已经被换掉：旧的 scroll 监听还挂在 window 上，
+			   不判断的话每次滚动都会对着一堆游离节点算一遍。 */
+			if (!content.isConnected) return;
 			var rect = content.getBoundingClientRect();
 			var navH = 56;
 			var total = content.offsetHeight - window.innerHeight + navH;
@@ -205,10 +208,14 @@
 		});
 
 		document.addEventListener('keydown', function (e) {
+			/* 同上：换页后 drawer 已游离，Esc 不该再让旧抽屉动，
+			   更不该把 body 的 overflow 锁上。 */
+			if (!drawer.isConnected) return;
 			if (e.key === 'Escape' && drawer.classList.contains('active')) setDrawer(false);
 		});
 
 		window.addEventListener('resize', function () {
+			if (!drawer.isConnected) return;
 			if (window.innerWidth > 900) setDrawer(false);
 		});
 	}

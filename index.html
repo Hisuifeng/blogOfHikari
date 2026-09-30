@@ -57,6 +57,13 @@
 
 	
 	
+	
+	
+<link rel="stylesheet" href="/css/player.css">
+
+	
+	
+	
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
@@ -117,6 +124,7 @@
 	
 	<div id="content" tabindex="-1" class="has-hero">
 		
+
 <link rel="stylesheet" href="/css/index.css">
 
 
@@ -130,10 +138,15 @@
 
 
 
+<link rel="stylesheet" href="/css/calendar.css">
+
+
+
+
 
 <section class="hero hero-has-bg">
 	
-		<span class="hero-bg" style="background-image:url('/images/wallpaper.jpg');opacity:0.32;--hero-speed:28s" aria-hidden="true"></span>
+		<span class="hero-bg" style="background-image:url('/images/wallpaper.jpg');--hero-opacity:0.32;--hero-speed:28s" aria-hidden="true"></span>
 	
 	<div class="wrap">
 		
@@ -151,6 +164,21 @@
 <div class="wrap home-wrap">
 	
 	<main class="home-main" id="main" tabindex="-1">
+		
+		
+			
+
+<script type="application/json" id="cal-data">{"posts":{"2025-10-14":[{"t":"主题测试文章","u":"/2025/10/14/%E4%B8%BB%E9%A2%98%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"}],"2026-09-29":[{"t":"AI编程耍起嘛（上）","u":"/2026/09/29/AI%E7%BC%96%E7%A8%8B%E8%80%8D%E8%B5%B7%E5%98%9B/"}],"2025-10-20":[{"t":"亡妻回忆录(蓝桥杯)","u":"/2025/10/20/%E4%BA%A1%E5%A6%BB%E5%9B%9E%E5%BF%86%E5%BD%95(%E8%93%9D%E6%A1%A5%E6%9D%AF)/"}]},"holidays":[{"name":"元旦","start":"2025-01-01","end":"2025-01-01"},{"name":"春节","start":"2025-01-28","end":"2025-02-04"},{"name":"清明节","start":"2025-04-04","end":"2025-04-06"},{"name":"劳动节","start":"2025-05-01","end":"2025-05-05"},{"name":"端午节","start":"2025-05-31","end":"2025-06-02"},{"name":"国庆节","start":"2025-10-01","end":"2025-10-08"},{"name":"元旦","start":"2026-01-01","end":"2026-01-03"},{"name":"春节","start":"2026-02-15","end":"2026-02-23"},{"name":"清明节","start":"2026-04-04","end":"2026-04-06"},{"name":"劳动节","start":"2026-05-01","end":"2026-05-05"},{"name":"端午节","start":"2026-06-19","end":"2026-06-21"},{"name":"中秋节","start":"2026-09-25","end":"2026-09-27"},{"name":"国庆节","start":"2026-10-01","end":"2026-10-07"}],"workdays":["2025-01-26","2025-02-08","2025-04-27","2025-09-28","2025-10-11","2026-01-04","2026-02-14","2026-02-28","2026-05-09","2026-09-20","2026-10-10"],"promptText":"今天是{name}，假期第 {day} 天，共 {total} 天。","promptTexts":{"春节":"新年好！今天是春节 {total} 长假的第 {day} /  天，烟火起，照人间，敬此新年！","国庆节":"今天是国庆假期 {total} 天的第 {day} 天，愿祖国繁荣富强，国泰民安。"},"workdayPrompt":false,"workdayText":"今天是悲伤的调休上班日TwT","api":{"enable":true,"mode":"always","urls":["https://cdn.jsdelivr.net/gh/NateScarlet/holiday-cn@master/{year}.json","https://timor.tech/api/holiday/year/{year}","https://raw.githubusercontent.com/NateScarlet/holiday-cn/master/{year}.json"],"timeout":4000,"cacheDays":30,"retryHours":6}}</script>
+
+		
+		
+			
+<div class="cal-prompt" id="cal-prompt" hidden>
+	<i class="fa fa-flag-o" aria-hidden="true"></i>
+	<span class="cal-prompt-text" id="cal-prompt-text"></span>
+</div>
+
+		
 		<div class="stat-bar">
 			<div>
 				<b>3</b>
@@ -165,7 +193,7 @@
 				<span>个标签</span>
 			</div>
 			<div>
-				<b>09-29</b>
+				<b>10-14</b>
 				<span>最近更新</span>
 			</div>
 		</div>
@@ -298,13 +326,6 @@
 						</li>
 					
 						<li>
-							<a class="cloud-item" href="/tags/%E5%8F%A4%E6%B3%95%E7%BC%96%E7%A8%8B/"
-								style="--w:0.820">
-								古法编程<sup>1</sup>
-							</a>
-						</li>
-					
-						<li>
 							<a class="cloud-item" href="/tags/%E7%8C%8E%E5%A5%87/"
 								style="--w:0.820">
 								猎奇<sup>1</sup>
@@ -315,6 +336,13 @@
 							<a class="cloud-item" href="/tags/%E6%9A%B4%E5%8A%9B/"
 								style="--w:0.820">
 								暴力<sup>1</sup>
+							</a>
+						</li>
+					
+						<li>
+							<a class="cloud-item" href="/tags/%E5%8F%A4%E6%B3%95%E7%BC%96%E7%A8%8B/"
+								style="--w:0.820">
+								古法编程<sup>1</sup>
 							</a>
 						</li>
 					
@@ -383,72 +411,142 @@
 	</main>
 
 	
-		<aside class="home-side" aria-label="关于作者">
+	
+		<aside class="home-side" aria-label="侧栏">
 			
+				
 
 <div class="side-card">
-	<div class="side-id">
+	<p class="box-title">
+		<i class="fa fa-user-o" aria-hidden="true"></i>关于作者<span class="en">Author</span>
+	</p>
+
+	<div class="side-body">
 		
-		<a class="side-avatar-link" href="/about" aria-label="关于 Hikari">
+		<div class="side-id">
 			
-				<img class="side-avatar" src="/images/head.jpg" alt="">
-			
-		</a>
-		<div class="side-id-info">
-			<p class="side-name"><a href="/about">Hikari</a></p>
-			
-				<p class="side-motto">何为坚强？</p>
-			
-			
-				<ul class="side-social">
-					
-						<li>
-							<a href="https://github.com/Hisuifeng" title="github" target="_blank" rel="noopener noreferrer">
-								
+			<a class="side-avatar-link" href="/about" aria-label="关于 Hikari">
+				
+					<img class="side-avatar" src="/images/head.jpg" alt="">
+				
+			</a>
+			<div class="side-id-info">
+				<p class="side-name"><a href="/about">Hikari</a></p>
+				
+					<p class="side-motto">何为坚强？</p>
+				
+				
+					<ul class="icon-links side-links">
+						
+							<li>
+								<a href="https://github.com/Hisuifeng" title="github" target="_blank" rel="noopener noreferrer">
+									
 <i class="fa fa-github" aria-hidden="true"></i>
 <span class="sr-only">github</span>
-							</a>
-						</li>
-					
-						<li>
-							<a href="mailto:minecraftsuifeng@outlook.com" title="mail" target="_blank" rel="noopener noreferrer">
-								
+								</a>
+							</li>
+						
+							<li>
+								<a href="mailto:minecraftsuifeng@outlook.com" title="mail" target="_blank" rel="noopener noreferrer">
+									
 <i class="fa fa-envelope" aria-hidden="true"></i>
 <span class="sr-only">mail</span>
-							</a>
-						</li>
-					
-				</ul>
-			
+								</a>
+							</li>
+						
+					</ul>
+				
+			</div>
 		</div>
-	</div>
 
-	
 		
-		<ul class="side-stats">
-			<li><b>3</b><span>篇文章</span></li>
-			<li><b>6</b><span>个标签</span></li>
-		</ul>
-	
-
-    
-		<div class="side-pick">
-			<span class="side-cap">随便看看</span>
-			<a class="side-pick-link" href="/2025/10/14/%E4%B8%BB%E9%A2%98%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/">主题测试文章</a>
-		</div>
-	
-
-	
 		
-		<div class="side-about">
 			<p class="side-about-text">有朋自远方来，不亦乐乎。</p>
-		</div>
-	
+		
+
+		
+		
+			<ul class="side-stats">
+				<li><b>3</b><span>文章</span></li>
+				<li><b>0</b><span>分类</span></li>
+				<li><b>6</b><span>标签</span></li>
+			</ul>
+		
+
+		
+			<ul class="side-tags">
+				<li class="side-cap">常写</li>
+				
+					<li><a class="side-tag" href="/tags/%E9%97%B2%E8%81%8A%E5%90%B9%E6%B0%B4/">闲聊吹水</a></li>
+				
+					<li><a class="side-tag" href="/tags/%E7%8C%8E%E5%A5%87/">猎奇</a></li>
+				
+					<li><a class="side-tag" href="/tags/%E6%9A%B4%E5%8A%9B/">暴力</a></li>
+				
+			</ul>
+		
+
+		
+			<p class="side-pick">
+				<span class="side-cap">随便看看</span>
+				<a class="side-pick-link" href="/2025/10/20/%E4%BA%A1%E5%A6%BB%E5%9B%9E%E5%BF%86%E5%BD%95(%E8%93%9D%E6%A1%A5%E6%9D%AF)/">亡妻回忆录(蓝桥杯)</a>
+			</p>
+		
+	</div>
 </div>
 
+			
+			
+				
+<div class="cal-card" id="cal">
+	<p class="box-title">
+		<i class="fa fa-calendar-o" aria-hidden="true"></i>日历<span class="en">Calendar</span>
+	</p>
+
+	<div class="cal-body">
+		<div class="cal-nav">
+			<button type="button" class="cal-step" id="cal-prev" aria-label="上个月">
+				<i class="fa fa-angle-left" aria-hidden="true"></i>
+			</button>
+			
+			<button type="button" class="cal-title" id="cal-title" title="回到本月">—</button>
+			<button type="button" class="cal-step" id="cal-next" aria-label="下个月">
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</button>
+		</div>
+
+		<div class="cal-week" id="cal-week" aria-hidden="true"></div>
+		<div class="cal-grid" id="cal-grid" role="grid" aria-label="文章日历"></div>
+
+		
+		<div class="cal-hist">
+			<div class="cal-bars" id="cal-bars"></div>
+			<div class="cal-months" id="cal-months" aria-hidden="true"></div>
+		</div>
+
+		<p class="cal-foot">
+			<span id="cal-count">本月 0 篇</span>
+			<span class="cal-legend">
+				<i class="cal-mk post" aria-hidden="true"></i>文章
+				<i class="cal-mk holiday" aria-hidden="true"></i>假期
+			</span>
+		</p>
+
+		
+		<ul class="cal-posts" id="cal-posts" hidden></ul>
+	</div>
+</div>
+
+			
 		</aside>
 	
 </div>
+
+
+	
+<script src="/js/calendar.js"></script>
+
+
 
 	</div>
 
@@ -476,6 +574,88 @@
 </footer>
 
 
+	
+	
+
+
+
+	<div class="player" id="player"
+		data-mode="list"
+		data-volume="0.1"
+		data-autoplay="0">
+
+		
+		<button class="player-toggle" id="player-toggle" type="button"
+			aria-label="展开播放器" aria-expanded="false" aria-controls="player-panel">
+			<i class="fa fa-music" aria-hidden="true"></i>
+		</button>
+
+		<div class="player-panel" id="player-panel">
+			<p class="player-head">
+				
+				<span id="player-cap">正在播放</span>
+				<button class="player-close" id="player-close" type="button" aria-label="收起播放器">
+					<span aria-hidden="true">×</span>
+				</button>
+			</p>
+
+			<div class="player-body">
+				<p class="player-meta">
+					<span class="player-name" id="player-name">—</span>
+					<span class="player-artist" id="player-artist"></span>
+				</p>
+
+				
+				<div class="player-bar" id="player-bar" role="slider" tabindex="0"
+					aria-label="播放进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+					<i class="player-fill" id="player-fill"></i>
+				</div>
+				<p class="player-time">
+					<span id="player-cur">0:00</span>
+					<span id="player-dur">0:00</span>
+				</p>
+
+				<div class="player-btns">
+					<button id="player-prev" type="button" aria-label="上一首" title="上一首">
+						<i class="fa fa-step-backward" aria-hidden="true"></i>
+					</button>
+					<button id="player-play" class="player-play" type="button" aria-label="播放" title="播放 / 暂停">
+						<i class="fa fa-play" aria-hidden="true"></i>
+					</button>
+					<button id="player-next" type="button" aria-label="下一首" title="下一首">
+						<i class="fa fa-step-forward" aria-hidden="true"></i>
+					</button>
+					
+					<button id="player-mode" type="button" aria-label="播放模式" title="播放模式">
+						<i class="fa fa-repeat" aria-hidden="true"></i>
+					</button>
+					<button id="player-list-btn" type="button" aria-label="播放列表" aria-expanded="false" title="播放列表">
+						<i class="fa fa-list-ul" aria-hidden="true"></i>
+					</button>
+				</div>
+
+				<div class="player-vol">
+					<button id="player-mute" class="player-mute" type="button" aria-label="静音" title="静音 / 取消静音">
+						<i class="fa fa-volume-up" aria-hidden="true"></i>
+					</button>
+					<div class="player-bar player-vol-bar" id="player-vol-bar" role="slider" tabindex="0"
+						aria-label="音量" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70">
+						<i class="player-fill" id="player-vol-fill"></i>
+					</div>
+					<span class="player-vol-num" id="player-vol-num">70</span>
+				</div>
+			</div>
+
+			<ul class="player-list" id="player-list" hidden></ul>
+		</div>
+
+		<audio id="player-audio" preload="metadata"></audio>
+
+		<script type="application/json" id="player-data">{"songs":[{"name":"Familiar Arms","artist":"横山克","url":"/music/%E6%A8%AA%E5%B1%B1%E5%85%8B%20-%20Familiar%20Arms.mp3"}],"holidayRanges":[{"name":"元旦","start":"2025-01-01","end":"2025-01-01"},{"name":"春节","start":"2025-01-28","end":"2025-02-04"},{"name":"清明节","start":"2025-04-04","end":"2025-04-06"},{"name":"劳动节","start":"2025-05-01","end":"2025-05-05"},{"name":"端午节","start":"2025-05-31","end":"2025-06-02"},{"name":"国庆节","start":"2025-10-01","end":"2025-10-08"},{"name":"元旦","start":"2026-01-01","end":"2026-01-03"},{"name":"春节","start":"2026-02-15","end":"2026-02-23"},{"name":"清明节","start":"2026-04-04","end":"2026-04-06"},{"name":"劳动节","start":"2026-05-01","end":"2026-05-05"},{"name":"端午节","start":"2026-06-19","end":"2026-06-21"},{"name":"中秋节","start":"2026-09-25","end":"2026-09-27"},{"name":"国庆节","start":"2026-10-01","end":"2026-10-07"}],"holidaySongs":{"春节":{"name":"春节序曲","artist":"中国国家交响乐团","url":"/music/%E4%B8%AD%E5%9B%BD%E4%BA%BA%E6%B0%91%E8%A7%A3%E6%94%BE%E5%86%9B%E5%86%9B%E4%B9%90%E5%9B%A2%20-%20%E6%98%A5%E8%8A%82%E5%BA%8F%E6%9B%B2.mp3"},"国庆节":{"name":"分列式进行曲","artist":"中国人民解放军军乐团","url":"/music/%E4%B8%AD%E5%9B%BD%E4%BA%BA%E6%B0%91%E8%A7%A3%E6%94%BE%E5%86%9B%E5%86%9B%E4%B9%90%E5%9B%A2%20-%20%E5%88%86%E5%88%97%E5%BC%8F%E8%BF%9B%E8%A1%8C%E6%9B%B2.mp3"}}}</script>
+	</div>
+
+
+
 	<a href="#top" id="back-to-top" aria-label="回到顶部">
 		<i class="fa fa-angle-up" aria-hidden="true"></i>
 	</a>
@@ -483,6 +663,17 @@
 	
 <script src="/js/main.js"></script>
 
+	
+	
+<script src="/js/player.js"></script>
+
+		
+		
+	
+<script src="/js/pjax.js"></script>
+
+		
+	
 	
 </body>
 
