@@ -94,3 +94,23 @@
 	color: var(--c-faint);
 	font-family: var(--font-mono);
 }
+
+/* 触摸设备上 :hover 会在抬手后继续命中，点过的分类块会一直保持主色底，
+   看着像被选中了。没有悬停能力的设备退回未悬停的样子。 */
+@media (hover: none) {
+	.cat-item a:hover {
+		color: var(--c-text);
+		background: var(--c-bg);
+		border-color: var(--c-border-strong);
+	}
+
+	.cat-item a:hover i,
+	.cat-item a:hover .cat-count {
+		color: var(--c-faint);
+	}
+
+	.cloud-item:hover {
+		color: var(--c-text);
+		border-bottom-color: transparent;
+	}
+}

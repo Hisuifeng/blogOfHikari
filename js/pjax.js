@@ -58,8 +58,59 @@
 		});
 	}
 
-	function swap(html, url) {
-		var doc = new DOMParser().parseFromString(html, 'text/html');
+	/* 换页前先把目标页要用到的样式表预热好。
+	   #content 里带着逐页的 <link>（index / post / page / archive …），
+	   换页时它们随旧内容一起被移除；如果新页面的样式还没下载完，
+	   中间就会闪出一帧没有任何样式的页面 —— 宽度、间距全都不对，
+	   看上去就是「元素因为加载顺序短暂错位」。
+	   做法：把新页面的样式表先插进 <head> 并等它 load 完再替换内容；
+	   这些 head 里的 link 会一直留着，之后换页也不会再经历一次「移除—重加」。 */
+	function preloadCss(doc, done) {
+		var links = doc.querySelectorAll(CONTENT + ' link[rel="stylesheet"]');
+		var pending = 0;
+		var finished = false;
+
+		function finish() {
+			if (finished) return;
+			finished = true;
+			done();
+		}
+
+		/* 只认 <head> 里已有的：光在 #content 里出现过的马上就会被换掉。
+		   逐个比对属性而不是拼选择器 —— href 里带引号会把选择器拼坏。 */
+		function inHead(href) {
+			var has = document.head.querySelectorAll('link[rel="stylesheet"]');
+			for (var n = 0; n < has.length; n++) {
+				if (has[n].getAttribute('href') === href) return true;
+			}
+			return false;
+		}
+
+		Array.prototype.forEach.call(links, function (l) {
+			var href = l.getAttribute('href');
+			if (!href || inHead(href)) return;
+
+			pending++;
+			var el = document.createElement('link');
+			el.rel = 'stylesheet';
+			el.href = href;
+			el.onload = el.onerror = function () {
+				pending--;
+				if (!pending) finish();
+			};
+			document.head.appendChild(el);
+		});
+
+		if (!pending) {
+			finish();
+			return;
+		}
+
+		/* 兜底：网络再慢也不能把换页卡住 */
+		setTimeout(finish, 800);
+	}
+
+	function swap(doc, url) {
 		var next = doc.querySelector(CONTENT);
 		var cur = document.querySelector(CONTENT);
 		if (!next || !cur) throw new Error('no #content');
@@ -106,11 +157,20 @@
 				return res.text();
 			})
 			.then(function (html) {
-				swap(html, url);
-				if (push) {
-					history.pushState({ pjax: true, scroll: 0 }, '', url);
-				}
-				window.scrollTo(0, restoreY || 0);
+				var doc = new DOMParser().parseFromString(html, 'text/html');
+				/* 先等样式表就位，再换内容：否则中间会闪过一帧没样式的页面 */
+				preloadCss(doc, function () {
+					try {
+						swap(doc, url);
+					} catch (err) {
+						location.href = url;
+						return;
+					}
+					if (push) {
+						history.pushState({ pjax: true, scroll: 0 }, '', url);
+					}
+					window.scrollTo(0, restoreY || 0);
+				});
 			})
 			.catch(function () {
 				location.href = url;

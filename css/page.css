@@ -274,6 +274,19 @@
 	background: var(--c-primary-soft);
 }
 
+/* 触摸设备上 :hover 抬手后仍然命中，友链卡片会一直是淡主色。
+   没有悬停能力的设备退回未悬停的样子。 */
+@media (hover: none) {
+	.friend-item a:hover {
+		border-color: var(--c-border);
+		background: var(--c-bg);
+	}
+
+	.friend-item a:hover .friend-name {
+		color: var(--c-title);
+	}
+}
+
 .friend-avatar {
 	width: 44px;
 	height: 44px;
@@ -354,18 +367,29 @@
 	display: none;
 }
 
+/* 清空键：文本 × 需要自己居中，字号也比图标时代大一档 */
 #search-clear {
+	display: none;
+	align-items: center;
+	justify-content: center;
 	width: 26px;
 	height: 26px;
-	font-size: 13px;
+	font-size: 18px;
+	line-height: 1;
 	color: var(--c-faint);
 	background: transparent;
 	border: 0;
 	cursor: pointer;
-	display: none;
+	transition: color .15s ease;
 }
 
-#search-clear.show { display: block; }
+#search-clear span {
+	display: block;
+	/* 文本 × 的字形重心略低，抬 1px 才居中 */
+	transform: translateY(-1px);
+}
+
+#search-clear.show { display: flex; }
 #search-clear:hover { color: var(--c-primary); }
 
 .search-status {

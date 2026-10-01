@@ -173,6 +173,15 @@
 	border-color: var(--c-primary);
 }
 
+/* 触摸设备上 :hover 抬手后仍然命中，标签会一直是主色 —— 退回未悬停的样子 */
+@media (hover: none) {
+	.side-tag:hover {
+		color: var(--c-muted);
+		background: var(--c-surface);
+		border-color: var(--c-border);
+	}
+}
+
 /* 「常写」「随便看看」这组前缀标签：小号大写字距，只做提示不抢视线。 */
 .side-cap {
 	flex-shrink: 0;

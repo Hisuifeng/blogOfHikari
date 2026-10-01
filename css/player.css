@@ -1,10 +1,13 @@
 /* ==========================================================================
-   player.css — 固定音乐播放器（layout/_partial/player.ejs + js/player.js）
-   只在主题配置 music.enable 且有歌曲时由 layout.ejs 引入。
+   player.css — 固定音乐播放器
+   结构见 layout/_partial/player.ejs，逻辑见 js/player.js。
 
-   风格沿用 main.css：零圆角、零阴影，层级只靠 1px 描边 + 色块；
-   收起后的方块与 #back-to-top 同一尺寸（44×44），叠在它正上方。
-   动效只做三件事：面板升降、进度线生长、按钮按下回弹，都不改布局。
+   版式取自设计稿：常驻头部栏（播放键 + 曲名/作者 + 折叠箭头）+ 可折叠面板
+   （时间内联的进度条、控制行、靠右的音量）。宽度 300px，全部尺寸按设计稿走。
+
+   配色不写死，一律用 main.css 的设计令牌（--c-primary / --c-muted /
+   --c-border …），这样明暗两套主题都能跟着走，风格也和站内其它组件一致。
+   图标是内联 SVG，哪一套显示由 .player 上的状态类决定（见文件末尾）。
    ========================================================================== */
 
 .player {
@@ -12,6 +15,10 @@
 	right: 20px;
 	bottom: 80px;
 	z-index: 940;
+	width: 300px;
+	background: var(--c-bg);
+	border: 1px solid var(--c-border);
+	overflow: hidden;
 	animation: player-in .32s ease both;
 }
 
@@ -26,157 +33,138 @@
 	}
 }
 
-/* ---------- 收起态的方块 ---------- */
-.player-toggle {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 44px;
-	height: 44px;
-	margin-left: auto;
-	font-size: 17px;
-	color: var(--c-muted);
-	background: var(--c-bg);
-	border: 1px solid var(--c-border-strong);
-	cursor: pointer;
-	transition: color .15s ease, background-color .15s ease, border-color .15s ease, transform .12s ease;
-}
-
-.player-toggle:active {
-	transform: scale(.94);
-}
-
-.player-toggle i {
-	display: block;
-	transition: transform .18s ease;
-}
-
-/* 正在播放：图标轻轻起伏，一眼能看出「在响」，但不会一直抢注意力 */
-.player.playing .player-toggle {
-	color: var(--c-primary);
-	border-color: var(--c-primary);
-}
-
-.player.playing .player-toggle i {
-	animation: player-pulse 1.9s ease-in-out infinite;
-}
-
-@keyframes player-pulse {
-	0%, 100% { transform: scale(1); }
-	50% { transform: scale(1.14); }
-}
-
-.player-toggle:hover,
-.player.open .player-toggle {
-	color: #fff;
-	background: var(--c-primary);
-	border-color: var(--c-primary);
-}
-
-/* ---------- 展开面板：向上生长 ----------
-   用 visibility + opacity + transform 过渡，不用 display:none ——
-   后者没有可补间的中间态，展开会「啪」地出现。
-   visibility:hidden 的元素不会进入 Tab 顺序，关着的时候按不到里面的按钮。 */
-.player-panel {
-	position: absolute;
-	right: 0;
-	bottom: calc(100% + 10px);
-	width: 268px;
-	background: var(--c-bg);
-	border: 1px solid var(--c-border);
-	opacity: 0;
-	visibility: hidden;
-	transform: translateY(8px);
-	transition: opacity .2s ease, transform .2s ease, visibility .2s;
-}
-
-.player.open .player-panel {
-	opacity: 1;
-	visibility: visible;
-	transform: none;
-}
-
+/* ---------- 常驻头部栏（收起时只留这一行） ---------- */
 .player-head {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	padding: 8px 10px 8px 14px;
-	font-size: 12px;
-	font-weight: 600;
-	color: var(--c-title);
-	background: var(--c-surface);
-	border-bottom: 1px solid var(--c-border);
+	gap: 8px;
+	height: 40px;
+	padding: 0 10px;
 }
 
-/* 命中节日主题曲：标题栏换成浅主色底并写明是哪个节日的主题曲，
-   和「正在播放」区分开 —— 用户一眼能看出今天为什么先放这首。 */
-.player.has-theme .player-head {
-	color: var(--c-primary);
-	background: var(--c-primary-soft);
-}
-
-.player-close {
+/* 播放 / 暂停：主色实心方块，这一条是整块的主要操作 */
+.player-main {
+	flex: none;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 24px;
-	height: 24px;
-	font-size: 18px;
-	line-height: 1;
-	color: var(--c-muted);
+	width: 26px;
+	height: 26px;
+	padding: 0;
+	color: #fff;
+	background: var(--c-primary);
 	cursor: pointer;
-	transition: color .15s ease, transform .12s ease;
+	/* manipulation：去掉手机上的双击缩放判定，点击不再有延迟 */
+	touch-action: manipulation;
+	transition: background-color .18s ease, transform .12s ease;
 }
 
-.player-close span {
-	display: block;
-	/* 文本 × 的字形重心略低，抬 1px 和左侧标题对齐 */
-	transform: translateY(-1px);
+.player-main:hover {
+	background: var(--c-primary-dark);
 }
 
-.player-close:hover {
-	color: var(--c-primary);
+.player-main:active {
+	transform: scale(.94);
 }
 
-.player-close:active {
-	transform: scale(.9);
+.player-title {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	align-items: baseline;
+	gap: 5px;
+	font-size: 12.5px;
+	color: var(--c-text);
+	white-space: nowrap;
+	overflow: hidden;
 }
 
-.player-body {
-	padding: 12px 14px 12px;
-}
-
-/* ---------- 曲名 / 作者 ---------- */
 .player-name {
-	display: block;
-	font-size: 13px;
-	font-weight: 600;
-	color: var(--c-title);
-	line-height: 1.5;
+	min-width: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
 }
 
 .player-artist {
-	display: block;
-	margin-top: 2px;
-	margin-bottom: 10px;
+	flex: 0 1 auto;
+	min-width: 0;
 	font-size: 11px;
+	font-style: normal;
 	color: var(--c-muted);
 	overflow: hidden;
 	text-overflow: ellipsis;
-	white-space: nowrap;
 }
 
-/* ---------- 进度 / 音量：两条 2px 线 ----------
+/* 折叠键：视觉上仍是 12px 的小箭头，但触摸区放大到 34×34。
+   24px 的目标在手机上太难点，手指偏一点就没反应 —— 看起来就像「折叠不了」。
+   负外边距把多出来的宽度补回去，箭头仍停在原来的视觉位置。 */
+.player-fold {
+	flex: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	margin-right: -5px;
+	color: var(--c-muted);
+	cursor: pointer;
+	touch-action: manipulation;
+	transition: color .18s ease;
+}
+
+.player-fold:hover {
+	color: var(--c-primary);
+}
+
+.player-chevron {
+	transition: transform .2s ease;
+}
+
+.player.open .player-chevron {
+	transform: rotate(180deg);
+}
+
+/* ---------- 可折叠面板 ---------- */
+.player-panel {
+	display: none;
+	padding: 10px 10px 12px;
+	border-top: 1px solid var(--c-border);
+}
+
+.player.open .player-panel {
+	display: block;
+	/* 只淡入、不做位移：面板高度随显隐变化，位移会带出一次跳动 */
+	animation: player-panel-in .18s ease both;
+}
+
+@keyframes player-panel-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+/* ---------- 进度：时间里联两端，省掉一整行 ---------- */
+.player-progress {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.player-time {
+	flex: none;
+	font-size: 10px;
+	color: var(--c-muted);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 可拖动条（进度 / 音量共用） ----------
    touch-action:none 是拖动能用的前提：不禁用触摸手势的话，
    手指一压上就被浏览器判成滚动，指针序列会收到 pointercancel 直接中断。
-   user-select 同理，防止拖的时候选中页面文字。 */
+   条本身只有 3px（设计稿），外面包 16px 高的透明命中区，否则根本按不住。 */
 .player-bar {
 	position: relative;
-	height: 14px;
-	margin: 0;
+	flex: 1;
+	min-width: 0;
+	height: 16px;
 	cursor: pointer;
 	touch-action: none;
 	user-select: none;
@@ -188,137 +176,103 @@
 	position: absolute;
 	left: 0;
 	right: 0;
-	top: 6px;
-	height: 2px;
+	top: calc(50% - 1.5px);
+	height: 3px;
 	background: var(--c-border);
+	transition: height .12s ease, top .12s ease;
 }
 
 .player-fill {
 	position: absolute;
 	left: 0;
-	top: 6px;
+	top: calc(50% - 1.5px);
 	width: 0;
-	height: 2px;
+	height: 3px;
 	background: var(--c-primary);
-	transition: width .12s linear;
+	transition: width .12s linear, height .12s ease, top .12s ease;
 }
 
-/* 拖动时不要过渡，否则进度线永远慢半拍跟不上手指 */
+/* 悬停 / 拖动时条变粗一点，给出「可以拖」的反馈；
+   拖动中去掉宽度的过渡，否则进度永远慢半拍跟不上手指。 */
+.player-bar:hover::before,
+.player-bar:hover .player-fill,
+.player-bar.dragging::before,
+.player-bar.dragging .player-fill {
+	top: calc(50% - 2.5px);
+	height: 5px;
+}
+
 .player-bar.dragging .player-fill {
 	transition: none;
 }
 
-/* 进度点：跟着进度线右端走 */
-.player-fill::after {
-	content: "";
-	position: absolute;
-	right: -3px;
-	top: -3px;
-	width: 8px;
-	height: 8px;
-	background: var(--c-primary);
-	transition: width .12s ease, height .12s ease, right .12s ease, top .12s ease;
-}
-
-.player-bar:hover .player-fill::after,
-.player-bar.dragging .player-fill::after,
-.player-bar:focus-visible .player-fill::after {
-	right: -5px;
-	top: -5px;
-	width: 12px;
-	height: 12px;
-}
-
-.player-time {
-	display: flex;
-	justify-content: space-between;
-	margin-top: 2px;
-	font-size: 11px;
-	color: var(--c-faint);
-	font-family: var(--font-mono);
-}
-
-/* ---------- 按钮排 ---------- */
-.player-btns {
+/* ---------- 控制行 ---------- */
+.player-row {
 	display: flex;
 	align-items: center;
-	gap: 6px;
-	margin-top: 12px;
-}
-
-.player-btns button {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 30px;
-	height: 30px;
-	font-size: 13px;
-	color: var(--c-muted);
-	background: var(--c-surface);
-	border: 1px solid var(--c-border);
-	cursor: pointer;
-	transition: color .15s ease, background-color .15s ease, border-color .15s ease, transform .12s ease;
-}
-
-.player-btns button:active {
-	transform: scale(.92);
-}
-
-.player-btns button:hover {
-	color: #fff;
-	background: var(--c-primary);
-	border-color: var(--c-primary);
-}
-
-/* 主操作：实心主色，一眼能找到 */
-.player-btns .player-play {
-	width: 36px;
-	height: 36px;
-	font-size: 15px;
-	color: #fff;
-	background: var(--c-primary);
-	border-color: var(--c-primary);
-}
-
-.player-btns .player-play:hover {
-	background: var(--c-primary-dark);
-	border-color: var(--c-primary-dark);
-}
-
-/* 播放模式与列表推到右端 */
-#player-mode {
-	margin-left: auto;
-}
-
-/* 处于「非默认」状态的按钮（单曲/随机、列表已展开）用主色标出来 */
-.player-btns button.on {
-	color: var(--c-primary);
-	border-color: var(--c-primary);
-}
-
-.player-btns button.on:hover {
-	color: #fff;
-}
-
-/* ---------- 音量 ---------- */
-.player-vol {
-	display: flex;
-	align-items: center;
-	gap: 8px;
+	gap: 2px;
 	margin-top: 10px;
 }
 
-.player-mute {
+.player-ctrl {
+	flex: none;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 22px;
-	height: 22px;
-	font-size: 13px;
+	width: 26px;
+	height: 26px;
+	padding: 0;
 	color: var(--c-muted);
 	background: transparent;
 	cursor: pointer;
-	transition: color .15s ease, transform .12s ease;
+	touch-action: manipulation;
+	transition: color .18s ease, transform .12s ease;
+}
+
+.player-ctrl:hover {
+	color: var(--c-primary);
+}
+
+.player-ctrl:active {
+	transform: scale(.92);
+}
+
+/* 处于非默认状态的按钮（单曲/随机、列表已展开）：常亮主色 */
+.player-ctrl.on {
+	color: var(--c-primary);
+}
+
+/* 分组分隔线 */
+.player-sep {
+	flex: none;
+	width: 1px;
+	height: 14px;
+	margin: 0 4px;
+	background: var(--c-border);
+}
+
+/* ---------- 音量：靠右对齐 ---------- */
+.player-volume {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-left: auto;
+	color: var(--c-muted);
+}
+
+.player-mute {
+	flex: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	padding: 0;
+	color: inherit;
+	background: transparent;
+	cursor: pointer;
+	touch-action: manipulation;
+	transition: color .18s ease, transform .12s ease;
 }
 
 .player-mute:hover {
@@ -329,30 +283,34 @@
 	transform: scale(.9);
 }
 
+/* 音量条比进度条短得多（设计稿固定 64px） */
 .player-vol-bar {
-	flex: 1;
-	height: 12px;
+	flex: none;
+	width: 64px;
 }
 
-.player-vol-bar::before {
-	top: 5px;
-}
-
-.player-vol-bar .player-fill {
-	top: 5px;
-}
-
-.player-vol-num {
-	width: 22px;
+/* ---------- 缓冲提示 ---------- */
+.player-buffer {
+	margin-top: 6px;
 	font-size: 10px;
-	color: var(--c-faint);
-	text-align: right;
-	font-family: var(--font-mono);
+	color: var(--c-primary);
+	animation: player-buffer-in .2s ease both;
+}
+
+.player-buffer[hidden] {
+	display: none;
+}
+
+@keyframes player-buffer-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
 }
 
 /* ---------- 播放列表 ---------- */
 .player-list {
 	max-height: 168px;
+	margin-top: 8px;
+	padding-top: 4px;
 	overflow-y: auto;
 	overscroll-behavior: contain;
 	list-style: none;
@@ -360,36 +318,19 @@
 	border-top: 1px solid var(--c-border);
 }
 
-/* 展开时补一段进场：hidden 一去掉元素刚被显示，动画正好从头播 */
-.player-list:not([hidden]) {
-	animation: player-list-in .22s ease both;
-}
-
-@keyframes player-list-in {
-	from {
-		opacity: 0;
-		transform: translateY(-4px);
-	}
-	to {
-		opacity: 1;
-		transform: none;
-	}
+.player-list[hidden] {
+	display: none;
 }
 
 .player-list li {
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	padding: 7px 14px;
+	padding: 6px 4px;
 	font-size: 12px;
 	color: var(--c-text);
-	border-bottom: 1px solid var(--c-border);
 	cursor: pointer;
 	transition: color .15s ease, background-color .15s ease;
-}
-
-.player-list li:last-child {
-	border-bottom: 0;
 }
 
 .player-list li:hover {
@@ -401,40 +342,140 @@
 	color: var(--c-primary);
 }
 
+.player-idx {
+	flex: none;
+	font-size: 10px;
+	color: var(--c-faint);
+	font-variant-numeric: tabular-nums;
+}
+
 .player-list li.active .player-idx {
 	color: var(--c-primary);
 }
 
-.player-idx {
-	flex-shrink: 0;
-	font-family: var(--font-mono);
-	font-size: 10px;
-	color: var(--c-faint);
-}
-
 .player-li-name {
+	min-width: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
-/* 尊重系统「减少动态效果」：装饰性动画一律停掉，功能不受影响 */
-@media (prefers-reduced-motion: reduce) {
-	.player,
-	.player.playing .player-toggle i,
-	.player-list:not([hidden]) {
-		animation: none;
+/* ---------- 节日主题曲：头部栏换成浅主色底，作者位置写明是哪个节日的主题曲 ---------- */
+.player.has-theme .player-head {
+	background: var(--c-primary-soft);
+}
+
+.player.has-theme .player-artist {
+	color: var(--c-primary);
+}
+
+/* ==========================================================================
+   图标：HTML 里把各状态的 SVG 都放好了，这里只决定显示哪一个。
+   js/player.js 不参与画图标，只改 .player 上的状态（.playing / data-mode / data-vol）。
+   ========================================================================== */
+.player-ico {
+	display: none;
+}
+
+.player-ico.on-static {
+	display: block;
+}
+
+/* 播放键：暂停中显示三角，播放中显示双竖线 */
+.player:not(.playing) .player-main .on-idle {
+	display: block;
+}
+
+.player.playing .player-main .on-pause {
+	display: block;
+}
+
+/* 播放模式 */
+.player[data-mode="list"] .on-mode-list,
+.player[data-mode="single"] .on-mode-single,
+.player[data-mode="shuffle"] .on-mode-shuffle {
+	display: block;
+}
+
+/* 音量档位 */
+.player[data-vol="up"] .on-vol-up,
+.player[data-vol="down"] .on-vol-down,
+.player[data-vol="off"] .on-vol-mute {
+	display: block;
+}
+
+/* ==========================================================================
+   触摸设备：没有悬停能力时 :hover 抬手后仍会命中，按钮会一直亮着主色，
+   看起来像被选中。这里退回未悬停的样子（按下反馈仍由 :active 承担）。
+   ========================================================================== */
+@media (hover: none) {
+	.player-ctrl:hover,
+	.player-mute:hover,
+	.player-fold:hover {
+		color: var(--c-muted);
+	}
+
+	.player-ctrl.on:hover {
+		color: var(--c-primary);
+	}
+
+	.player-main:hover {
+		background: var(--c-primary);
 	}
 }
 
-/* ---------- 响应式 ---------- */
+/* 尊重系统「减少动态效果」 */
+@media (prefers-reduced-motion: reduce) {
+	.player,
+	.player-panel,
+	.player-buffer,
+	.player-chevron,
+	.player-bar::before,
+	.player-fill {
+		animation: none;
+		transition: none;
+	}
+}
+
+/* ---------- 响应式 ----------
+   手机上要满足两件事：
+     1. 收起时真的省地方 —— 300px 宽的横条会压住右下角内容，
+        所以窄屏下收起态收成一条 168px 的小条，展开时再回到 300px；
+     2. 折叠键点得中 —— 触摸区已在上面放大到 34×34，
+        这里再给底部留出 iPhone 的 Home Indicator 安全距离。 */
 @media screen and (max-width: 480px) {
 	.player {
 		right: 12px;
-		bottom: 72px;
+		bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+		width: min(300px, calc(100vw - 24px));
+		transition: width .22s ease;
 	}
 
-	.player-panel {
-		width: min(300px, calc(100vw - 24px));
+	/* 收起态：只留播放键 + 歌名 + 折叠键 */
+	.player:not(.open) {
+		width: 168px;
+	}
+
+	/* 窄条里歌名最多占一半宽度，别把折叠键挤出去 */
+	.player:not(.open) .player-title {
+		max-width: 50%;
+	}
+
+	/* 手机上再放大一档折叠键的触摸区（接近 iOS 建议的 44px 目标） */
+	.player-fold {
+		width: 40px;
+		height: 38px;
+		margin-right: -8px;
+	}
+
+	/* 展开后如果比视口还高，面板内部滚动，头部栏始终留在视野里 */
+	.player.open {
+		max-height: calc(100vh - 120px);
+	}
+
+	.player.open .player-panel {
+		max-height: calc(100vh - 160px);
+		overflow-y: auto;
+		overscroll-behavior: contain;
 	}
 }

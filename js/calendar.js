@@ -528,13 +528,40 @@
 		listEl.hidden = false;
 	}
 
+	function clearSelect() {
+		selected = null;
+		Array.prototype.forEach.call(gridEl.querySelectorAll('.cal-day.selected'), function (el) {
+			el.classList.remove('selected');
+		});
+		if (listEl) {
+			listEl.hidden = true;
+			listEl.innerHTML = '';
+		}
+	}
+
 	function select(k, btn) {
+		/* 再点一次同一天就取消选中。否则那块高亮会一直留着，
+		   看起来就像一个「失去焦点还保持选中」的按钮。 */
+		if (selected === k) {
+			clearSelect();
+			return;
+		}
+
 		selected = k;
 		Array.prototype.forEach.call(gridEl.querySelectorAll('.cal-day.selected'), function (el) {
 			el.classList.remove('selected');
 		});
 		if (btn) btn.classList.add('selected');
 		showPosts(k);
+	}
+
+	/* 点格子以外的空白处也取消选中，和常见日历一致 */
+	if (root) {
+		root.addEventListener('click', function (e) {
+			if (!selected) return;
+			if (e.target.closest && e.target.closest('.cal-day, .cal-bar, .cal-step, .cal-title')) return;
+			clearSelect();
+		});
 	}
 
 	function render() {

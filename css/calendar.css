@@ -208,16 +208,39 @@
 	border-color: var(--c-title);
 }
 
-/* 选中的那天：铺满主色 */
+/* 选中的那天：浅主色底 + 主色描边。
+   早先是整格铺主色，点完再点别处会看着像「按钮一直保持选中」；
+   改成浅底之后仍能从一排日子里认出来，也不至于像被按住了。
+   再点一次同一天、或点格子外的空白处都可以取消选中。 */
 .cal-day.selected,
 .cal-day.has-post.selected {
-	color: #fff;
-	background: var(--c-primary);
+	color: var(--c-primary);
+	background: var(--c-primary-soft);
 	border-color: var(--c-primary);
 }
 
 .cal-day.selected::after {
-	background: #fff;
+	background: var(--c-primary);
+}
+
+/* 触摸设备上 :hover 在抬手后仍会命中，按钮会一直亮着 ——
+   只在真有悬停能力的设备上给 hover 反馈。 */
+@media (hover: none) {
+	.cal-day.has-post:hover {
+		color: var(--c-title);
+		background: transparent;
+		border-color: var(--c-primary);
+	}
+
+	.cal-day.has-post:hover::after {
+		background: var(--c-primary);
+	}
+
+	.cal-step:hover {
+		color: var(--c-muted);
+		background: var(--c-surface);
+		border-color: var(--c-border);
+	}
 }
 
 /* ---------- 全年分布柱 ---------- */

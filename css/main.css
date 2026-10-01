@@ -677,3 +677,35 @@ body > #content {
 		font-size: 14px;
 	}
 }
+
+/* ---------- 触摸设备上的「粘住的悬停」 ----------
+   手指点完抬起之后，浏览器仍然会让 :hover 继续命中那个元素，
+   而上面这些按钮的 hover 都是「变主色」—— 于是点过一次的按钮会一直亮着，
+   看起来就像它保持着选中状态。没有悬停能力的设备一律退回未悬停时的样子，
+   按下反馈仍旧由 :active / 焦点环承担。
+   玩家自定义组件的同类处理在 player.css / calendar.css 里。 */
+@media (hover: none) {
+	.btn:hover {
+		color: var(--c-text);
+		background: var(--c-bg);
+		border-color: var(--c-border-strong);
+	}
+
+	.chip:hover {
+		color: var(--c-primary);
+		background: var(--c-primary-soft);
+		border-color: transparent;
+	}
+
+	.chip-plain:hover {
+		color: var(--c-muted);
+		background: transparent;
+		border-color: var(--c-border);
+	}
+
+	#back-to-top:hover {
+		color: var(--c-muted);
+		background: var(--c-bg);
+		border-color: var(--c-border-strong);
+	}
+}
