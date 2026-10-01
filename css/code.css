@@ -155,6 +155,10 @@ pre[class*="language-"] {
 	font-size: 13px;
 	line-height: 1.6;
 	tab-size: 4;
+	/* prism.css 给 code 和 pre 都写了 color:#000（它的默认主题是浅底深字）。
+	   这里必须把 pre 自己也收回主题色 —— 否则任何直接挂在 pre 下、
+	   不在 code 里的文字（例如 post.js 插的语言角标）在暗色下就是纯黑。 */
+	color: var(--c-text);
 }
 
 /* prism 默认会给 pre 内的 code 加背景和内边距，这里清掉，避免出现两层色块 */
@@ -183,6 +187,20 @@ pre[class*="language-"].line-numbers .line-numbers-rows {
 
 .line-numbers-rows > span::before {
 	color: var(--c-faint);
+}
+
+/* 行号在浅色下用 --c-faint 是「淡」，到了暗色同样一个变量却变成「暗」——
+   #6b7078 压进 #1b1e24 的代码块底色里只剩 3.4:1，几乎糊掉。
+   暗色下改用 --c-muted，和正文形成清楚的层次又不抢代码。
+   两套选择器与 main.css 的暗色令牌保持一致：手动档 + 跟随系统。 */
+:root[data-theme="dark"] .line-numbers-rows > span::before {
+	color: var(--c-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .line-numbers-rows > span::before {
+		color: var(--c-muted);
+	}
 }
 
 pre[class*="language-"].line-numbers > code {
@@ -255,6 +273,20 @@ pre[class*="language-"] .token.important,
 pre[class*="language-"] .token.regex,
 pre[class*="language-"] .token.variable {
 	color: var(--sx-special);
+}
+
+/* ---------- 兜底 ----------
+   上面逐条覆盖的是 prism 默认主题里「会着色」的 token。但 prism 的
+   默认色值是浅底深字（#905 / #690 / #07a 这些），只要有任何一个 token
+   没被列到，它就会落回那个深色 —— 在暗色代码块上就是一团看不清的黑。
+
+   这里用一条更低特异性的规则把所有 token 兜到正文色：
+     · 低于上面的 .token.xxx（0,3,1），不会盖掉已经配好的颜色；
+     · 高于 prism.css 的 .token.xxx（0,2,0），能接住漏网的。
+   于是「代码块里出现深色字」这件事从根上不可能再发生，
+   将来 prism 新增 token 类型也不用回来补规则。 */
+pre[class*="language-"] .token {
+	color: inherit;
 }
 
 /* prism 给整块加了 1px 白色 text-shadow：浅色下是极轻的浮雕，
