@@ -5,6 +5,16 @@
 (function () {
 	'use strict';
 
+	/* 固定导航的高度。布局是 --nav-h 控制的，这里读同一个变量，
+	   免得将来调高度时漏改 —— 目录跳转要按它留出顶部空间。 */
+	var NAV_H = (function () {
+		var v = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'), 10);
+		return isNaN(v) ? 56 : v;
+	})();
+
+	/* 用户要求减少动效时，跳转不做平滑动画（JS 的 behavior 不吃 CSS 的媒体查询） */
+	var REDUCE_MOTION = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
 	/* ---------- 阅读进度条 ---------- */
 	var bar = document.getElementById('read-progress-bar');
 	var content = document.querySelector('.post-content');
@@ -189,13 +199,15 @@
 	var closeBtn = document.getElementById('toc-drawer-close');
 	var mask = document.getElementById('toc-drawer-mask');
 
-	if (toggle && drawer) {
-		function setDrawer(open) {
-			drawer.classList.toggle('active', open);
-			toggle.setAttribute('aria-expanded', String(open));
-			document.body.style.overflow = open ? 'hidden' : '';
-		}
+	/* 提到 if 外面：下面接管的目录跳转也要用它 */
+	function setDrawer(open) {
+		if (!drawer || !toggle) return;
+		drawer.classList.toggle('active', open);
+		toggle.setAttribute('aria-expanded', String(open));
+		document.body.style.overflow = open ? 'hidden' : '';
+	}
 
+	if (toggle && drawer) {
 		toggle.addEventListener('click', function () {
 			setDrawer(!drawer.classList.contains('active'));
 		});
@@ -219,4 +231,64 @@
 			if (window.innerWidth > 900) setDrawer(false);
 		});
 	}
+
+	/* ---------- 目录跳转 ----------
+	   不再依赖浏览器默认的 fragment 跳转：那条链路会被三件事同时干扰 ——
+	     · html 上的 scroll-behavior:smooth（跳转本身是一次动画）；
+	     · 移动端抽屉给 body 加的 overflow:hidden（跳之前先解锁，滚动才不被吃掉）；
+	     · 首屏入场动画给元素加的 translateY（会让位置计算偏掉）。
+	   任一个在跳转生效的瞬间改动样式，浏览器就会把这次滚动作废重来 ——
+	   表现就是「先滚到目标，又被弹回文章开头」。
+	   这里显式接管：解锁滚动 → 等一帧 → 自己算位置滚过去。 */
+
+	/* 累加 offsetTop 得到布局位置：不能用 getBoundingClientRect，
+	   它返回的是「变换后」的位置，入场动画的 translateY 还在的话会偏十几像素。 */
+	function layoutTop(el) {
+		var y = 0;
+		while (el) {
+			y += el.offsetTop;
+			el = el.offsetParent;
+		}
+		return y;
+	}
+
+	function jumpTo(hash) {
+		if (!hash || hash.length < 2) return;
+
+		var raw = hash.slice(1);
+		var el = null;
+		try {
+			el = document.getElementById(decodeURIComponent(raw));
+		} catch (e) {
+			el = document.getElementById(raw);
+		}
+		if (!el) return;
+
+		/* 顶部留出固定导航的高度，和 html 的 scroll-padding-top 对齐 */
+		var top = Math.max(0, layoutTop(el) - NAV_H - 16);
+		window.scrollTo({ top: top, behavior: REDUCE_MOTION ? 'auto' : 'smooth' });
+
+		/* 同步地址栏（可复制、可分享），用 replace 不额外压历史记录 ——
+		   否则后退时 pjax 会接管这次 hash 变化并重新加载页面。 */
+		try { history.replaceState(history.state, '', hash); } catch (e) {}
+	}
+
+	document.addEventListener('click', function (e) {
+		if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+
+		var a = e.target && e.target.closest ? e.target.closest('a[href^="#"]') : null;
+		if (!a) return;
+		/* 只管目录里的锚点；正文标题上的 .headerlink 仍交给浏览器 */
+		if (!a.closest('.toc-content')) return;
+
+		e.preventDefault();
+
+		var hash = a.getAttribute('href');
+
+		/* 先解锁滚动：抽屉开着时 body 是 overflow:hidden，锁没解除就滚不动。
+		   然后统一等一帧再跳 —— 解锁要等样式生效，而且点击链上
+		   抽屉自己的处理器已经跑过一遍（它也会 setDrawer(false)）。 */
+		setDrawer(false);
+		requestAnimationFrame(function () { jumpTo(hash); });
+	});
 })();
