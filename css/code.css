@@ -1,0 +1,461 @@
+/* ==========================================================================
+   code.css — 代码块
+   同时覆盖两条高亮链路，站点无论怎么配置都有高亮：
+     1. Hexo 内置 highlight.js（syntax_highlighter 未设为 prismjs）
+        → figure.highlight + table.highlighttable + td.gutter
+     2. 内置 prismjs（syntax_highlighter: prismjs，hexo 7.0.0+ 无需插件）
+        → pre.line-numbers.language-x > code.language-x + .line-numbers-rows
+   本文件在 prism.css / prism-line-numbers.css 之后加载，靠加载顺序
+   + !important 兜底把 prism 自带的圆角、阴影、按钮底色压成扁平样式。
+   ========================================================================== */
+
+/* ---------- 链路 1：Hexo 内置高亮 ---------- */
+figure.highlight {
+	margin: 18px 0;
+	background: var(--c-code-bg);
+	border: 1px solid var(--c-border);
+	overflow-x: auto;
+	font-size: 13px;
+	line-height: 1.6;
+}
+
+/* 覆盖 post.css / page.css 里给通用 pre 加的边框内边距（否则会套两层） */
+figure.highlight pre {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: none;
+	overflow: visible;
+	font-size: inherit;
+	line-height: inherit;
+	color: var(--c-text);
+}
+
+figure.highlight table {
+	width: 100%;
+	margin: 0;
+	border: 0;
+	border-collapse: collapse;
+	table-layout: auto;
+}
+
+figure.highlight td {
+	padding: 0;
+	border: 0;
+	vertical-align: top;
+}
+
+figure.highlight td.gutter {
+	width: 1%;
+	white-space: nowrap;
+	user-select: none;
+	background: var(--c-surface);
+	border-right: 1px solid var(--c-border);
+}
+
+figure.highlight td.gutter pre {
+	padding: 14px 10px;
+	text-align: right;
+	color: var(--c-faint);
+}
+
+figure.highlight td.code pre {
+	padding: 14px 16px;
+}
+
+figure.highlight .line {
+	display: block;
+	min-height: 1.6em;
+}
+
+/* 行号（line_number: true 时 dots 与 number 两种模式都兼容） */
+figure.highlight .line,
+figure.highlight .line.marked {
+	background: none;
+}
+
+figure.highlight .marked {
+	background: var(--c-primary-soft);
+}
+
+/* ---------- 内置高亮的扁平浅色配色 ---------- */
+figure.highlight .comment,
+figure.highlight .quote {
+	color: #a0a0a0;
+	font-style: italic;
+}
+
+figure.highlight .keyword,
+figure.highlight .selector-tag,
+figure.highlight .doctag,
+figure.highlight .meta-keyword {
+	color: var(--c-primary-dark);
+	font-weight: 600;
+}
+
+figure.highlight .string,
+figure.highlight .regexp,
+figure.highlight .addition,
+figure.highlight .meta-string {
+	color: #50a14f;
+}
+
+figure.highlight .number,
+figure.highlight .literal,
+figure.highlight .symbol,
+figure.highlight .bullet {
+	color: #986801;
+}
+
+figure.highlight .title,
+figure.highlight .section,
+figure.highlight .name,
+figure.highlight .selector-id,
+figure.highlight .selector-class,
+figure.highlight .function {
+	color: #4078f2;
+}
+
+figure.highlight .built_in,
+figure.highlight .type,
+figure.highlight .class .title {
+	color: #c18401;
+}
+
+figure.highlight .attr,
+figure.highlight .attribute,
+figure.highlight .variable,
+figure.highlight .template-variable,
+figure.highlight .deletion {
+	color: #e45649;
+}
+
+figure.highlight .meta,
+figure.highlight .tag {
+	color: #a0a0a0;
+}
+
+figure.highlight .emphasis {
+	font-style: italic;
+}
+
+figure.highlight .strong {
+	font-weight: 700;
+}
+
+/* ---------- 链路 2：内置 prismjs ---------- */
+/* prism.css 自带 .3em/.5em 圆角、#f5f2f0 底色与阴影，
+   main.css 的 !important 兜底规则已把它们归零，这里统一代码块外观。 */
+pre[class*="language-"] {
+	margin: 18px 0;
+	padding: 14px 16px;
+	background: var(--c-code-bg);
+	border: 1px solid var(--c-border);
+	overflow-x: auto;
+	font-size: 13px;
+	line-height: 1.6;
+	tab-size: 4;
+	/* prism.css 给 code 和 pre 都写了 color:#000（它的默认主题是浅底深字）。
+	   这里必须把 pre 自己也收回主题色 —— 否则任何直接挂在 pre 下、
+	   不在 code 里的文字（例如 post.js 插的语言角标）在暗色下就是纯黑。 */
+	color: var(--c-text);
+}
+
+/* prism 默认会给 pre 内的 code 加背景和内边距，这里清掉，避免出现两层色块 */
+pre[class*="language-"] > code {
+	display: block;
+	margin: 0;
+	padding: 0;
+	background: none;
+	border: 0;
+	color: var(--c-text);
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	white-space: pre;
+	word-break: normal;
+}
+
+/* 行号 gutter。
+   hexo-util prism.js 在 preprocess + line_number 模式下会把
+   <span class="line-numbers-rows">1\n2\n3</span> 追加到 <code> 末尾，
+   由 prism-line-numbers.css 绝对定位到左侧；这里只把配色换成主题变量。
+   pre 的 padding-left: 3.8em 由 prism-line-numbers.css 提供（特异性更高，不覆盖）。 */
+pre[class*="language-"].line-numbers .line-numbers-rows {
+	border-right: 1px solid var(--c-border);
+}
+
+.line-numbers-rows > span::before {
+	color: var(--c-faint);
+}
+
+/* 行号在浅色下用 --c-faint 是「淡」，到了暗色同样一个变量却变成「暗」——
+   #6b7078 压进 #1b1e24 的代码块底色里只剩 3.4:1，几乎糊掉。
+   暗色下改用 --c-muted，和正文形成清楚的层次又不抢代码。
+   两套选择器与 main.css 的暗色令牌保持一致：手动档 + 跟随系统。 */
+:root[data-theme="dark"] .line-numbers-rows > span::before {
+	color: var(--c-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .line-numbers-rows > span::before {
+		color: var(--c-muted);
+	}
+}
+
+pre[class*="language-"].line-numbers > code {
+	white-space: inherit;
+}
+
+/* 行内代码（不是代码块） */
+:not(pre) > code[class*="language-"] {
+	background: var(--c-primary-soft);
+	/* prism 给带语言 class 的 code 定了纯黑 + 白描边，
+	   暗色下纯黑压深底会看不见，这里连同描边一起收回主题色。 */
+	color: var(--c-primary-dark);
+	text-shadow: none;
+}
+
+/* ---------- prism 语法着色 ----------
+   色值全部走 --sx-* 变量（定义在 main.css 的设计令牌里）。
+   整组重写而不是只补暗色：浅色那组变量就等于 prism.css 的默认原值，
+   所以浅色外观一个像素都不变，而暗色只需换变量、不必再复制一份规则。 */
+pre[class*="language-"] .token.comment,
+pre[class*="language-"] .token.prolog,
+pre[class*="language-"] .token.doctype,
+pre[class*="language-"] .token.cdata {
+	color: var(--sx-comment);
+}
+
+pre[class*="language-"] .token.punctuation {
+	color: var(--sx-punct);
+}
+
+pre[class*="language-"] .token.boolean,
+pre[class*="language-"] .token.constant,
+pre[class*="language-"] .token.deleted,
+pre[class*="language-"] .token.number,
+pre[class*="language-"] .token.property,
+pre[class*="language-"] .token.symbol,
+pre[class*="language-"] .token.tag {
+	color: var(--sx-number);
+}
+
+pre[class*="language-"] .token.attr-name,
+pre[class*="language-"] .token.builtin,
+pre[class*="language-"] .token.char,
+pre[class*="language-"] .token.inserted,
+pre[class*="language-"] .token.selector,
+pre[class*="language-"] .token.string {
+	color: var(--sx-string);
+}
+
+pre[class*="language-"] .token.entity,
+pre[class*="language-"] .token.operator,
+pre[class*="language-"] .token.url,
+pre[class*="language-"] .language-css .token.string,
+pre[class*="language-"] .style .token.string {
+	color: var(--sx-operator);
+}
+
+pre[class*="language-"] .token.atrule,
+pre[class*="language-"] .token.attr-value,
+pre[class*="language-"] .token.keyword {
+	color: var(--sx-keyword);
+}
+
+pre[class*="language-"] .token.class-name,
+pre[class*="language-"] .token.function {
+	color: var(--sx-func);
+}
+
+pre[class*="language-"] .token.important,
+pre[class*="language-"] .token.regex,
+pre[class*="language-"] .token.variable {
+	color: var(--sx-special);
+}
+
+/* ---------- 兜底 ----------
+   上面逐条覆盖的是 prism 默认主题里「会着色」的 token。但 prism 的
+   默认色值是浅底深字（#905 / #690 / #07a 这些），只要有任何一个 token
+   没被列到，它就会落回那个深色 —— 在暗色代码块上就是一团看不清的黑。
+
+   这里用一条更低特异性的规则把所有 token 兜到正文色：
+     · 低于上面的 .token.xxx（0,3,1），不会盖掉已经配好的颜色；
+     · 高于 prism.css 的 .token.xxx（0,2,0），能接住漏网的。
+   于是「代码块里出现深色字」这件事从根上不可能再发生，
+   将来 prism 新增 token 类型也不用回来补规则。 */
+pre[class*="language-"] .token {
+	color: inherit;
+}
+
+/* prism 给整块加了 1px 白色 text-shadow：浅色下是极轻的浮雕，
+   暗色下会在字底透出一圈白光。主题本就零阴影，统一去掉。 */
+pre[class*="language-"],
+pre[class*="language-"] > code {
+	text-shadow: none;
+}
+
+/* ---------- 代码语言角标 ----------
+   语言名只存在于高亮器写进 HTML 的 class 里（language-xxx），正文里看不到。
+   post.js 从 class 反解出语言名，插一个 <span class="code-lang"> 贴在代码块右上角。
+
+   为什么用 position:absolute 而不是把 pre 改成 flex：
+   pre 里有 prism 的行号栏和拆分后的 .code-line，改成 flex 会让
+   行号列的绝对定位失去定位基准（行号栏是相对 pre 定位的），
+   一行代码都可能错位。角标浮在代码上方是唯一安全的做法。
+
+   同时给 pre 补 padding-top，让出角标那一行的位置，
+   否则角标会压在第一行代码上。 */
+pre[class*="language-"],
+figure.highlight pre {
+	position: relative;
+}
+
+/* 补出顶部内边距，让开角标那一行。
+   挂 .has-lang 而不是 :has(.code-lang)：这个类由 post.js 插入角标时
+   一并加上。:has() 虽然现代浏览器都支持，但老浏览器解析失败会把
+   整条规则丢掉 —— 结果是角标压在第一行代码上，而 padding 也一起没了。 */
+pre.has-lang,
+figure.highlight pre.has-lang {
+	padding-top: 30px;
+}
+
+.code-lang {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 2;
+	padding: 2px 8px;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	line-height: 1.5;
+	letter-spacing: .04em;
+	text-transform: lowercase;
+	color: var(--c-faint);
+	background: var(--c-surface);
+	border-left: 1px solid var(--c-border);
+	border-bottom: 1px solid var(--c-border);
+	/* pointer-events:none：角标浮在代码上方，点到它应该穿透到代码，
+	   不然在角标那一行上拖选会选不到东西。 */
+	pointer-events: none;
+	user-select: none;
+}
+
+/* 有行号时角标不能压住行号列。行号列在左侧，角标在右侧，本来就不冲突，
+   但 prism 的行号栏是整列绝对定位，宽度不定，这里把角标往左收一点留出安全边距。 */
+pre[class*="language-"].line-numbers .code-lang {
+	right: 0;
+}
+
+/* 行内代码不应该有角标。这里兜一道：:not(pre) > code 匹配的是
+   行内代码，万一将来有别的脚本往行内 code 里插了 .code-lang，
+   绝对定位会把它甩到页面角落。 */
+:not(pre) > .code-lang {
+	position: static;
+	display: inline-block;
+	padding: 0 4px;
+	font-size: inherit;
+}
+
+/* ---------- 代码块自动换行 ----------
+   长代码行折行显示，不再依赖横向滚动。
+   全部挂在 pre.code-wrap 下：这个类由 post.js 拆完代码行才加上。
+   JS 没跑时下面这些规则一条都不生效，代码块退回「横向滚动 + prism 原生行号」，
+   不会出现「折行了但行号对不上」这种半残状态。 */
+pre.code-wrap {
+	white-space: pre-wrap;
+	/* 长标识符（URL、base64、无空格的长串）也允许在词中间断开，
+	   否则单个超长 token 照样把容器撑爆。 */
+	overflow-wrap: break-word;
+	word-break: break-word;
+}
+
+/* 每个源码行一个块级元素，折行只发生在行内，行与行之间不会粘在一起。
+   min-height 必需：空行没有内容，块高会塌成 0，行号就往上挤。 */
+.code-line {
+	display: block;
+	min-height: 1.6em;
+}
+
+/* code.css 上面的 pre[class*="language-"] > code 写了 white-space: pre，
+   这里必须显式改回 pre-wrap；选择器要同时带上 .code-wrap 才能压过它。
+   prism-line-numbers.css 的 white-space: inherit 特异性相同，
+   靠本文件加载更晚取胜。 */
+pre.code-wrap > code,
+pre.code-wrap[class*="language-"] > code,
+pre.code-wrap[class*="language-"].line-numbers > code {
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	word-break: normal;
+}
+
+/* 行号改用 CSS 计数器。
+   ::before 只写了 left、没写 top，落在它的静态位置，也就是该行的行首，
+   所以即使这一行折成两三行视觉行，行号也仍钉在第一行的开头。 */
+pre.code-wrap[class*="language-"].line-numbers {
+	padding-left: 3.6em;
+}
+
+pre.code-wrap[class*="language-"].line-numbers > code {
+	counter-reset: linenumber;
+}
+
+pre.code-wrap[class*="language-"].line-numbers > code > .code-line {
+	/* 必须自己成为包含块：否则 ::before 的包含块是 code，
+	   top:auto 会退回「静态位置」，而静态位置对折行的行不可靠 ——
+	   实测折行行的行号会整体掉下一个行高（正好 20.8px）。
+	   显式 top:0 之后，行号就锁死在各自的行首，与是否折行无关。 */
+	position: relative;
+	counter-increment: linenumber;
+}
+
+pre.code-wrap[class*="language-"].line-numbers > code > .code-line::before {
+	content: counter(linenumber);
+	position: absolute;
+	top: 0;
+	left: -3.6em;
+	width: 3.6em;
+	padding-right: 10px;
+	box-sizing: border-box;
+	text-align: right;
+	color: var(--c-faint);
+	pointer-events: none;
+	user-select: none;
+	border-right: 1px solid var(--c-border);
+}
+
+/* prism 客户端模式（preprocess: false）加载 prism.js 后会生成工具栏，样式压平 */
+div.code-toolbar > .toolbar > .toolbar-item > button,
+div.code-toolbar > .toolbar > .toolbar-item > a,
+div.code-toolbar > .toolbar > .toolbar-item > span {
+	color: var(--c-muted);
+	background: var(--c-bg);
+	border: 1px solid var(--c-border-strong);
+	font-size: 11px;
+	padding: 3px 8px;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button:hover {
+	color: #fff;
+	background: var(--c-primary);
+	border-color: var(--c-primary);
+}
+
+@media screen and (max-width: 600px) {
+	figure.highlight {
+		font-size: 12px;
+	}
+
+	figure.highlight td.gutter pre {
+		padding: 12px 8px;
+	}
+
+	figure.highlight td.code pre {
+		padding: 12px;
+	}
+
+	pre[class*="language-"] {
+		font-size: 12px;
+	}
+}

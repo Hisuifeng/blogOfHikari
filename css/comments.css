@@ -1,0 +1,207 @@
+/* ==========================================================================
+   comments.css — 文章底部评论区（Twikoo）
+   容器与配置见 layout/_partial/comments.ejs，加载逻辑见 js/comments.js。
+
+   Twikoo 自带的样式里，颜色是硬编码的 Element UI 色板（强调色 #409eff 蓝、
+   圆角 4~5px），跟本主题的「主色 + 零圆角」不符。它没有暴露 CSS 变量，
+   所以这里按它的类名逐条换色 —— 全部限定在 .post-comments 下，不外溢。
+
+   明暗不用管：Twikoo 内部大量使用 currentColor 和半透明色，
+   容器继承了 --c-text 它就自动适配。唯一例外是 OwO 表情面板，
+   它硬编码了白底，见文件末尾的补丁。
+   ========================================================================== */
+
+/* 与 post-footer 之间用一条描边分隔，层次表达和站内其它区块一致 */
+.post-comments {
+	margin-top: 40px;
+	padding-top: 24px;
+	border-top: 1px solid var(--c-border);
+}
+
+/* 脚本注入前先占住高度，免得加载完成时页面往下跳一跳 */
+.post-comments .twikoo:empty {
+	min-height: 140px;
+}
+
+/* 让 Twikoo 的 currentColor 拿到主题文字色 */
+.post-comments .twikoo {
+	color: var(--c-text);
+}
+
+/* ---------- 标题 ----------
+   Twikoo 自己渲染「评论」标题（带评论数、排序、折叠），
+   不再另起一个 h2；这里把它的外观改成站内 .section-title 的样子。 */
+.post-comments .tk-comments-title {
+	margin-bottom: 16px;
+	padding-left: 10px;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.2;
+	border-left: 3px solid var(--c-primary);
+}
+
+/* ---------- 强调色：Element UI 蓝 → 站点主色 ---------- */
+
+.post-comments .tk-action-link,
+.post-comments .tk-action-icon,
+.post-comments .tk-button--text,
+.post-comments .tk-actions button,
+.post-comments .tk-icon.__comments {
+	color: var(--c-primary);
+}
+
+.post-comments .tk-input__inner:focus {
+	border-color: var(--c-primary);
+}
+
+.post-comments .tk-nick-link:hover {
+	color: var(--c-primary);
+}
+
+.post-comments .tk-input-group__append .tk-button:hover {
+	color: var(--c-primary);
+}
+
+/* 排序：未选中是半透明的（原 #409eff99），选中才满色 */
+.post-comments .tk-sort-item {
+	color: var(--c-muted);
+}
+
+.post-comments .tk-sort-item.__active,
+.post-comments .tk-sort-item:focus {
+	color: var(--c-primary);
+}
+
+/* 普通按钮的悬停态 */
+.post-comments .tk-button:not(.tk-button--primary):not(.tk-button--text):not(.is-disabled):hover,
+.post-comments .tk-button:not(.tk-button--primary):not(.tk-button--text):not(.is-disabled):focus,
+.post-comments .tk-button:not(.tk-button--primary):not(.tk-button--text):not(.is-disabled):active {
+	color: var(--c-primary);
+	background-color: var(--c-primary-soft);
+	border-color: var(--c-primary);
+}
+
+/* 主按钮（发表） */
+.post-comments .tk-button--primary {
+	color: #fff;
+	background: var(--c-primary);
+	border-color: var(--c-primary);
+}
+
+.post-comments .tk-button--primary:not(.is-disabled):hover,
+.post-comments .tk-button--primary:not(.is-disabled):focus,
+.post-comments .tk-button--primary:not(.is-disabled):active {
+	color: #fff;
+	background: var(--c-primary-dark);
+	border-color: var(--c-primary-dark);
+}
+
+.post-comments .tk-button--primary.is-disabled,
+.post-comments .tk-button--primary.is-disabled:active,
+.post-comments .tk-button--primary.is-disabled:focus,
+.post-comments .tk-button--primary.is-disabled:hover {
+	background-color: var(--c-primary-soft);
+	border-color: transparent;
+}
+
+/* 表情按钮的选中态：底色 + 一圈光晕 */
+.post-comments .tk-icon.__comments.__active {
+	color: #fff;
+	background: var(--c-primary);
+	box-shadow: 0 0 0 .2rem var(--c-primary);
+}
+
+/* 分页当前页 */
+.post-comments .tk-pagination-pager.__current {
+	background-color: var(--c-primary);
+}
+
+/* 加载动画 */
+.post-comments .tk-loading-spinner .path {
+	stroke: var(--c-primary);
+}
+
+/* 标签 */
+.post-comments .tk-tag-blue {
+	color: var(--c-primary);
+	background-color: var(--c-primary-soft);
+	border-color: var(--c-primary);
+}
+
+/* ---------- 扁平约束：站点零圆角 ----------
+   Twikoo 的圆角散落在输入框、按钮、头像、代码块工具条、表情面板等处，
+   逐个列容易漏，这里一次抹平。 */
+.post-comments * {
+	border-radius: 0 !important;
+}
+
+/* ---------- 代码块 ----------
+   评论里贴的代码沿用站内代码块的底色，和文章里的观感连上 */
+.post-comments .tk-content pre,
+.post-comments .tk-preview-container pre {
+	background: var(--c-code-bg);
+	border: 1px solid var(--c-border);
+}
+
+/* ---------- OwO 表情面板的暗色补丁 ----------
+   面板硬编码了白底，且只认 [data-theme=dark]。
+   手动切到暗色时 Twikoo 自己就处理了；跟随系统的档位下 html 上没有这个属性，
+   所以要按媒体查询补一份。选择器与 main.css 的暗色令牌保持一致。 */
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .post-comments .OwO .OwO-body {
+		color: var(--c-text);
+		background-color: var(--c-surface);
+		border-color: var(--c-border-strong);
+	}
+
+	:root:not([data-theme="light"]) .post-comments .OwO .OwO-bar {
+		border-top-color: var(--c-border);
+	}
+}
+
+/* ---------- 表情面板的窄屏宽度 ----------
+   Twikoo 自带样式里有四条 #twikoo 前缀的规则控制每行放几个表情，
+   它们要求容器 id 就是 twikoo；而容器一旦叫 twikoo，浏览器就会给
+   window.twikoo 建一个指向该元素的同名全局，和 Twikoo 的全局对象撞名
+   （报错 window.twikoo.init is not a function）。所以容器改用了 tcomment，
+   这四条按 .post-comments 重写一遍。 */
+@media screen and (max-width: 600px) {
+	.post-comments .OwO-items > .OwO-item {
+		width: 16%;
+	}
+}
+
+@media screen and (max-width: 460px) {
+	.post-comments .OwO-items > .OwO-item {
+		width: 20%;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.post-comments .OwO-items > .OwO-item {
+		width: 25%;
+	}
+}
+
+@media screen and (max-width: 330px) {
+	.post-comments .OwO-items > .OwO-item {
+		width: 33%;
+	}
+}
+
+/* 脚本拉不到时的兜底提示（由 comments.js 写入），沿用站内的虚线占位风格 */
+.comments-fallback {
+	margin: 0;
+	padding: 18px;
+	font-size: 13px;
+	color: var(--c-muted);
+	background: var(--c-surface);
+	border: 1px dashed var(--c-border-strong);
+}
+
+@media screen and (max-width: 600px) {
+	.post-comments {
+		margin-top: 32px;
+		padding-top: 20px;
+	}
+}

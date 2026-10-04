@@ -1,0 +1,226 @@
+/* ==========================================================================
+   side-card.css — 侧栏作者名片
+   文章页与首页共用（layout/_partial/side-card.ejs）。
+   抽成独立文件是因为它不再是 post.css 的私有样式：首页不引 post.css，
+   塞在 post.css 里会让首页要么样式丢失、要么被迫加载整份文章页样式。
+
+   高度是这块的硬约束：.post-side / .home-side 是 sticky + max-height，
+   卡片在里面 flex:0 0 auto 且不设 max-height —— 它内部永远不滚动，
+   空间不够时由目录让位（收缩优先级写在 post.css 里那段注释）。
+   所以卡片每高 1px，能看到的目录就少 1px。自然高度约 340px，
+   再往卡片里加模块之前，请先回读 post.css 里那段注释。
+
+   卡片外壳、标题栏（.box-title）、社交按钮组（.icon-links）都在 main.css，
+   这里只写名片自己的排版，避免和「关于页」再各写一份近似的样式。
+   ========================================================================== */
+
+/* 外壳：白底 + 1px 描边。标题栏自己带下边框，这里不要再补。 */
+.side-card {
+	border: 1px solid var(--c-border);
+	background: var(--c-bg);
+}
+
+.side-body {
+	padding: 14px;
+}
+
+/* 身份区：头像靠左、信息竖排在一侧。 */
+.side-id {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+}
+
+.side-avatar-link {
+	display: block;
+	flex-shrink: 0;
+	/* 行内元素默认带基线间隙，头像和昵称顶边会差几像素。block + 0 行高消除。 */
+	line-height: 0;
+}
+
+.side-avatar {
+	display: block;
+	width: 56px;
+	height: 56px;
+	object-fit: cover;
+	border: 1px solid var(--c-border-strong);
+	transition: border-color .15s ease;
+}
+
+/* 头像即入口：悬停时描边变主色。不用缩放/阴影 —— 扁平风格约束。 */
+.side-avatar-link:hover .side-avatar {
+	border-color: var(--c-primary);
+}
+
+.side-id-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.side-name {
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--c-title);
+	line-height: 1.4;
+}
+
+/* 昵称是链接：颜色继承 .side-name，别让浏览器默认的蓝色链接着色漏进来。 */
+.side-name a {
+	color: inherit;
+}
+
+.side-name a:hover {
+	color: var(--c-primary);
+}
+
+.side-motto {
+	margin-top: 3px;
+	font-size: 12px;
+	color: var(--c-muted);
+	line-height: 1.5;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.side-links {
+	margin-top: 6px;
+}
+
+/* 自述：左侧主色竖线当引文标记，与正文 blockquote 同一套语言，
+   比再加一层底色更轻，也不会把上面那块白底切碎。 */
+.side-about-text {
+	margin-top: 10px;
+	padding: 2px 0 2px 10px;
+	font-size: 12px;
+	color: var(--c-muted);
+	line-height: 1.6;
+	border-left: 2px solid var(--c-primary);
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* 三个后续模块共用「10px 间距 + 9px 内边距 + 1px 上边框」。
+   分隔靠上边框而不是各自套外框：整卡已有一圈边框，
+   块内再套框会显得碎。这组数字是高度预算的一部分。 */
+.side-stats,
+.side-tags,
+.side-pick {
+	margin-top: 10px;
+	padding-top: 9px;
+	border-top: 1px solid var(--c-border);
+}
+
+/* 概览：三格等宽，格与格之间用竖线分隔 —— 和首页 .stat-bar 同一套表达。 */
+.side-stats {
+	display: flex;
+}
+
+.side-stats li {
+	flex: 1;
+	text-align: center;
+	border-right: 1px solid var(--c-border);
+}
+
+.side-stats li:last-child {
+	border-right: 0;
+}
+
+.side-stats b {
+	display: block;
+	font-size: 16px;
+	color: var(--c-primary);
+	line-height: 1.25;
+}
+
+.side-stats span {
+	font-size: 11px;
+	color: var(--c-muted);
+}
+
+/* 常写标签：**固定一行**。flex-wrap:nowrap 是关键 ——
+   一旦允许换行，标签一多就撑出第二行，名片跟着长高，
+   文章页侧栏就得靠滚动才能看全。放不下时由 .side-tag 省略号收尾。 */
+.side-tags {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+	gap: 6px;
+}
+
+.side-tag {
+	flex: 0 1 auto;
+	min-width: 0;
+	display: inline-block;
+	padding: 1px 7px;
+	font-size: 12px;
+	line-height: 1.6;
+	color: var(--c-muted);
+	background: var(--c-surface);
+	border: 1px solid var(--c-border);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	transition: all .15s ease;
+}
+
+.side-tag:hover {
+	color: var(--c-primary);
+	background: var(--c-primary-soft);
+	border-color: var(--c-primary);
+}
+
+/* 触摸设备上 :hover 抬手后仍然命中，标签会一直是主色 —— 退回未悬停的样子 */
+@media (hover: none) {
+	.side-tag:hover {
+		color: var(--c-muted);
+		background: var(--c-surface);
+		border-color: var(--c-border);
+	}
+}
+
+/* 「常写」「随便看看」这组前缀标签：小号大写字距，只做提示不抢视线。 */
+.side-cap {
+	flex-shrink: 0;
+	font-size: 11px;
+	color: var(--c-faint);
+	letter-spacing: .08em;
+}
+
+/* 「随便看看」标签与文章标题并成一行，省下一整行的高度。
+   用 flex 而不是把标签塞进链接里，是为了让可点击区域仍然只覆盖文章标题。 */
+.side-pick {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+}
+
+.side-pick-link {
+	display: -webkit-box;
+	font-size: 13px;
+	color: var(--c-title);
+	line-height: 1.5;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.side-pick-link:hover {
+	color: var(--c-primary);
+}
+
+/* 头像占位（profile.avatar 没配时）。
+   56×56 的方块里放作者名首字，缩到 28px 仍能看清是哪一位。 */
+.side-avatar-fallback {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 22px;
+	font-weight: 600;
+	color: var(--c-muted);
+	background: var(--c-surface);
+	border: 1px solid var(--c-border-strong);
+}

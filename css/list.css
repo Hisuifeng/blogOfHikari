@@ -1,0 +1,81 @@
+/* ===== 文章列表（index / tag / category / search 共用） ===== */
+.post-list {
+	border: 1px solid var(--c-border);
+	border-bottom: 0;
+	background: var(--c-bg);
+}
+/* 圆点重置不在这里：main.css 的 .post-list 组已统一处理，
+   与 .archive-list / .cat-list 等同处一条规则，避免两处维护。 */
+
+.post-item {
+	border-bottom: 1px solid var(--c-border);
+	transition: background-color .15s ease;
+}
+
+.post-item:hover {
+	background: var(--c-surface);
+}
+
+.post-item-main {
+	padding: 16px 18px;
+}
+
+.post-item-title {
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+.post-item-title a {
+	color: var(--c-title);
+}
+
+.post-item-title a:hover {
+	color: var(--c-primary);
+}
+
+.post-item-meta {
+	margin-top: 6px;
+	font-size: 12px;
+	color: var(--c-faint);
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.meta-dot {
+	color: var(--c-border-strong);
+}
+
+.post-item-digest {
+	margin-top: 8px;
+	font-size: 13px;
+	color: var(--c-muted);
+	line-height: 1.7;
+}
+
+.post-item-tags {
+	margin-top: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+/* 搜索结果关键词高亮 */
+.post-item-digest mark,
+.post-item-title mark {
+	background: var(--c-primary-soft);
+	color: var(--c-primary);
+	padding: 0 2px;
+	font-weight: 600;
+}
+
+@media screen and (max-width: 600px) {
+	.post-item-main {
+		padding: 14px;
+	}
+
+	.post-item-title {
+		font-size: 15px;
+	}
+}

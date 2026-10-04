@@ -1,0 +1,142 @@
+/* ===== 归档页 ===== */
+.year-nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 28px;
+}
+
+.year-nav a {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 5px 12px;
+	font-size: 13px;
+	color: var(--c-text);
+	background: var(--c-bg);
+	border: 1px solid var(--c-border-strong);
+	transition: all .15s ease;
+}
+
+.year-nav a:hover {
+	color: #fff;
+	background: var(--c-primary);
+	border-color: var(--c-primary);
+}
+
+.year-nav sup {
+	font-size: 10px;
+	color: var(--c-faint);
+}
+
+.year-nav a:hover sup {
+	color: var(--c-primary-soft);
+}
+
+.archive-year {
+	margin-bottom: 40px;
+}
+
+.archive-year-title {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	font-size: 22px;
+	padding-bottom: 8px;
+	margin-bottom: 4px;
+	border-bottom: 2px solid var(--c-title);
+}
+
+.archive-month-title {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--c-muted);
+	margin: 20px 0 8px;
+	padding-left: 8px;
+	border-left: 2px solid var(--c-primary);
+}
+
+.archive-count {
+	font-size: 11px;
+	font-weight: 400;
+	color: var(--c-faint);
+}
+
+.archive-list {
+	border: 1px solid var(--c-border);
+	border-bottom: 0;
+}
+
+.archive-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 14px;
+	border-bottom: 1px solid var(--c-border);
+	transition: background-color .15s ease;
+}
+
+.archive-item:hover {
+	background: var(--c-surface);
+}
+
+.archive-date {
+	flex-shrink: 0;
+	width: 46px;
+	font-size: 12px;
+	color: var(--c-faint);
+	font-family: var(--font-mono);
+}
+
+.archive-title {
+	flex: 1;
+	min-width: 0;
+	font-size: 14px;
+	color: var(--c-title);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.archive-title:hover {
+	color: var(--c-primary);
+}
+
+.archive-tags {
+	flex-shrink: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	justify-content: flex-end;
+}
+
+@media screen and (max-width: 700px) {
+	.archive-year-title {
+		font-size: 19px;
+	}
+
+	.archive-item {
+		flex-wrap: wrap;
+		gap: 6px 10px;
+		padding: 12px;
+	}
+
+	.archive-title {
+		flex: 1 1 100%;
+		order: 2;
+		white-space: normal;
+	}
+
+	.archive-date {
+		order: 1;
+	}
+
+	.archive-tags {
+		order: 3;
+		justify-content: flex-start;
+		flex-basis: 100%;
+	}
+}

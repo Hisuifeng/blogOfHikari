@@ -1,0 +1,573 @@
+/* ===== 阅读进度条（JS 驱动，替代 scroll-timeline） ===== */
+.read-progress {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 2px;
+	z-index: 1100;
+	background: transparent;
+	pointer-events: none;
+}
+
+.read-progress i {
+	display: block;
+	height: 100%;
+	width: 0;
+	background: var(--c-primary);
+}
+
+/* ===== 布局 ===== */
+.post-wrap {
+	display: flex;
+	align-items: flex-start;
+	gap: 24px;
+}
+
+/* 侧栏整块必须矮于视口：.post-side 是 position:sticky，不会随页面滚动，
+   一旦比视口高，底部的作者名片就会被顶出视口且滚动过程中永远看不到。
+   目录长度不参与这里的计算，所以约束要落在侧栏容器上，而不是只给目录设 max-height。 */
+.post-side {
+	width: 236px;
+	flex-shrink: 0;
+	position: sticky;
+	top: calc(var(--nav-h) + 20px);
+	max-height: calc(100vh - var(--nav-h) - 40px);
+	display: flex;
+	flex-direction: column;
+}
+
+.post-main {
+	flex: 1;
+	min-width: 0;
+}
+
+/* ===== 侧栏目录 ===== */
+/* 目录是侧栏里唯一肯让位的部分：flex:0 1 auto + min-height:0，
+   空间不够时先压它（见下面 .post-side .side-card 那段说明）。
+   overflow:hidden 是为了压到极扁时把标题一起裁掉，
+   而不是让内容溢出到卡片外面。 */
+.toc-box {
+	border: 1px solid var(--c-border);
+	background: var(--c-bg);
+	display: flex;
+	flex-direction: column;
+	flex: 0 1 auto;
+	min-height: 0;
+	overflow: hidden;
+}
+
+/* .box-title / .card 的样式统一放在 main.css，目录标题与侧栏名片标题栏共用一份，
+   这里不再重复声明 —— 之前两处各写一遍，改一处就会漂移。 */
+
+.toc-content {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding: 10px 14px;
+	font-size: 13px;
+}
+
+.toc-content ul,
+.toc-content ol {
+	list-style: none;
+	padding-left: 12px;
+	margin: 0;
+	border-left: 1px solid var(--c-border);
+}
+
+.toc-content > ul,
+.toc-content > ol {
+	padding-left: 0;
+	border-left: 0;
+}
+
+.toc-content li {
+	margin: 2px 0;
+	line-height: 1.6;
+}
+
+.toc-content a {
+	display: block;
+	padding: 3px 0;
+	color: var(--c-muted);
+	border-left: 2px solid transparent;
+	padding-left: 8px;
+	margin-left: -1px;
+	/* 提前声明一次 transition：.active 之后会加粗字重，
+	   没有过渡时深浅两级之间是硬切，滚动时目录会「闪」一下。 */
+	transition: color .15s ease, background-color .15s ease,
+		border-color .15s ease;
+}
+
+.toc-content a:hover {
+	color: var(--c-primary);
+}
+
+/* 当前项。左侧竖条 + 淡底 + 加粗，三重提示。
+   之前只有竖条和淡底：目录里同时存在一二级标题时，
+   一级项和它下面的二级项底色几乎一样，滚动中很难一眼看出走到哪了。 */
+.toc-content a.active {
+	color: var(--c-primary);
+	border-left-color: var(--c-primary);
+	background: var(--c-primary-soft);
+	font-weight: 600;
+}
+
+/* ===== 侧栏空间分配（卡片本体在 side-card.css，文章页/首页共用） ===== */
+/* 侧栏整块是 sticky + max-height，空间不够时得有人让位，规则是「目录让，名片不让」：
+     · 名片 flex-shrink:0，且不再设 max-height —— 它永远不会内部滚动。
+       名片里全是「一眼看完」的信息，一旦要拖动才能看全就等于没放；
+     · 目录 flex-shrink:1 且 min-height:0，空间不足时它先被压扁，
+       而目录本来就能内部滚动，压扁只是少显示几行，功能不丢。
+   反过来的做法（给名片设百分比上限）在 750px 上下的窗口就会冒滚动条，
+   所以这里把配额彻底去掉，改用收缩优先级来分空间。
+   选择器带上 .post-side：首页侧栏没有目录竞争，不参与这套分配。 */
+.post-side .side-card {
+	flex: 0 0 auto;
+	margin-top: 16px;
+}
+
+/* ===== 文章头部 ===== */
+.post-header {
+	padding: 28px 0 18px;
+	border-bottom: 1px solid var(--c-border);
+	margin-bottom: 24px;
+}
+
+.post-title {
+	font-size: 28px;
+	line-height: 1.35;
+	word-break: break-word;
+}
+
+.post-meta {
+	margin-top: 10px;
+	font-size: 12px;
+	color: var(--c-faint);
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.post-meta a {
+	color: var(--c-muted);
+	border-bottom: 1px solid var(--c-border-strong);
+}
+
+.post-meta a:hover {
+	color: var(--c-primary);
+	border-bottom-color: var(--c-primary);
+}
+
+/* ===== 正文排版 ===== */
+.post-content {
+	font-size: 15px;
+	line-height: 1.85;
+	color: var(--c-text);
+	word-break: break-word;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+	margin: 28px 0 14px;
+	line-height: 1.4;
+}
+
+.post-content h1 {
+	font-size: 25px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid var(--c-border);
+}
+
+.post-content h2 {
+	font-size: 21px;
+	padding-left: 10px;
+	border-left: 3px solid var(--c-primary);
+}
+
+.post-content h3 { font-size: 18px; }
+.post-content h4 { font-size: 16px; }
+.post-content h5 { font-size: 15px; }
+.post-content h6 { font-size: 14px; color: var(--c-muted); }
+
+.post-content > *:first-child {
+	margin-top: 0;
+}
+
+.post-content p {
+	margin: 14px 0;
+}
+
+.post-content a {
+	color: var(--c-primary);
+	border-bottom: 1px solid var(--c-border-strong);
+}
+
+.post-content a:hover {
+	border-bottom-color: var(--c-primary);
+}
+
+.post-content ul,
+.post-content ol {
+	margin: 14px 0;
+	padding-left: 1.6em;
+}
+
+.post-content li {
+	margin: 6px 0;
+}
+
+.post-content li::marker {
+	color: var(--c-faint);
+}
+
+.post-content img {
+	margin: 20px auto;
+	max-width: 100%;
+	border: 1px solid var(--c-border);
+}
+
+.post-content blockquote {
+	margin: 18px 0;
+	padding: 10px 16px;
+	color: var(--c-muted);
+	background: var(--c-surface);
+	border-left: 3px solid var(--c-border-strong);
+}
+
+.post-content blockquote p {
+	margin: 6px 0;
+}
+
+.post-content hr {
+	margin: 28px 0;
+}
+
+.post-content table {
+	margin: 18px 0;
+	font-size: 14px;
+	border: 1px solid var(--c-border);
+}
+
+.post-content th,
+.post-content td {
+	padding: 9px 12px;
+	border: 1px solid var(--c-border);
+	text-align: left;
+}
+
+.post-content th {
+	background: var(--c-surface);
+	color: var(--c-title);
+	font-weight: 600;
+}
+
+.post-content tbody tr:nth-child(even) {
+	background: var(--c-surface);
+}
+
+/* 行内代码 */
+.post-content :not(pre) > code {
+	padding: 2px 5px;
+	font-size: 13px;
+	color: var(--c-primary-dark);
+	background: var(--c-primary-soft);
+	border: 1px solid var(--c-border);
+}
+
+/* 代码块 */
+.post-content pre {
+	margin: 18px 0;
+	padding: 16px 18px;
+	overflow-x: auto;
+	font-size: 13px;
+	line-height: 1.6;
+	background: var(--c-code-bg);
+	border: 1px solid var(--c-border);
+}
+
+.post-content pre code {
+	background: none;
+	border: 0;
+	padding: 0;
+	font-size: inherit;
+	color: inherit;
+}
+
+/* prism 复制按钮（扁平化覆盖，去掉自带阴影与圆角） */
+div.code-toolbar {
+	border: 0;
+}
+
+div.code-toolbar > .toolbar {
+	top: 6px;
+	right: 6px;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button,
+div.code-toolbar > .toolbar > .toolbar-item > a {
+	font-size: 11px;
+	color: var(--c-muted);
+	background: var(--c-bg);
+	border: 1px solid var(--c-border-strong);
+}
+
+/* ===== 文章页脚 ===== */
+.post-footer {
+	margin-top: 36px;
+	padding-top: 20px;
+	border-top: 1px solid var(--c-border);
+}
+
+.post-tags {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 18px;
+}
+
+.tags-label {
+	font-size: 12px;
+	color: var(--c-muted);
+}
+
+.post-copyright {
+	padding: 12px 14px;
+	font-size: 12px;
+	color: var(--c-muted);
+	background: var(--c-surface);
+	border: 1px dashed var(--c-border-strong);
+}
+
+/* 上下篇 */
+.post-nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 18px;
+}
+
+/* 只有一篇时 nav 是空的，div 本身还在，会在页脚上方留一条 18px 的空隙。
+   没有内容就别渲染外层盒子，:empty 就是这个用途。 */
+.post-nav:empty {
+	display: none;
+}
+
+.post-nav-item {
+	position: relative;
+	flex: 1 1 240px;
+	min-width: 0;
+	padding: 12px 14px;
+	border: 1px solid var(--c-border);
+	background: var(--c-bg);
+	/* 只动 border-color / background-color。给 .post-nav-item 加
+	   transform 位移的话，卡片会盖住下面 12px 处的内容，
+	   而 .post-nav 的 gap 只有 12px，两张卡片并排时中间那条缝会消失。 */
+	transition: border-color .15s ease, background-color .15s ease;
+}
+
+.post-nav-item:hover {
+	border-color: var(--c-primary);
+	background: var(--c-primary-soft);
+}
+
+.post-nav-item.next {
+	text-align: right;
+}
+
+.nav-dir {
+	display: block;
+	font-size: 12px;
+	color: var(--c-faint);
+}
+
+/* 「上一篇 / 下一篇」的方向箭头：常驻但只有 0.5 的不透明度，
+   悬停时随卡片变色。挂在箭头上而不是整张卡上，
+   整卡位移会和上面的「不加 transform」的理由冲突。 */
+.nav-dir i {
+	opacity: .5;
+	transition: opacity .15s ease, transform .15s ease;
+}
+
+.post-nav-item.prev:hover .nav-dir i {
+	opacity: 1;
+	transform: translateX(-2px);
+}
+
+.post-nav-item.next:hover .nav-dir i {
+	opacity: 1;
+	transform: translateX(2px);
+}
+
+.nav-title {
+	display: block;
+	margin-top: 4px;
+	font-size: 13px;
+	color: var(--c-title);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.post-nav-item:hover .nav-title {
+	color: var(--c-primary);
+}
+
+/* ===== 移动端目录抽屉 ===== */
+.toc-toggle {
+	display: none;
+	position: fixed;
+	left: 20px;
+	bottom: 24px;
+	z-index: 950;
+	width: 44px;
+	height: 44px;
+	font-size: 17px;
+	color: var(--c-muted);
+	background: var(--c-bg);
+	border: 1px solid var(--c-border-strong);
+	cursor: pointer;
+}
+
+.toc-toggle:hover {
+	color: #fff;
+	background: var(--c-primary);
+	border-color: var(--c-primary);
+}
+
+.toc-drawer {
+	position: fixed;
+	inset: 0;
+	z-index: 1200;
+	visibility: hidden;
+	pointer-events: none;
+}
+
+.toc-drawer.active {
+	visibility: visible;
+	pointer-events: auto;
+}
+
+.toc-drawer-mask {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, .35);
+	opacity: 0;
+	transition: opacity .25s ease;
+}
+
+.toc-drawer.active .toc-drawer-mask {
+	opacity: 1;
+}
+
+.toc-drawer-panel {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: min(300px, 84vw);
+	background: var(--c-bg);
+	border-right: 1px solid var(--c-border);
+	transform: translateX(-100%);
+	transition: transform .28s ease;
+	display: flex;
+	flex-direction: column;
+}
+
+.toc-drawer.active .toc-drawer-panel {
+	transform: translateX(0);
+}
+
+.toc-drawer-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 16px;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--c-title);
+	background: var(--c-surface);
+	border-bottom: 1px solid var(--c-border);
+}
+
+/* 关闭按钮用文本 ×，不用 font-awesome 图标：
+   图标字形在 15px 上偏细偏小，正文体的 × 更容易点中，也和播放器、
+   其他纯文字按钮保持同一套表达。 */
+#toc-drawer-close {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	font-size: 20px;
+	line-height: 1;
+	color: var(--c-muted);
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+}
+
+#toc-drawer-close span {
+	display: block;
+	/* 文本 × 的视觉重心比字形框略低，抬 1px 才和左侧标题对齐 */
+	transform: translateY(-1px);
+}
+
+#toc-drawer-close:hover {
+	color: var(--c-primary);
+}
+
+/* 抽屉面板本身已是满高 flex 列，目录占满剩余空间并内部滚动 */
+.toc-drawer-panel .toc-content {
+	flex: 1 1 auto;
+	min-height: 0;
+	font-size: 14px;
+}
+
+/* ===== 响应式 ===== */
+@media screen and (max-width: 900px) {
+	.post-wrap {
+		gap: 0;
+	}
+
+	.post-side {
+		display: none;
+	}
+
+	.toc-toggle {
+		display: block;
+	}
+
+	.post-title {
+		font-size: 22px;
+	}
+
+	.post-content {
+		font-size: 15px;
+	}
+
+	/* 表格与代码块在窄屏横向滚动，避免撑破布局 */
+	.post-content table {
+		display: block;
+		overflow-x: auto;
+	}
+
+	.post-header {
+		padding: 20px 0 14px;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.post-content pre {
+		padding: 12px;
+		font-size: 12px;
+	}
+}

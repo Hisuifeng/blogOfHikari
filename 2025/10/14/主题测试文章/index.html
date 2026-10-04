@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+	<meta name="theme-color" content="#ffffff">
+	
+	<script>
+		(function () {
+			try {
+				var t = localStorage.getItem('theme');
+				if (t === 'light' || t === 'dark') {
+					document.documentElement.setAttribute('data-theme', t);
+				}
+			} catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略即可 */ }
+		})();
+	</script>
+	<title>
+		主题测试文章 | Hikari 的博客
+	</title>
+	<meta name="description" content="Hikari 的个人博客，记录小说、技术笔记和随笔。">
+	
+	<meta name="keywords" content="Hexo,博客,随笔,音游">
+	
+	
+	
+	
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+	
+	
+<link rel="stylesheet" href="/lib/highlight/prism/prism.css">
+
+		
+	
+<link rel="stylesheet" href="/lib/highlight/prism/prism-line-numbers.css">
+
+		
+	
+	
+<link rel="stylesheet" href="/css/topnav.css">
+
+	
+<link rel="stylesheet" href="/css/footer.css">
+
+	
+<link rel="stylesheet" href="/css/code.css">
+
+	
+	
+<link rel="stylesheet" href="/css/anim.css">
+
+	
+	
+	
+	
+<link rel="stylesheet" href="/css/player.css">
+
+	
+	
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+	
+	<a class="skip-link" href="#content">跳到正文</a>
+
+	<header class="topnav" id="top">
+	<div class="topnav-inner">
+		<a class="brand" href="/">
+			Hikari 的博客
+		</a>
+
+		<div class="nav-right">
+			<button class="hamburger" id="hamburger" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="nav-menu">
+				<span class="hamburger-bar"></span>
+				<span class="hamburger-bar"></span>
+				<span class="hamburger-bar"></span>
+			</button>
+
+			<nav class="nav-menu" id="nav-menu" aria-label="主导航">
+				
+					<a href="/" data-nav="/">首页</a>
+				
+					<a href="/archives" data-nav="/archives">归档</a>
+				
+					<a href="/tags" data-nav="/tags">标签</a>
+				
+					<a href="/categories" data-nav="/categories">分类</a>
+				
+					<a href="/links" data-nav="/links">友链</a>
+				
+					<a href="/search" data-nav="/search">搜索</a>
+				
+					<a href="/about" data-nav="/about">关于</a>
+				
+				
+					
+					<a href="https://github.com/Hisuifeng" class="nav-external" target="_blank" rel="noopener noreferrer" title="github">
+						
+<i class="fa fa-github" aria-hidden="true"></i>
+<span class="sr-only">github</span>
+					</a>
+				
+			</nav>
+
+			
+			<button class="theme-toggle" id="theme-toggle" type="button" aria-label="切换主题（当前：跟随系统）" title="切换主题">
+				<i class="fa fa-adjust toggle-auto" aria-hidden="true"></i>
+				<i class="fa fa-sun-o toggle-light" aria-hidden="true"></i>
+				<i class="fa fa-moon-o toggle-dark" aria-hidden="true"></i>
+			</button>
+		</div>
+	</div>
+</header>
+
+
+	
+	
+	<div id="content" tabindex="-1">
+		
+
+<link rel="stylesheet" href="/css/side-card.css">
+
+
+<link rel="stylesheet" href="/css/post.css">
+
+
+<link rel="stylesheet" href="/css/comments.css">
+
+
+<div class="read-progress" id="read-progress" aria-hidden="true"><i id="read-progress-bar"></i></div>
+
+<div class="wrap post-wrap">
+	<aside class="post-side">
+		
+			<nav class="toc-box" aria-label="文章目录">
+				<p class="box-title"><i class="fa fa-list-ul" aria-hidden="true"></i>目录<span class="en">Toc</span></p>
+				<div class="toc-content" id="toc-content">
+					<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%9F%BA%E7%A1%80%E6%B5%8B%E8%AF%95%E2%80%8B"><span class="toc-text">一、文本格式基础测试​</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%A0%87%E9%A2%98%E5%B1%82%E7%BA%A7%E2%80%8B"><span class="toc-text">1.1 标题层级​</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">一级标题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">二级标题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">三级标题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Inline-%E6%A0%BC%E5%BC%8F%E2%80%8B"><span class="toc-text">1.2 Inline 格式​</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE%E4%B8%93%E9%A1%B9%E6%B5%8B%E8%AF%95"><span class="toc-text">二、代码高亮专项测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Python"><span class="toc-text">Python</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-C"><span class="toc-text">C&#x2F;C++</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript"><span class="toc-text">JavaScript</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-CSS-%E4%BB%A3%E7%A0%81"><span class="toc-text">HTML + CSS 代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E8%AF%AD%E8%A8%80%E6%8C%87%E5%AE%9A%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-text">无语言指定代码块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9B%BE%E7%89%87%E6%B5%8B%E8%AF%95"><span class="toc-text">三、图片测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%88%97%E8%A1%A8%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="toc-text">二、列表功能测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-text">2.1 无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-text">2.2 有序列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%BC%95%E7%94%A8%E4%B8%8E%E8%A1%A8%E6%A0%BC%E6%B5%8B%E8%AF%95"><span class="toc-text">三、引用与表格测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%BC%95%E7%94%A8%E5%8A%9F%E8%83%BD"><span class="toc-text">3.1 引用功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E8%A1%A8%E6%A0%BC%E5%8A%9F%E8%83%BD"><span class="toc-text">3.2 表格功能</span></a></li></ol></li></ol>
+				</div>
+			</nav>
+		
+
+		
+			
+
+<div class="side-card">
+	<p class="box-title">
+		<i class="fa fa-user-o" aria-hidden="true"></i>关于作者<span class="en">Author</span>
+	</p>
+
+	<div class="side-body">
+		
+		<div class="side-id">
+			
+			<a class="side-avatar-link" href="/about" aria-label="关于 Hikari">
+				
+					<img class="side-avatar" src="/images/head.jpg" alt="">
+				
+			</a>
+			<div class="side-id-info">
+				<p class="side-name"><a href="/about">Hikari</a></p>
+				
+					<p class="side-motto">何为坚强？</p>
+				
+				
+					<ul class="icon-links side-links">
+						
+							<li>
+								<a href="https://github.com/Hisuifeng" title="github" target="_blank" rel="noopener noreferrer">
+									
+<i class="fa fa-github" aria-hidden="true"></i>
+<span class="sr-only">github</span>
+								</a>
+							</li>
+						
+							<li>
+								<a href="mailto:minecraftsuifeng@outlook.com" title="mail" target="_blank" rel="noopener noreferrer">
+									
+<i class="fa fa-envelope" aria-hidden="true"></i>
+<span class="sr-only">mail</span>
+								</a>
+							</li>
+						
+					</ul>
+				
+			</div>
+		</div>
+
+		
+		
+			<p class="side-about-text">有朋自远方来，不亦乐乎。</p>
+		
+
+		
+		
+			<ul class="side-stats">
+				<li><b>4</b><span>文章</span></li>
+				<li><b>0</b><span>分类</span></li>
+				<li><b>6</b><span>标签</span></li>
+			</ul>
+		
+
+		
+			<ul class="side-tags">
+				<li class="side-cap">常写</li>
+				
+					<li><a class="side-tag" href="/tags/%E9%97%B2%E8%81%8A%E5%90%B9%E6%B0%B4/">闲聊吹水</a></li>
+				
+					<li><a class="side-tag" href="/tags/%E5%8F%A4%E6%B3%95%E7%BC%96%E7%A8%8B/">古法编程</a></li>
+				
+					<li><a class="side-tag" href="/tags/%E7%8C%8E%E5%A5%87/">猎奇</a></li>
+				
+			</ul>
+		
+
+		
+			<p class="side-pick">
+				<span class="side-cap">随便看看</span>
+				<a class="side-pick-link" href="/2026/10/04/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95/">博客评论系统测试</a>
+			</p>
+		
+	</div>
+</div>
+
+		
+	</aside>
+
+	<main class="post-main">
+		<header class="post-header">
+			<h1 class="post-title">主题测试文章</h1>
+			
+			<p class="post-meta">
+				<i class="fa fa-calendar-o" aria-hidden="true"></i>
+				<time datetime="2025-10-14 10:55:45">2025-10-14</time>
+				
+					<span class="meta-dot">/</span>
+					<i class="fa fa-file-text-o" aria-hidden="true"></i>
+					2.5k 字
+				
+				
+					<span class="meta-dot">/</span>
+					<i class="fa fa-clock-o" aria-hidden="true"></i>
+					
+					约 2 分钟
+				
+				
+			</p>
+		</header>
+
+		<article class="post-content">
+			<p>这是一篇测试文章，用于验证博客的核心渲染能力。</p>
+<h2 id="一、文本格式基础测试​"><a href="#一、文本格式基础测试​" class="headerlink" title="一、文本格式基础测试​"></a>一、文本格式基础测试​</h2><h3 id="1-1-标题层级​"><a href="#1-1-标题层级​" class="headerlink" title="1.1 标题层级​"></a>1.1 标题层级​</h3><h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><h3 id="1-2-Inline-格式​"><a href="#1-2-Inline-格式​" class="headerlink" title="1.2 Inline 格式​"></a>1.2 Inline 格式​</h3><p>加粗文本：<strong>加粗文本</strong>​<br>斜体文本：<em>斜体文本</em>​<br>加粗斜体：<em><strong>加粗斜体</strong></em>​<br>删除线：<del>删除线</del>​<br>行内代码：<code>printf(&quot;hello world&quot;)</code>​<br>超链接：</p>
+<ul>
+<li>外部链接：<a href="URL">这是一个超链接</a></li>
+<li>内部锚点：点击跳转到<a href="#%E4%B8%80%E3%80%81%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%9F%BA%E7%A1%80%E6%B5%8B%E8%AF%95%E2%80%8B">一、文本格式基础测试​</a></li>
+</ul>
+<h2 id="二、代码高亮专项测试"><a href="#二、代码高亮专项测试" class="headerlink" title="二、代码高亮专项测试"></a>二、代码高亮专项测试</h2><p>hexo自带的代码高亮太几把好看了，建议还是去高亮官网调。这里用的是棱镜<a target="_blank" rel="noopener" href="https://prismjs.com/">Prism</a>​进行的代码高亮。<br>这里用最经典的杨辉三角来展示代码高亮吧。​</p>
+<h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">n<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+nums<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span>n <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token comment">#初始化一个n*n的零阵</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> j<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+            nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">1</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">=</span>nums<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">+</span>nums<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span>
+        <span class="token keyword">if</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span>end<span class="token operator">=</span><span class="token string">' '</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="C-C"><a href="#C-C" class="headerlink" title="C&#x2F;C++"></a>C&#x2F;C++</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;stdio.h></span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> map<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">0</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span class="token comment">//10*10的二维0数组为进行操作</span>
+    <span class="token comment">/*分析，最左列为1，因此从第2列考虑
+    公式：ls[i][j]=ls[i-1][j-1]+ls[i-1][j]*/</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//初始化最左列</span>
+        map<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                map<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> map<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">+</span>map<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>map<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//不输出0</span>
+                <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%5d"</span><span class="token punctuation">,</span>map<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="JavaScript"><a href="#JavaScript" class="headerlink" title="JavaScript"></a>JavaScript</h3><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">yanghui</span><span class="token punctuation">(</span><span class="token parameter">row</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+   <span class="token comment">// 创建一维数组</span>
+   <span class="token keyword">var</span> arr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Array</span><span class="token punctuation">(</span>row<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token comment">// 创建二维数组</span>
+   <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+       arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Array</span><span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+   <span class="token comment">// 循环赋值</span>
+   <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+       <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+           <span class="token keyword">if</span> <span class="token punctuation">(</span>j <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">||</span> i <span class="token operator">===</span> j<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+               arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 首尾赋值为1</span>
+           <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+               arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">+</span> arr<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 中间值为上一行两个相邻数字之和</span>
+           <span class="token punctuation">&#125;</span>
+       <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">&#125;</span>
+   <span class="token comment">// 打印三角</span>
+   <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+       <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+           document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token punctuation">&#125;</span>
+       document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"&lt;br/>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">// 调用函数，生成5行的杨辉三角</span>
+<span class="token function">yanghui</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="HTML-CSS-代码"><a href="#HTML-CSS-代码" class="headerlink" title="HTML + CSS 代码"></a>HTML + CSS 代码</h3><pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>zh-CN<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>代码高亮测试页面<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+        <span class="token selector">.code-block</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">background-color</span><span class="token punctuation">:</span> #f5f5f5<span class="token punctuation">;</span>
+            <span class="token property">border-radius</span><span class="token punctuation">:</span> 4px<span class="token punctuation">;</span>
+            <span class="token property">padding</span><span class="token punctuation">:</span> 16px<span class="token punctuation">;</span>
+            <span class="token property">font-family</span><span class="token punctuation">:</span> <span class="token string">"Consolas"</span><span class="token punctuation">,</span> monospace<span class="token punctuation">;</span>
+            <span class="token property">overflow-x</span><span class="token punctuation">:</span> auto<span class="token punctuation">;</span> <span class="token comment">/* 处理长代码换行 */</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token selector">.title</span> <span class="token punctuation">&#123;</span>
+            <span class="token property">color</span><span class="token punctuation">:</span> #2c3e50<span class="token punctuation">;</span>
+            <span class="token property">font-size</span><span class="token punctuation">:</span> 24px<span class="token punctuation">;</span>
+            <span class="token property">font-weight</span><span class="token punctuation">:</span> 600<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>title<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>代码高亮演示<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>code-block<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        // 这里是示例代码
+        console.log("Hello, Code Highlight!");
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="无语言指定代码块"><a href="#无语言指定代码块" class="headerlink" title="无语言指定代码块"></a>无语言指定代码块</h3><pre class="line-numbers language-none"><code class="language-none">井inculde 《stdio。h》
+viod main()&#123;
+    char【10】c&#x3D;“hello world”；
+    pRintf（“%f”，c）；
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="三、图片测试"><a href="#三、图片测试" class="headerlink" title="三、图片测试"></a>三、图片测试</h2><p><img src="/images/head.jpg" alt="这是图片"></p>
+<h2 id="二、列表功能测试"><a href="#二、列表功能测试" class="headerlink" title="二、列表功能测试"></a>二、列表功能测试</h2><p>以下分别测试无序列表和有序列表。</p>
+<h3 id="2-1-无序列表"><a href="#2-1-无序列表" class="headerlink" title="2.1 无序列表"></a>2.1 无序列表</h3><ul>
+<li>测试项 1：无序列表默认样式</li>
+<li>测试项 2：嵌套无序列表<ul>
+<li>嵌套子项 A</li>
+<li>嵌套子项 B</li>
+</ul>
+</li>
+<li>测试项 3：列表与段落结合<br>这是列表项后的补充段落，用于验证列表与正文的间距和排版是否正常。</li>
+</ul>
+<h3 id="2-2-有序列表"><a href="#2-2-有序列表" class="headerlink" title="2.2 有序列表"></a>2.2 有序列表</h3><ol>
+<li>第一步：创建测试文档</li>
+<li>第二步：添加各类格式内容<ol>
+<li>子步骤 1：插入代码块</li>
+<li>子步骤 2：插入表格</li>
+</ol>
+</li>
+<li>第三步：预览并验证效果</li>
+</ol>
+<h2 id="三、引用与表格测试"><a href="#三、引用与表格测试" class="headerlink" title="三、引用与表格测试"></a>三、引用与表格测试</h2><h3 id="3-1-引用功能"><a href="#3-1-引用功能" class="headerlink" title="3.1 引用功能"></a>3.1 引用功能</h3><p>引用常用于引用外部观点或重要提示，测试长文本引用的换行和缩进效果：</p>
+<blockquote>
+<p>“Markdown 是一种轻量级标记语言，它允许人们使用易读易写的纯文本格式编写文档，然后转换成有效的 XHTML（或者 HTML）文档。”<br>—— 引自 Markdown 官方说明</p>
+</blockquote>
+<h3 id="3-2-表格功能"><a href="#3-2-表格功能" class="headerlink" title="3.2 表格功能"></a>3.2 表格功能</h3><p>表格用于展示结构化数据，测试表头、单元格对齐及内容换行效果：</p>
+<table>
+<thead>
+<tr>
+<th>功能模块</th>
+<th>测试内容</th>
+<th>预期效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文字格式</td>
+<td>粗体、斜体、删除线</td>
+<td>样式清晰，无错乱</td>
+</tr>
+<tr>
+<td>代码高亮</td>
+<td>多语言代码块</td>
+<td>语法颜色区分明显</td>
+</tr>
+<tr>
+<td>列表</td>
+<td>嵌套列表、列表+段落</td>
+<td>层级分明，间距合理</td>
+</tr>
+<tr>
+<td>表格</td>
+<td>多列数据、单元格换行</td>
+<td>边框完整，内容居中对齐</td>
+</tr>
+</tbody></table>
+
+		</article>
+
+		<footer class="post-footer">
+			
+				<div class="post-tags">
+					<span class="tags-label">标签</span>
+					
+						<a class="chip" href="/tags/%E7%8C%8E%E5%A5%87/">#猎奇</a>
+					
+						<a class="chip" href="/tags/%E6%9A%B4%E5%8A%9B/">#暴力</a>
+					
+				</div>
+			
+
+			<p class="post-copyright">
+				本文由 Hikari 创作于 2025-10-14，转载请注明出处。
+			</p>
+
+			<nav class="post-nav" aria-label="上下篇导航">
+				
+					<a class="post-nav-item prev" href="/2025/10/20/%E4%BA%A1%E5%A6%BB%E5%9B%9E%E5%BF%86%E5%BD%95(%E8%93%9D%E6%A1%A5%E6%9D%AF)/">
+						<span class="nav-dir"><i class="fa fa-angle-left" aria-hidden="true"></i>上一篇</span>
+						<span class="nav-title">亡妻回忆录(蓝桥杯)</span>
+					</a>
+				
+				
+			</nav>
+		</footer>
+
+		
+			
+
+<section class="post-comments">
+	
+	<div class="twikoo" id="tcomment"
+		data-src="https://cdn.jsdelivr.net/npm/twikoo@2.0.12/dist/twikoo.min.js"
+		data-env-id="https://hikari-twikoo.netlify.app/.netlify/functions/twikoo"
+		data-lang="zh-CN"
+		data-path=""></div>
+</section>
+
+		
+	</main>
+</div>
+
+
+	<button class="toc-toggle" id="toc-toggle" type="button" aria-label="打开目录" aria-expanded="false">
+		<i class="fa fa-bars" aria-hidden="true"></i>
+	</button>
+
+	<div class="toc-drawer" id="toc-drawer" role="dialog" aria-modal="true" aria-label="文章目录">
+		<div class="toc-drawer-mask" id="toc-drawer-mask"></div>
+		<div class="toc-drawer-panel">
+			<div class="toc-drawer-head">
+				<span>目录</span>
+				<button type="button" id="toc-drawer-close" aria-label="关闭目录">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="toc-content">
+				<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%9F%BA%E7%A1%80%E6%B5%8B%E8%AF%95%E2%80%8B"><span class="toc-text">一、文本格式基础测试​</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%A0%87%E9%A2%98%E5%B1%82%E7%BA%A7%E2%80%8B"><span class="toc-text">1.1 标题层级​</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">一级标题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">二级标题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%BA%A7%E6%A0%87%E9%A2%98"><span class="toc-text">三级标题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Inline-%E6%A0%BC%E5%BC%8F%E2%80%8B"><span class="toc-text">1.2 Inline 格式​</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BB%A3%E7%A0%81%E9%AB%98%E4%BA%AE%E4%B8%93%E9%A1%B9%E6%B5%8B%E8%AF%95"><span class="toc-text">二、代码高亮专项测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Python"><span class="toc-text">Python</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-C"><span class="toc-text">C&#x2F;C++</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript"><span class="toc-text">JavaScript</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-CSS-%E4%BB%A3%E7%A0%81"><span class="toc-text">HTML + CSS 代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E8%AF%AD%E8%A8%80%E6%8C%87%E5%AE%9A%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-text">无语言指定代码块</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9B%BE%E7%89%87%E6%B5%8B%E8%AF%95"><span class="toc-text">三、图片测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%88%97%E8%A1%A8%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="toc-text">二、列表功能测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-text">2.1 无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-text">2.2 有序列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%BC%95%E7%94%A8%E4%B8%8E%E8%A1%A8%E6%A0%BC%E6%B5%8B%E8%AF%95"><span class="toc-text">三、引用与表格测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%BC%95%E7%94%A8%E5%8A%9F%E8%83%BD"><span class="toc-text">3.1 引用功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E8%A1%A8%E6%A0%BC%E5%8A%9F%E8%83%BD"><span class="toc-text">3.2 表格功能</span></a></li></ol></li></ol>
+			</div>
+		</div>
+	</div>
+
+
+
+<script src="/js/post.js"></script>
+
+
+<script src="/js/comments.js"></script>
+
+
+	</div>
+
+	<footer class="footer">
+	<div class="wrap">
+		<div class="footer-main">
+			<p class="footer-copy">
+				
+					&copy; 2025&ndash;2026
+				
+				Hikari
+			</p>
+			
+			
+				<p class="footer-meta">
+					Powered by <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+					&middot; Theme restart
+				</p>
+			
+		</div>
+		
+			<p class="footer-saying">&ldquo;善待生活，热爱一切，常开怀大笑。&rdquo;</p>
+		
+	</div>
+</footer>
+
+
+	
+	
+
+
+
+	<div class="player" id="player"
+		data-mode="list"
+		data-vol="up"
+		data-volume="0.1"
+		data-autoplay="0"
+		
+		data-blob="1">
+
+		
+		<div class="player-head">
+			<button class="player-main" id="player-play" type="button" aria-label="播放" title="播放 / 暂停">
+				<span class="player-ico on-pause"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.6v14H7z"/><path d="M13.4 5H17v14h-3.4z"/></svg></span>
+				<span class="player-ico on-idle"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5z"/></svg></span>
+			</button>
+
+			<p class="player-title">
+				<span class="player-name" id="player-name">—</span>
+				<em class="player-artist" id="player-artist"></em>
+			</p>
+
+			
+			<button class="player-fold" id="player-fold" type="button"
+				aria-label="展开播放器" aria-expanded="false" title="展开播放器">
+				<span class="player-ico on-static player-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+			</button>
+		</div>
+
+		
+		<div class="player-panel" id="player-panel">
+			<div class="player-progress">
+				<span class="player-time" id="player-cur">0:00</span>
+				<div class="player-bar" id="player-bar" role="slider" tabindex="0"
+					aria-label="播放进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+					<i class="player-fill" id="player-fill"></i>
+				</div>
+				<span class="player-time" id="player-dur">0:00</span>
+			</div>
+
+			
+			<p class="player-buffer" id="player-buffer" hidden>缓冲中…</p>
+
+			<div class="player-row">
+				<button class="player-ctrl" id="player-prev" type="button" aria-label="上一首" title="上一首">
+					<span class="player-ico on-static"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6h1.6v12H7z"/><path d="M18 6v12l-8-6 8-6z"/></svg></span>
+				</button>
+				<button class="player-ctrl" id="player-next" type="button" aria-label="下一首" title="下一首">
+					<span class="player-ico on-static"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6l8 6-8 6V6z"/><path d="M15.4 6H17v12h-1.6z"/></svg></span>
+				</button>
+
+				<span class="player-sep" aria-hidden="true"></span>
+
+				
+				<button class="player-ctrl" id="player-mode" type="button" aria-label="播放模式" title="播放模式">
+					<span class="player-ico on-mode-list"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></span>
+					<span class="player-ico on-mode-single"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/><path d="M11 10h1.2v4"/></svg></span>
+					<span class="player-ico on-mode-shuffle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3 3 21"/><path d="M16 21h5v-5"/><path d="M3 3l6 6"/><path d="M15 15l6 6"/></svg></span>
+				</button>
+				<button class="player-ctrl" id="player-list-btn" type="button" aria-label="播放列表" aria-expanded="false" title="播放列表">
+					<span class="player-ico on-static"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h9"/></svg></span>
+				</button>
+
+				<div class="player-volume">
+					<button class="player-mute" id="player-mute" type="button" aria-label="静音" title="静音 / 取消静音">
+						<span class="player-ico on-vol-up"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5.5a9 9 0 0 1 0 13"/></svg></span>
+						<span class="player-ico on-vol-down"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></span>
+						<span class="player-ico on-vol-mute"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M22 9l-6 6"/><path d="M16 9l6 6"/></svg></span>
+					</button>
+					<div class="player-bar player-vol-bar" id="player-vol-bar" role="slider" tabindex="0"
+						aria-label="音量" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70">
+						<i class="player-fill" id="player-vol-fill"></i>
+					</div>
+				</div>
+			</div>
+
+			
+			<ul class="player-list" id="player-list" hidden></ul>
+		</div>
+
+		<audio id="player-audio" preload="auto"></audio>
+
+		<script type="application/json" id="player-data">{"songs":[{"name":"Familiar Arms","artist":"横山克","url":"/music/%E6%A8%AA%E5%B1%B1%E5%85%8B%20-%20Familiar%20Arms.mp3"}],"holidayRanges":[{"name":"元旦","start":"2025-01-01","end":"2025-01-01"},{"name":"春节","start":"2025-01-28","end":"2025-02-04"},{"name":"清明节","start":"2025-04-04","end":"2025-04-06"},{"name":"劳动节","start":"2025-05-01","end":"2025-05-05"},{"name":"端午节","start":"2025-05-31","end":"2025-06-02"},{"name":"国庆节","start":"2025-10-01","end":"2025-10-08"},{"name":"元旦","start":"2026-01-01","end":"2026-01-03"},{"name":"春节","start":"2026-02-15","end":"2026-02-23"},{"name":"清明节","start":"2026-04-04","end":"2026-04-06"},{"name":"劳动节","start":"2026-05-01","end":"2026-05-05"},{"name":"端午节","start":"2026-06-19","end":"2026-06-21"},{"name":"中秋节","start":"2026-09-25","end":"2026-09-27"},{"name":"国庆节","start":"2026-10-01","end":"2026-10-07"}],"holidaySongs":{"春节":{"name":"春节序曲","artist":"中国国家交响乐团","url":"/music/%E4%B8%AD%E5%9B%BD%E4%BA%BA%E6%B0%91%E8%A7%A3%E6%94%BE%E5%86%9B%E5%86%9B%E4%B9%90%E5%9B%A2%20-%20%E6%98%A5%E8%8A%82%E5%BA%8F%E6%9B%B2.mp3"},"国庆节":{"name":"分列式进行曲","artist":"中国人民解放军军乐团","url":"/music/%E4%B8%AD%E5%9B%BD%E4%BA%BA%E6%B0%91%E8%A7%A3%E6%94%BE%E5%86%9B%E5%86%9B%E4%B9%90%E5%9B%A2%20-%20%E5%88%86%E5%88%97%E5%BC%8F%E8%BF%9B%E8%A1%8C%E6%9B%B2.mp3"}}}</script>
+	</div>
+
+
+
+	<a href="#top" id="back-to-top" aria-label="回到顶部">
+		<i class="fa fa-angle-up" aria-hidden="true"></i>
+	</a>
+
+	
+<script src="/js/main.js"></script>
+
+	
+	
+<script src="/js/player.js"></script>
+
+		
+		
+	
+<script src="/js/pjax.js"></script>
+
+		
+	
+	
+</body>
+
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+	<meta name="theme-color" content="#ffffff">
+	
+	<script>
+		(function () {
+			try {
+				var t = localStorage.getItem('theme');
+				if (t === 'light' || t === 'dark') {
+					document.documentElement.setAttribute('data-theme', t);
+				}
+			} catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略即可 */ }
+		})();
+	</script>
+	<title>
+		亡妻回忆录(蓝桥杯) | Hikari 的博客
+	</title>
+	<meta name="description" content="Hikari 的个人博客，记录小说、技术笔记和随笔。">
+	
+	<meta name="keywords" content="Hexo,博客,随笔,音游">
+	
+	
+	
+	
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+	
+	
+<link rel="stylesheet" href="/lib/highlight/prism/prism.css">
+
+		
+	
+<link rel="stylesheet" href="/lib/highlight/prism/prism-line-numbers.css">
+
+		
+	
+	
+<link rel="stylesheet" href="/css/topnav.css">
+
+	
+<link rel="stylesheet" href="/css/footer.css">
+
+	
+<link rel="stylesheet" href="/css/code.css">
+
+	
+	
+<link rel="stylesheet" href="/css/anim.css">
+
+	
+	
+	
+	
+<link rel="stylesheet" href="/css/player.css">
+
+	
+	
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+	
+	<a class="skip-link" href="#content">跳到正文</a>
+
+	<header class="topnav" id="top">
+	<div class="topnav-inner">
+		<a class="brand" href="/">
+			Hikari 的博客
+		</a>
+
+		<div class="nav-right">
+			<button class="hamburger" id="hamburger" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="nav-menu">
+				<span class="hamburger-bar"></span>
+				<span class="hamburger-bar"></span>
+				<span class="hamburger-bar"></span>
+			</button>
+
+			<nav class="nav-menu" id="nav-menu" aria-label="主导航">
+				
+					<a href="/" data-nav="/">首页</a>
+				
+					<a href="/archives" data-nav="/archives">归档</a>
+				
+					<a href="/tags" data-nav="/tags">标签</a>
+				
+					<a href="/categories" data-nav="/categories">分类</a>
+				
+					<a href="/links" data-nav="/links">友链</a>
+				
+					<a href="/search" data-nav="/search">搜索</a>
+				
+					<a href="/about" data-nav="/about">关于</a>
+				
+				
+					
+					<a href="https://github.com/Hisuifeng" class="nav-external" target="_blank" rel="noopener noreferrer" title="github">
+						
+<i class="fa fa-github" aria-hidden="true"></i>
+<span class="sr-only">github</span>
+					</a>
+				
+			</nav>
+
+			
+			<button class="theme-toggle" id="theme-toggle" type="button" aria-label="切换主题（当前：跟随系统）" title="切换主题">
+				<i class="fa fa-adjust toggle-auto" aria-hidden="true"></i>
+				<i class="fa fa-sun-o toggle-light" aria-hidden="true"></i>
+				<i class="fa fa-moon-o toggle-dark" aria-hidden="true"></i>
+			</button>
+		</div>
+	</div>
+</header>
+
+
+	
+	
+	<div id="content" tabindex="-1">
+		
+
+<link rel="stylesheet" href="/css/side-card.css">
+
+
+<link rel="stylesheet" href="/css/post.css">
+
+
+<link rel="stylesheet" href="/css/comments.css">
+
+
+<div class="read-progress" id="read-progress" aria-hidden="true"><i id="read-progress-bar"></i></div>
+
+<div class="wrap post-wrap">
+	<aside class="post-side">
+		
+			<nav class="toc-box" aria-label="文章目录">
+				<p class="box-title"><i class="fa fa-list-ul" aria-hidden="true"></i>目录<span class="en">Toc</span></p>
+				<div class="toc-content" id="toc-content">
+					<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%93%9D%E6%A1%A5%E6%9D%AF%E4%B9%8B%E6%AD%BB"><span class="toc-text">一、蓝桥杯之死</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9B%9E%E9%A1%BE%E8%93%9D%E6%A1%A5%E6%9D%AF"><span class="toc-text">二、回顾蓝桥杯</span></a></li></ol>
+				</div>
+			</nav>
+		
+
+		
+			
+
+<div class="side-card">
+	<p class="box-title">
+		<i class="fa fa-user-o" aria-hidden="true"></i>关于作者<span class="en">Author</span>
+	</p>
+
+	<div class="side-body">
+		
+		<div class="side-id">
+			
+			<a class="side-avatar-link" href="/about" aria-label="关于 Hikari">
+				
+					<img class="side-avatar" src="/images/head.jpg" alt="">
+				
+			</a>
+			<div class="side-id-info">
+				<p class="side-name"><a href="/about">Hikari</a></p>
+				
+					<p class="side-motto">何为坚强？</p>
+				
+				
+					<ul class="icon-links side-links">
+						
+							<li>
+								<a href="https://github.com/Hisuifeng" title="github" target="_blank" rel="noopener noreferrer">
+									
+<i class="fa fa-github" aria-hidden="true"></i>
+<span class="sr-only">github</span>
+								</a>
+							</li>
+						
+							<li>
+								<a href="mailto:minecraftsuifeng@outlook.com" title="mail" target="_blank" rel="noopener noreferrer">
+									
+<i class="fa fa-envelope" aria-hidden="true"></i>
+<span class="sr-only">mail</span>
+								</a>
+							</li>
+						
+					</ul>
+				
+			</div>
+		</div>
+
+		
+		
+			<p class="side-about-text">有朋自远方来，不亦乐乎。</p>
+		
+
+		
+		
+			<ul class="side-stats">
+				<li><b>4</b><span>文章</span></li>
+				<li><b>0</b><span>分类</span></li>
+				<li><b>6</b><span>标签</span></li>
+			</ul>
+		
+
+		
+			<ul class="side-tags">
+				<li class="side-cap">常写</li>
+				
+					<li><a class="side-tag" href="/tags/%E9%97%B2%E8%81%8A%E5%90%B9%E6%B0%B4/">闲聊吹水</a></li>
+				
+					<li><a class="side-tag" href="/tags/%E5%8F%A4%E6%B3%95%E7%BC%96%E7%A8%8B/">古法编程</a></li>
+				
+					<li><a class="side-tag" href="/tags/%E7%8C%8E%E5%A5%87/">猎奇</a></li>
+				
+			</ul>
+		
+
+		
+			<p class="side-pick">
+				<span class="side-cap">随便看看</span>
+				<a class="side-pick-link" href="/2026/10/04/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95/">博客评论系统测试</a>
+			</p>
+		
+	</div>
+</div>
+
+		
+	</aside>
+
+	<main class="post-main">
+		<header class="post-header">
+			<h1 class="post-title">亡妻回忆录(蓝桥杯)</h1>
+			
+			<p class="post-meta">
+				<i class="fa fa-calendar-o" aria-hidden="true"></i>
+				<time datetime="2025-10-20 22:42:24">2025-10-20</time>
+				
+					<span class="meta-dot">/</span>
+					<i class="fa fa-file-text-o" aria-hidden="true"></i>
+					786 字
+				
+				
+					<span class="meta-dot">/</span>
+					<i class="fa fa-clock-o" aria-hidden="true"></i>
+					
+					约 1 分钟
+				
+				
+			</p>
+		</header>
+
+		<article class="post-content">
+			<h2 id="一、蓝桥杯之死"><a href="#一、蓝桥杯之死" class="headerlink" title="一、蓝桥杯之死"></a>一、蓝桥杯之死</h2><p>首先给图<br><img src="https://pic1.zhimg.com/v2-eb5504d02063cdadff781eca4a19ceb4_r.jpeg" alt="这是图片"><br><a target="_blank" rel="noopener" href="https://dasai.lanqiao.cn/notices/1708">官网链接</a><br>蓝桥杯的离去好像在人们意料之中。</p>
+<blockquote>
+<p>“一个点击就送的水赛，奖项有什么含金量？难道在简历里写上蓝桥杯是一件很自豪的事吗？”</p>
+</blockquote>
+<p>可能也与选手<a target="_blank" rel="noopener" href="https://news.cctv.com/2025/05/02/ARTIHonCWOnZpwvqLrhxmDms250502.shtml">大规模作弊</a>有关</p>
+<h2 id="二、回顾蓝桥杯"><a href="#二、回顾蓝桥杯" class="headerlink" title="二、回顾蓝桥杯"></a>二、回顾蓝桥杯</h2><p>说真的，我是真绷不住了，虽然圈钱杯名号早有耳闻，但是没想到的是这么快就死了。<br>ACM，CCF CACC压力暴大，大佬云集。（学校也没队，菜鸡玩不了一点）。因此我选择了参加了蓝桥杯，作为大一上学期为了练手参加的比赛也没想这么多，但没想到省赛是真抽象。<br>怎么个抽象法？byd我旁边的兄弟直接做了几题后直接走了。wtf？不是兄弟300块报名费大风吹来的啊？<br>其实在场的差不多都是这个状态，但还有些兄弟在蒸。可以看出大家水平都不高，这也让第一次参赛的我放心了。<br>比赛是内网进行的，但我发现电脑上有很多IDE工具可以使用，于是我想都没想就用了我最喜欢用的VSC，直到开赛后30分钟左右我都写完3道题后监管老师才看到我用VSC，提醒我不能用VSC。我当时就懵逼了，我不用VSC我用啥啊？但我也没多想，询问了老师我能用什么IDE，他竟然说不知道，让我用记事本写。<br>没错，记事本。</p>
+<blockquote>
+<p>“如果你是C语言和Java组的同学，写不下去了可以看看隔壁用记事本的python组同学。”<br>——Hikari《悲伤回忆录》</p>
+</blockquote>
+<p>这次经历让我觉得这个比赛是真的松，你甚至能在厕所当战神。不出意外，这届蓝桥杯出现了学校大规模作弊的情况。<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/1901701298623067681">如何看待蓝桥杯大赛处理作弊选手 1133 人？为什么会有这么多人作弊？</a><br>今年的一堆名不见传的学校冒了一大堆省一。你甚至能看到有的参赛地甚至不是内网机房比赛的，是自带笔记本比赛的。<br>还有更逆天的吗？有的兄弟，有的。<br>国赛不让看获奖pdf的来咯。官方的理由是省赛获奖名单被发现某些学校大量作弊后决定不再公布获奖名单。<br>这波操作真的怎么看都不是正常人能想出来的操作。这不是在包庇作弊行为吗？</p>
+<p>烂到骨子里了，可能这次就是纯作死作的。</p>
+
+		</article>
+
+		<footer class="post-footer">
+			
+				<div class="post-tags">
+					<span class="tags-label">标签</span>
+					
+						<a class="chip" href="/tags/%E9%97%B2%E8%81%8A%E5%90%B9%E6%B0%B4/">#闲聊吹水</a>
+					
+						<a class="chip" href="/tags/%E8%93%9D%E6%A1%A5%E6%9D%AF/">#蓝桥杯</a>
+					
+						<a class="chip" href="/tags/%E7%BC%96%E7%A8%8B%E6%AF%94%E8%B5%9B/">#编程比赛</a>
+					
+				</div>
+			
+
+			<p class="post-copyright">
+				本文由 Hikari 创作于 2025-10-20，转载请注明出处。
+			</p>
+
+			<nav class="post-nav" aria-label="上下篇导航">
+				
+					<a class="post-nav-item prev" href="/2026/09/29/AI%E7%BC%96%E7%A8%8B%E8%80%8D%E8%B5%B7%E5%98%9B/">
+						<span class="nav-dir"><i class="fa fa-angle-left" aria-hidden="true"></i>上一篇</span>
+						<span class="nav-title">AI编程耍起嘛</span>
+					</a>
+				
+				
+					<a class="post-nav-item next" href="/2025/10/14/%E4%B8%BB%E9%A2%98%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/">
+						<span class="nav-dir">下一篇<i class="fa fa-angle-right" aria-hidden="true"></i></span>
+						<span class="nav-title">主题测试文章</span>
+					</a>
+				
+			</nav>
+		</footer>
+
+		
+			
+
+<section class="post-comments">
+	
+	<div class="twikoo" id="tcomment"
+		data-src="https://cdn.jsdelivr.net/npm/twikoo@2.0.12/dist/twikoo.min.js"
+		data-env-id="https://hikari-twikoo.netlify.app/.netlify/functions/twikoo"
+		data-lang="zh-CN"
+		data-path=""></div>
+</section>
+
+		
+	</main>
+</div>
+
+
+	<button class="toc-toggle" id="toc-toggle" type="button" aria-label="打开目录" aria-expanded="false">
+		<i class="fa fa-bars" aria-hidden="true"></i>
+	</button>
+
+	<div class="toc-drawer" id="toc-drawer" role="dialog" aria-modal="true" aria-label="文章目录">
+		<div class="toc-drawer-mask" id="toc-drawer-mask"></div>
+		<div class="toc-drawer-panel">
+			<div class="toc-drawer-head">
+				<span>目录</span>
+				<button type="button" id="toc-drawer-close" aria-label="关闭目录">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="toc-content">
+				<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%93%9D%E6%A1%A5%E6%9D%AF%E4%B9%8B%E6%AD%BB"><span class="toc-text">一、蓝桥杯之死</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9B%9E%E9%A1%BE%E8%93%9D%E6%A1%A5%E6%9D%AF"><span class="toc-text">二、回顾蓝桥杯</span></a></li></ol>
+			</div>
+		</div>
+	</div>
+
+
+
+<script src="/js/post.js"></script>
+
+
+<script src="/js/comments.js"></script>
+
+
+	</div>
+
+	<footer class="footer">
+	<div class="wrap">
+		<div class="footer-main">
+			<p class="footer-copy">
+				
+					&copy; 2025&ndash;2026
+				
+				Hikari
+			</p>
+			
+			
+				<p class="footer-meta">
+					Powered by <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+					&middot; Theme restart
+				</p>
+			
+		</div>
+		
+			<p class="footer-saying">&ldquo;善待生活，热爱一切，常开怀大笑。&rdquo;</p>
+		
+	</div>
+</footer>
+
+
+	
+	
+
+
+
+	<div class="player" id="player"
+		data-mode="list"
+		data-vol="up"
+		data-volume="0.1"
+		data-autoplay="0"
+		
+		data-blob="1">
+
+		
+		<div class="player-head">
+			<button class="player-main" id="player-play" type="button" aria-label="播放" title="播放 / 暂停">
+				<span class="player-ico on-pause"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.6v14H7z"/><path d="M13.4 5H17v14h-3.4z"/></svg></span>
+				<span class="player-ico on-idle"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5z"/></svg></span>
+			</button>
+
+			<p class="player-title">
+				<span class="player-name" id="player-name">—</span>
+				<em class="player-artist" id="player-artist"></em>
+			</p>
+
+			
+			<button class="player-fold" id="player-fold" type="button"
+				aria-label="展开播放器" aria-expanded="false" title="展开播放器">
+				<span class="player-ico on-static player-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+			</button>
+		</div>
+
+		
+		<div class="player-panel" id="player-panel">
+			<div class="player-progress">
+				<span class="player-time" id="player-cur">0:00</span>
+				<div class="player-bar" id="player-bar" role="slider" tabindex="0"
+					aria-label="播放进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+					<i class="player-fill" id="player-fill"></i>
+				</div>
+				<span class="player-time" id="player-dur">0:00</span>
+			</div>
+
+			
+			<p class="player-buffer" id="player-buffer" hidden>缓冲中…</p>
+
+			<div class="player-row">
+				<button class="player-ctrl" id="player-prev" type="button" aria-label="上一首" title="上一首">
+					<span class="player-ico on-static"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6h1.6v12H7z"/><path d="M18 6v12l-8-6 8-6z"/></svg></span>
+				</button>
+				<button class="player-ctrl" id="player-next" type="button" aria-label="下一首" title="下一首">
+					<span class="player-ico on-static"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6l8 6-8 6V6z"/><path d="M15.4 6H17v12h-1.6z"/></svg></span>
+				</button>
+
+				<span class="player-sep" aria-hidden="true"></span>
+
+				
+				<button class="player-ctrl" id="player-mode" type="button" aria-label="播放模式" title="播放模式">
+					<span class="player-ico on-mode-list"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></span>
+					<span class="player-ico on-mode-single"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/><path d="M11 10h1.2v4"/></svg></span>
+					<span class="player-ico on-mode-shuffle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3 3 21"/><path d="M16 21h5v-5"/><path d="M3 3l6 6"/><path d="M15 15l6 6"/></svg></span>
+				</button>
+				<button class="player-ctrl" id="player-list-btn" type="button" aria-label="播放列表" aria-expanded="false" title="播放列表">
+					<span class="player-ico on-static"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h9"/></svg></span>
+				</button>
+
+				<div class="player-volume">
+					<button class="player-mute" id="player-mute" type="button" aria-label="静音" title="静音 / 取消静音">
+						<span class="player-ico on-vol-up"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5.5a9 9 0 0 1 0 13"/></svg></span>
+						<span class="player-ico on-vol-down"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></span>
+						<span class="player-ico on-vol-mute"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M22 9l-6 6"/><path d="M16 9l6 6"/></svg></span>
+					</button>
+					<div class="player-bar player-vol-bar" id="player-vol-bar" role="slider" tabindex="0"
+						aria-label="音量" aria-valuemin="0" aria-valuemax="100" aria-valuenow="70">
+						<i class="player-fill" id="player-vol-fill"></i>
+					</div>
+				</div>
+			</div>
+
+			
+			<ul class="player-list" id="player-list" hidden></ul>
+		</div>
+
+		<audio id="player-audio" preload="auto"></audio>
+
+		<script type="application/json" id="player-data">{"songs":[{"name":"Familiar Arms","artist":"横山克","url":"/music/%E6%A8%AA%E5%B1%B1%E5%85%8B%20-%20Familiar%20Arms.mp3"}],"holidayRanges":[{"name":"元旦","start":"2025-01-01","end":"2025-01-01"},{"name":"春节","start":"2025-01-28","end":"2025-02-04"},{"name":"清明节","start":"2025-04-04","end":"2025-04-06"},{"name":"劳动节","start":"2025-05-01","end":"2025-05-05"},{"name":"端午节","start":"2025-05-31","end":"2025-06-02"},{"name":"国庆节","start":"2025-10-01","end":"2025-10-08"},{"name":"元旦","start":"2026-01-01","end":"2026-01-03"},{"name":"春节","start":"2026-02-15","end":"2026-02-23"},{"name":"清明节","start":"2026-04-04","end":"2026-04-06"},{"name":"劳动节","start":"2026-05-01","end":"2026-05-05"},{"name":"端午节","start":"2026-06-19","end":"2026-06-21"},{"name":"中秋节","start":"2026-09-25","end":"2026-09-27"},{"name":"国庆节","start":"2026-10-01","end":"2026-10-07"}],"holidaySongs":{"春节":{"name":"春节序曲","artist":"中国国家交响乐团","url":"/music/%E4%B8%AD%E5%9B%BD%E4%BA%BA%E6%B0%91%E8%A7%A3%E6%94%BE%E5%86%9B%E5%86%9B%E4%B9%90%E5%9B%A2%20-%20%E6%98%A5%E8%8A%82%E5%BA%8F%E6%9B%B2.mp3"},"国庆节":{"name":"分列式进行曲","artist":"中国人民解放军军乐团","url":"/music/%E4%B8%AD%E5%9B%BD%E4%BA%BA%E6%B0%91%E8%A7%A3%E6%94%BE%E5%86%9B%E5%86%9B%E4%B9%90%E5%9B%A2%20-%20%E5%88%86%E5%88%97%E5%BC%8F%E8%BF%9B%E8%A1%8C%E6%9B%B2.mp3"}}}</script>
+	</div>
+
+
+
+	<a href="#top" id="back-to-top" aria-label="回到顶部">
+		<i class="fa fa-angle-up" aria-hidden="true"></i>
+	</a>
+
+	
+<script src="/js/main.js"></script>
+
+	
+	
+<script src="/js/player.js"></script>
+
+		
+		
+	
+<script src="/js/pjax.js"></script>
+
+		
+	
+	
+</body>
+
+</html>
