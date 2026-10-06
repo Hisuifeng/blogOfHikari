@@ -291,4 +291,71 @@
 		setDrawer(false);
 		requestAnimationFrame(function () { jumpTo(hash); });
 	});
+
+	/* ---------- 图片放大 ----------
+	   点正文里的图片铺满全屏，再点一下（或按 Esc）关掉。
+	   包在 <a> 里的图片不接管 —— 那是「点图跳转」的写法，
+	   抢掉默认行为会让人点不动链接。
+	   监听挂在 .post-content 上（不是 document）：pjax 换页后它是新元素，
+	   重新绑一次即可，不会在 document 上越积越多。 */
+	var lightbox = null;
+
+	function lightboxKey(e) {
+		if (e.key === 'Escape') lightboxClose();
+	}
+
+	function lightboxClose() {
+		if (!lightbox) return;
+		var el = lightbox;
+		lightbox = null;
+		document.removeEventListener('keydown', lightboxKey);
+		el.classList.remove('on');
+		/* 等淡出走完再摘掉，否则图先消失、遮罩后消失 */
+		setTimeout(function () {
+			if (el.parentNode) el.parentNode.removeChild(el);
+		}, 180);
+	}
+
+	if (content) {
+		content.addEventListener('click', function (e) {
+			var img = e.target;
+			if (!img || img.tagName !== 'IMG') return;
+			if (img.closest('a')) return;
+			e.preventDefault();
+
+			lightboxClose();
+
+			lightbox = document.createElement('div');
+			lightbox.className = 'img-lightbox';
+
+			var big = document.createElement('img');
+			/* currentSrc：有 srcset 时取浏览器实际选中的那张 */
+			big.src = img.currentSrc || img.src;
+			big.alt = img.alt || '';
+			lightbox.appendChild(big);
+
+			/* 描述：就是图片的 alt，没有就不加这一行 */
+			if (img.alt) {
+				var cap = document.createElement('p');
+				cap.className = 'img-lightbox-cap';
+				cap.textContent = img.alt;
+				lightbox.appendChild(cap);
+			}
+
+			/* 关闭按钮同样是文本 ×，和抽屉、播放器保持一致 */
+			var close = document.createElement('button');
+			close.type = 'button';
+			close.className = 'img-lightbox-close';
+			close.setAttribute('aria-label', '关闭');
+			close.textContent = '×';
+			lightbox.appendChild(close);
+
+			document.body.appendChild(lightbox);
+			void lightbox.offsetWidth; /* 强制重排，让淡入真的跑起来 */
+			lightbox.classList.add('on');
+
+			lightbox.addEventListener('click', lightboxClose);
+			document.addEventListener('keydown', lightboxKey);
+		});
+	}
 })();
