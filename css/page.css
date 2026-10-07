@@ -486,3 +486,117 @@
 		padding: 50px 10px 60px;
 	}
 }
+
+/* ===== 关于页：两张卡片的切换 =====
+   结构见 layout/about.ejs。切换控件是分页签的样子：
+   选中项用主色文字 + 一条压在分隔线上的主色下边框。 */
+.card-switch {
+	display: flex;
+	gap: 4px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid var(--c-border);
+}
+
+.card-tab {
+	position: relative;
+	padding: 9px 16px;
+	font-family: inherit;
+	font-size: 14px;
+	color: var(--c-muted);
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+	transition: color .15s ease;
+}
+
+.card-tab:hover {
+	color: var(--c-primary);
+}
+
+.card-tab.on {
+	color: var(--c-primary);
+	font-weight: 600;
+}
+
+.card-tab.on::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	/* -1px 正好盖住 .card-switch 的底边框，看起来像页签压在线上 */
+	bottom: -1px;
+	height: 2px;
+	background: var(--c-primary);
+}
+
+.card-pane[hidden] {
+	display: none;
+}
+
+/* 切换时的入场动画。
+   元素从 display:none 变回显示时会重新播放自己身上的动画，
+   所以只靠这一条就够，不需要 JS 在切换时加类。 */
+.card-pane:not([hidden]) {
+	animation: card-pane-in .32s ease both;
+}
+
+@keyframes card-pane-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.card-pane:not([hidden]) {
+		animation: none;
+	}
+}
+
+/* ===== 电子名片 =====
+   名片是独立页面（/card/），这里只负责框住它。
+   高度按名片自身尺寸留：桌面最多需要约 434px（封面 600×370 + 上下留白），
+   窄屏下卡片会跟着缩小，所以给小屏单独收一档，免得白占屏幕。 */
+.namecard-frame {
+	display: block;
+	width: 100%;
+	height: 440px;
+	background: var(--c-bg);
+	border: 1px solid var(--c-border);
+}
+
+/* 分享：进到那张独立页面去，地址可以直接发给别人 */
+.namecard-share {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 16px;
+	padding: 10px 18px;
+	font-size: 13px;
+	color: var(--c-primary);
+	background: var(--c-bg);
+	border: 1px solid var(--c-primary);
+	transition: color .15s ease, background-color .15s ease;
+}
+
+.namecard-share:hover {
+	color: #fff;
+	background: var(--c-primary);
+}
+
+@media screen and (max-width: 600px) {
+	.namecard-frame {
+		height: 280px;
+	}
+
+	.card-tab {
+		flex: 1 1 0;
+		padding: 9px 8px;
+		text-align: center;
+	}
+}

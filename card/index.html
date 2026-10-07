@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="auto">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>电子名片</title>
+    <style>
+        /* ========== 主题变量 ========== */
+        :root {
+            --accent: #e06c75;
+            --cover-alpha: 1;
+        }
+
+        :root,
+        :root[data-theme="light"] {
+            --bg: #f3f2ef;
+            --card: #ffffff;
+            --fg: #1c1e22;
+            --muted: #8d9096;
+            --line: rgba(0, 0, 0, .11);
+            --hover: rgba(224, 108, 117, .075);
+            --flow: rgba(28, 30, 34, .14);
+            --caption-fg: #1c1e22;
+            --caption-muted: rgba(28, 30, 34, .55);
+            --caption-line: rgba(28, 30, 34, .2);
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #111316;
+            --card: #191c21;
+            --fg: #e8eaed;
+            --muted: #82868e;
+            --line: rgba(255, 255, 255, .11);
+            --hover: rgba(224, 108, 117, .11);
+            --flow: rgba(232, 234, 237, .11);
+            --caption-fg: #ffffff;
+            --caption-muted: rgba(255, 255, 255, .62);
+            --caption-line: rgba(255, 255, 255, .24);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root[data-theme="auto"] {
+                --bg: #111316;
+                --card: #191c21;
+                --fg: #e8eaed;
+                --muted: #82868e;
+                --line: rgba(255, 255, 255, .11);
+                --hover: rgba(224, 108, 117, .11);
+                --flow: rgba(232, 234, 237, .11);
+                --caption-fg: #ffffff;
+                --caption-muted: rgba(255, 255, 255, .62);
+                --caption-line: rgba(255, 255, 255, .24);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            display: grid;
+            place-items: center;
+            padding: 32px 20px;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            transition: background .3s ease, color .3s ease;
+        }
+
+        /* ========== 主题切换 ========== */
+        .theme-toggle {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 13px;
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--muted);
+            font-family: inherit;
+            font-size: 11px;
+            letter-spacing: .08em;
+            cursor: pointer;
+            transition: color .2s, border-color .2s;
+        }
+
+        .theme-toggle:hover {
+            color: var(--fg);
+            border-color: var(--fg)
+        }
+
+        .theme-toggle .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        /* ========== 卡片舞台 ========== */
+        .scene {
+            width: min(600px, 92vw);
+            aspect-ratio: 600/370;
+            perspective: 1800px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .scene:focus-visible {
+            outline: 1px solid var(--accent);
+            outline-offset: 8px
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform .65s cubic-bezier(.4, .05, .2, 1);
+        }
+
+        .scene.flipped .card {
+            transform: rotateY(180deg)
+        }
+
+        .face {
+            position: absolute;
+            inset: 0;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: var(--card);
+            transition: background .3s ease, border-color .3s ease;
+        }
+
+        /* ★ 关键修复：显式控制两个面的点击接收，避免隐藏面拦截点击 */
+        .front {
+            pointer-events: auto;
+        }
+
+        .back {
+            pointer-events: none;
+        }
+
+        .scene.flipped .front {
+            pointer-events: none;
+        }
+
+        .scene.flipped .back {
+            pointer-events: auto;
+        }
+
+        /* ================= 正面 ================= */
+
+        .flow {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 220%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 17px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .flow-row {
+            display: flex;
+            width: max-content;
+            white-space: nowrap;
+            animation: flow-scroll 28s linear infinite;
+            will-change: transform;
+        }
+
+        .flow-row span {
+            flex: 0 0 auto;
+            padding-right: 58px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+            letter-spacing: .34em;
+            text-transform: uppercase;
+            color: var(--flow);
+        }
+
+        @keyframes flow-scroll {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        img.cover {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: var(--cover-alpha);
+        }
+
+        .cover-ph {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: grid;
+            place-items: center;
+            color: var(--muted);
+            font-size: 11px;
+            letter-spacing: .22em;
+            opacity: .5;
+        }
+
+        .corner {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            width: 20px;
+            height: 20px;
+            border-top: 1px solid var(--accent);
+            border-left: 1px solid var(--accent);
+            opacity: .55;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .caption {
+            position: absolute;
+            right: 38px;
+            bottom: 32px;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+            max-width: 74%;
+            pointer-events: none;
+        }
+
+        .caption-rule {
+            position: relative;
+            width: clamp(72px, 20vw, 120px);
+            height: 1px;
+            margin-bottom: 15px;
+            background: linear-gradient(to left,
+                    var(--accent) 0%,
+                    var(--caption-line) 62%,
+                    transparent 100%);
+        }
+
+        .caption-rule::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 5px;
+            height: 5px;
+            transform: translateY(-50%);
+            background: var(--accent);
+        }
+
+        .caption-name {
+            font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+                "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+            font-size: clamp(20px, 4.3vw, 27px);
+            font-weight: 500;
+            letter-spacing: .2em;
+            line-height: 1.2;
+            color: var(--caption-fg);
+            margin-right: -.2em;
+            transition: color .3s ease;
+        }
+
+        .caption-motto {
+            margin-top: 10px;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+                "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+            font-size: clamp(10px, 1.9vw, 12px);
+            font-weight: 300;
+            letter-spacing: .18em;
+            line-height: 1.6;
+            color: var(--caption-muted);
+            margin-right: -.18em;
+            transition: color .3s ease;
+        }
+
+        /* ================= 背面 ================= */
+        .back {
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            padding: 0 44px;
+        }
+
+        .identity {
+            flex: 0 0 190px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .identity::after {
+            content: "";
+            position: absolute;
+            left: calc(100% + 22px);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: min(58%, 130px);
+            background: var(--line);
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            display: grid;
+            place-items: center;
+            background: var(--accent);
+            color: #fff;
+            font-size: 24px;
+            font-weight: 600;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block
+        }
+
+        .name {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            line-height: 1.2
+        }
+
+        .role {
+            margin-top: 5px;
+            font-size: 11px;
+            letter-spacing: .16em;
+            color: var(--muted)
+        }
+
+        .contact {
+            flex: 1;
+            padding-left: 44px;
+            min-width: 0;
+        }
+
+        .info {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px
+        }
+
+        /* ★ 增大点击区域，减少误点 */
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 12px;
+            margin-left: -12px;
+            cursor: pointer;
+            outline: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: background .18s ease;
+        }
+
+        .item:hover,
+        .item:focus-visible {
+            background: var(--hover)
+        }
+
+        .item .k {
+            flex: 0 0 34px;
+            font-size: 10px;
+            letter-spacing: .14em;
+            color: var(--muted);
+        }
+
+        .item .v {
+            font-size: 13px;
+            color: var(--fg);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color .18s ease;
+        }
+
+        .item.done .v {
+            color: var(--accent)
+        }
+
+        .tip {
+            margin-top: 14px;
+            padding-left: 12px;
+            font-size: 10px;
+            letter-spacing: .06em;
+            color: var(--muted);
+            opacity: .65;
+        }
+
+        /* ========== 复制提示 ========== */
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 32px;
+            transform: translate(-50%, 8px);
+            padding: 9px 17px;
+            background: var(--fg);
+            color: var(--bg);
+            font-size: 11px;
+            letter-spacing: .06em;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .22s ease, transform .22s ease;
+            z-index: 99;
+            max-width: 80vw;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0)
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card {
+                transition: none
+            }
+
+            .flow-row {
+                animation: none
+            }
+        }
+
+        /* ========== 小屏 ========== */
+        @media (max-width:560px) {
+            .theme-toggle {
+                top: 12px;
+                right: 12px;
+                padding: 6px 10px;
+                font-size: 10px
+            }
+
+            .flow {
+                gap: 13px
+            }
+
+            .flow-row span {
+                font-size: 10px;
+                letter-spacing: .26em;
+                padding-right: 42px
+            }
+
+            .corner {
+                top: 12px;
+                left: 12px;
+                width: 14px;
+                height: 14px
+            }
+
+            .caption {
+                right: 20px;
+                bottom: 18px
+            }
+
+            .caption-rule {
+                margin-bottom: 10px
+            }
+
+            .caption-name {
+                font-size: 17px;
+                letter-spacing: .16em
+            }
+
+            .caption-motto {
+                margin-top: 6px;
+                font-size: 9.5px;
+                letter-spacing: .14em
+            }
+
+            .back {
+                padding: 0 20px
+            }
+
+            .identity {
+                flex: 0 0 100px;
+                gap: 12px
+            }
+
+            .identity::after {
+                left: calc(100% + 12px)
+            }
+
+            .avatar {
+                width: 46px;
+                height: 46px;
+                font-size: 18px
+            }
+
+            .name {
+                font-size: 14px
+            }
+
+            .role {
+                margin-top: 3px;
+                font-size: 9px;
+                letter-spacing: .1em
+            }
+
+            .contact {
+                padding-left: 24px
+            }
+
+            .item {
+                padding: 8px 10px;
+                gap: 10px;
+                margin-left: -10px
+            }
+
+            .item .k {
+                flex: 0 0 26px;
+                font-size: 9px
+            }
+
+            .item .v {
+                font-size: 11px
+            }
+
+            .tip {
+                margin-top: 10px;
+                padding-left: 10px;
+                font-size: 9px
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换主题">
+        <span class="dot"></span>
+        <span class="label">跟随系统</span>
+    </button>
+
+    <div class="scene" id="scene" tabindex="0" role="button" aria-label="电子名片，点击翻转">
+        <div class="card">
+
+            <!-- ================= 正面 ================= -->
+            <div class="face front">
+                <div class="flow" id="flow" aria-hidden="true"></div>
+                <img class="cover" src="cover.png" alt="封面">
+                <span class="corner" aria-hidden="true"></span>
+
+                <div class="caption">
+                    <span class="caption-rule" aria-hidden="true"></span>
+                    <h2 class="caption-name">光-Hikari</h2>
+                    <p class="caption-motto">善待生活，热爱一切，常开怀大笑</p>
+                </div>
+            </div>
+
+            <!-- ================= 背面 ================= -->
+            <div class="face back">
+
+                <div class="identity">
+                    <div class="avatar"><img src="avatar.jpg" alt="头像"></div>
+                    <div>
+                        <h1 class="name">Hikari(ひかり)</h1>
+                        <p class="role">神人开发者</p>
+                    </div>
+                </div>
+
+                <div class="contact">
+                    <ul class="info">
+                        <li class="item" data-copy="2970498335" tabindex="0" role="button" aria-label="复制分类">
+                            <span class="k">QQ</span>
+                            <span class="v">2970498335</span>
+                        </li>
+                        <li class="item" data-copy="https://github.com/Hisuifeng" tabindex="0" role="button"
+                            aria-label="复制标签">
+                            <span class="k">github</span>
+                            <span class="v">Hisuifeng (Hikari)</span>
+                        </li>
+                        <li class="item" data-copy="minecraftsuifeng@outlook.com" tabindex="0" role="button"
+                            aria-label="复制邮箱">
+                            <span class="k">邮箱</span>
+                            <span class="v">minecraftsuifeng@outlook.com</span>
+                        </li>
+                        <li class="item" data-copy="https://blogofhikari.pages.dev/" tabindex="0" role="button"
+                            aria-label="复制博客">
+                            <span class="k">博客</span>
+                            <span class="v">blogofhikari.pages.dev</span>
+                        </li>
+                    </ul>
+                    <p class="tip">点击任意一行复制</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        /* ================= 生成斜向流动文本 ================= */
+        (function () {
+            const WORDS = [
+                '赛博电子狗 · CYBER DOG',
+                '不玩音游 · NO RHYTHM GAMES',
+                '神人开发者 · GOD-TIER DEVELOPER',
+                '最会打枪的男人 · THE BEST SHOOTER',
+                '二次元 · ANIME / ACG',
+                '神秘堵桥人 · DU QIAO PLAY',
+                '暴力炸 · HOU OH OH OH'
+            ];
+
+            const flow = document.getElementById('flow');
+            const frag = document.createDocumentFragment();
+
+            WORDS.forEach(function (word, i) {
+                const content = (word + '  ·  ').repeat(6);
+                const row = document.createElement('div');
+                row.className = 'flow-row';
+                row.innerHTML = '<span>' + content + '</span><span>' + content + '</span>';
+                row.style.animationDuration = (24 + (i % 5) * 6) + 's';
+                if (i % 2) row.style.animationDirection = 'reverse';
+                frag.appendChild(row);
+            });
+
+            flow.appendChild(frag);
+        })();
+
+        /* ================= 主题切换 ================= */
+        (function () {
+            const root = document.documentElement;
+            const btn = document.getElementById('themeToggle');
+            const label = btn.querySelector('.label');
+
+            const ORDER = ['auto', 'light', 'dark'];
+            const NAME = { auto: '跟随系统', light: '浅色', dark: '深色' };
+
+            let mode = 'auto';
+            try {
+                const saved = localStorage.getItem('card-theme');
+                if (ORDER.indexOf(saved) > -1) mode = saved;
+            } catch (e) { }
+
+            function apply() {
+                root.setAttribute('data-theme', mode);
+                label.textContent = NAME[mode];
+                btn.setAttribute('aria-label', '当前主题：' + NAME[mode] + '，点击切换');
+            }
+
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                mode = ORDER[(ORDER.indexOf(mode) + 1) % ORDER.length];
+                try { localStorage.setItem('card-theme', mode); } catch (err) { }
+                apply();
+            });
+
+            apply();
+        })();
+
+        /* ================= 卡片翻转（带误触防护） ================= */
+        (function () {
+            const scene = document.getElementById('scene');
+            let locked = false;
+
+            function flip() {
+                if (locked) return;
+                locked = true;
+                scene.classList.toggle('flipped');
+                setTimeout(function () { locked = false; }, 380);
+            }
+
+            scene.addEventListener('click', function (e) {
+                // ★ 双保险：点击信息条目或其内部任意元素，都不翻转
+                const t = e.target;
+                if (t && t.closest && t.closest('.item')) return;
+                flip();
+            });
+
+            scene.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    flip();
+                }
+            });
+        })();
+
+        /* ================= 点击复制 ================= */
+        (function () {
+            const toastEl = document.getElementById('toast');
+            let toastTimer;
+
+            function toast(msg) {
+                toastEl.textContent = msg;
+                toastEl.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(function () {
+                    toastEl.classList.remove('show');
+                }, 1700);
+            }
+
+            async function copyText(text) {
+                try {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        await navigator.clipboard.writeText(text);
+                        return true;
+                    }
+                    throw new Error('fallback');
+                } catch (err) {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.setAttribute('readonly', '');
+                    ta.style.cssText = 'position:fixed;top:0;left:-9999px;opacity:0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    let ok = false;
+                    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+                    ta.remove();
+                    return ok;
+                }
+            }
+
+            document.querySelectorAll('.item').forEach(function (item) {
+                async function run() {
+                    const text = item.dataset.copy || '';
+                    const ok = await copyText(text);
+
+                    item.classList.add('done');
+                    clearTimeout(item._t);
+                    item._t = setTimeout(function () {
+                        item.classList.remove('done');
+                    }, 1200);
+
+                    toast(ok ? '已复制 ' + text : '复制失败，请长按选择');
+                }
+
+                item.addEventListener('click', function (e) {
+                    e.stopPropagation();   // 阻止到达 scene
+                    run();
+                });
+
+                item.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        run();
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>

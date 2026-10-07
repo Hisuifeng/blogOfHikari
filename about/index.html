@@ -124,7 +124,11 @@
 	
 	<div id="content" tabindex="-1">
 		
+
 <link rel="stylesheet" href="/css/page.css">
+
+
+<link rel="stylesheet" href="/css/comments.css">
 
 
 
@@ -136,6 +140,13 @@
 		<p class="desc">关于我，以及这个博客。</p>
 	</div>
 
+	
+	<div class="card-switch" role="tablist" aria-label="切换显示">
+		<button class="card-tab on" type="button" role="tab" data-pane="about" aria-selected="true">关于我</button>
+		<button class="card-tab" type="button" role="tab" data-pane="card" aria-selected="false">电子名片</button>
+	</div>
+
+	<div class="card-pane" data-pane="about">
 	<div class="about-grid">
 		<div class="about-main">
 			<section class="card">
@@ -234,7 +245,7 @@
 					<li><span>分类</span><b>0</b></li>
 					<li><span>标签</span><b>6</b></li>
 					
-						<li><span>运行</span><b>358<em>天</em></b></li>
+						<li><span>运行</span><b>359<em>天</em></b></li>
 					
 				</ul>
 			</section>
@@ -261,7 +272,68 @@
 			
 		</aside>
 	</div>
+	</div>
+
+	<div class="card-pane" data-pane="card" hidden>
+		
+		<iframe class="namecard-frame" src="/card/" title="电子名片" loading="lazy"></iframe>
+
+		<a class="namecard-share" href="/card/">
+			<i class="fa fa-share-alt" aria-hidden="true"></i>分享名片
+		</a>
+	</div>
+
+	
+	
+		
+
+<section class="post-comments">
+	
+	<div class="twikoo" id="tcomment"
+		data-src="https://cdn.jsdelivr.net/npm/twikoo@2.0.12/dist/twikoo.min.js"
+		data-env-id="https://hikari-twikoo.netlify.app/.netlify/functions/twikoo"
+		data-lang="zh-CN"
+		data-path=""></div>
+</section>
+
+	
 </div>
+
+
+<script src="/js/comments.js"></script>
+
+
+<script>
+	/* 卡片切换：只切 data-pane 匹配的那一块，顺手把状态写进地址栏的 hash，
+	   这样「关于页 + #card」本身也是一个可以直接分享的入口。 */
+	(function () {
+		var tabs = document.querySelectorAll('.card-tab');
+		var panes = document.querySelectorAll('.card-pane');
+		if (!tabs.length || !panes.length) return;
+
+		function show(name) {
+			for (var i = 0; i < tabs.length; i++) {
+				var on = tabs[i].getAttribute('data-pane') === name;
+				tabs[i].classList.toggle('on', on);
+				tabs[i].setAttribute('aria-selected', String(on));
+			}
+			for (var j = 0; j < panes.length; j++) {
+				panes[j].hidden = panes[j].getAttribute('data-pane') !== name;
+			}
+			try {
+				history.replaceState(history.state, '', name === 'card' ? '#card' : location.pathname);
+			} catch (e) {}
+		}
+
+		for (var i = 0; i < tabs.length; i++) {
+			tabs[i].addEventListener('click', function () {
+				show(this.getAttribute('data-pane'));
+			});
+		}
+
+		if (location.hash === '#card') show('card');
+	})();
+</script>
 
 	</div>
 
