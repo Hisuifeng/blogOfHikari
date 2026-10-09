@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# 站点地图由 hexo-generator-sitemap 生成（见站点 _config.yml 的 sitemap 段）
+Sitemap: https://blogofhikari.pages.dev/sitemap.xml
