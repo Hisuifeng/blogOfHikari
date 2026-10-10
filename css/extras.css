@@ -1,0 +1,622 @@
+/* ==========================================================================
+   extras.css — 正文里的几类增强元素
+   标签实现见 scripts/tags.js（黑幕、GitHub 卡片），
+   前端增强见 js/extras.js（卡片补数据、流程图、公式、图片注释、分享）。
+
+   配色一律走 main.css 的设计令牌，描边一律 1px，和站内其它区块同一套语言。
+   ========================================================================== */
+
+/* ---------- 黑幕 ----------
+   用 --c-title 当色块：浅色主题下是黑底、显字后为白字；
+   暗色主题下自动反过来变成浅底深字，两套主题共用一条规则。 */
+.heimu {
+	color: transparent;
+	background: var(--c-title);
+	cursor: pointer;
+	/* 未揭开时选中会复制出原文，等于白遮了 */
+	-webkit-user-select: none;
+	user-select: none;
+	transition: color .18s ease;
+}
+
+.heimu:hover,
+.heimu.on {
+	color: var(--c-bg);
+}
+
+.heimu.on {
+	-webkit-user-select: auto;
+	user-select: auto;
+}
+
+/* ---------- GitHub 仓库卡片 ---------- */
+.ghcard {
+	display: block;
+	margin: 18px 0;
+	padding: 14px 16px;
+	background: var(--c-bg);
+	border: 1px solid var(--c-border-strong);
+	transition: border-color .15s ease, background-color .15s ease;
+}
+
+/* 正文里的链接默认带下划线描边，卡片不需要 */
+.post-content a.ghcard,
+.post-content a.ghcard:hover {
+	border-bottom: 0;
+}
+
+.ghcard:hover {
+	border-color: var(--c-primary);
+	background: var(--c-primary-soft);
+}
+
+.ghcard-head {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	color: var(--c-title);
+}
+
+.ghcard-head i {
+	font-size: 15px;
+	color: var(--c-muted);
+	transition: color .15s ease;
+}
+
+.ghcard:hover .ghcard-head i {
+	color: var(--c-primary);
+}
+
+.ghcard-name {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ghcard-desc {
+	display: block;
+	margin-top: 8px;
+	font-size: 13px;
+	line-height: 1.6;
+	color: var(--c-muted);
+}
+
+.ghcard-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 14px;
+	margin-top: 10px;
+	font-size: 12px;
+	color: var(--c-muted);
+}
+
+/* 数据没回来（或接口失败）时别留一块空行 */
+.ghcard-desc:empty,
+.ghcard-meta:empty {
+	display: none;
+}
+
+.ghcard-stat {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.ghcard-stat i {
+	color: var(--c-faint);
+}
+
+/* ---------- 流程图（mermaid） ----------
+   代码块由 js/extras.js 换成这个容器。底色沿用代码块，视觉上归到一类。 */
+.mermaid-box {
+	margin: 18px 0;
+	padding: 14px;
+	overflow-x: auto;
+	text-align: center;
+	background: var(--c-code-bg);
+	border: 1px solid var(--c-border);
+}
+
+.mermaid-box svg {
+	max-width: 100%;
+	height: auto;
+}
+
+/* 渲染失败时 mermaid 会把原文留在容器里，给一行提示 */
+.mermaid-box[data-failed]::before {
+	content: "流程图渲染失败";
+	display: block;
+	margin-bottom: 8px;
+	font-size: 12px;
+	color: var(--c-muted);
+}
+
+/* ---------- 数学公式（KaTeX） ----------
+   KaTeX 用的是 currentColor，配色不用管；这里只处理排版：
+   长公式横向滚动，别把正文撑破。 */
+.katex-display {
+	margin: 18px 0;
+	padding: 2px 0;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+.katex {
+	font-size: 1.05em;
+}
+
+/* ---------- 图片注释 ----------
+   js/extras.js 把带 title 的图片包成 figure + figcaption。 */
+.post-content figure.fig-wrap {
+	margin: 20px 0;
+}
+
+.post-content figure.fig-wrap img {
+	display: block;
+	margin: 0 auto;
+}
+
+.post-content figure.fig-wrap figcaption {
+	margin-top: 8px;
+	font-size: 12px;
+	line-height: 1.6;
+	text-align: center;
+	color: var(--c-muted);
+}
+
+/* ---------- 分享 ---------- */
+.share-box {
+	margin-top: 18px;
+	padding-top: 18px;
+	border-top: 1px dashed var(--c-border-strong);
+}
+
+.share-title {
+	margin-bottom: 12px;
+	font-size: 12px;
+	color: var(--c-muted);
+}
+
+.share-btns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.share-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 14px;
+	font-family: inherit;
+	font-size: 13px;
+	line-height: 1;
+	color: var(--c-text);
+	background: var(--c-bg);
+	border: 1px solid var(--c-border-strong);
+	cursor: pointer;
+	transition: color .15s ease, border-color .15s ease, background-color .15s ease;
+}
+
+.share-btn:hover {
+	color: var(--c-primary);
+	background: var(--c-primary-soft);
+	border-color: var(--c-primary);
+}
+
+.share-btn i {
+	font-size: 14px;
+}
+
+/* ---------- 分享海报 ----------
+   左文右码，主色竖条当装饰，和站内 .section-title 是同一个语言。 */
+.share-poster {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	margin-bottom: 16px;
+	padding: 18px 20px;
+	background: var(--c-surface);
+	border: 1px solid var(--c-border);
+	border-left: 3px solid var(--c-primary);
+}
+
+.share-poster-main {
+	flex: 1;
+	min-width: 0;
+}
+
+.share-poster-brand {
+	font-size: 11px;
+	letter-spacing: .08em;
+	color: var(--c-muted);
+}
+
+.share-poster-title {
+	margin-top: 8px;
+	font-size: 17px;
+	line-height: 1.45;
+	color: var(--c-title);
+	/* 最多两行，超出打点 */
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.share-poster-desc {
+	margin-top: 8px;
+	font-size: 12px;
+	line-height: 1.7;
+	color: var(--c-muted);
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.share-poster-meta {
+	margin-top: 10px;
+	font-size: 11px;
+	color: var(--c-faint);
+}
+
+.share-poster-qr {
+	flex: none;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+}
+
+/* 底色写死白：暗色主题下二维码同样需要浅底才扫得动 */
+.share-qr {
+	width: 96px;
+	height: 96px;
+	padding: 5px;
+	background: #fff;
+}
+
+.share-qr img,
+.share-qr canvas {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.share-qr-tip {
+	font-size: 10px;
+	color: var(--c-faint);
+}
+
+@media screen and (max-width: 600px) {
+	.share-poster {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.share-poster-qr {
+		align-self: center;
+	}
+}
+
+/* ==========================================================================
+   媒体查看器（图片 / 流程图）
+   结构由 js/extras.js 挂到 body 上 —— 不在 .post-content 里，
+   所以上面那些正文图片规则不会作用到它。
+   配色是深底白字的浮层，和站内的浅色卡片是两套语境，所以这里不复用 --c-*，
+   只有关闭键沿用「文本 ×」这个和抽屉、播放器一致的做法。
+   ========================================================================== */
+
+/* 查看器开着时锁住页面滚动，拖图不会带着背景一起动 */
+body.viewer-open {
+	overflow: hidden;
+}
+
+.viewer {
+	position: fixed;
+	inset: 0;
+	z-index: 1300;
+	display: flex;
+	flex-direction: column;
+	background: rgba(0, 0, 0, .92);
+	opacity: 0;
+	transition: opacity .18s ease;
+	/* 手势自己处理：别让浏览器把它当滚动或页面缩放 */
+	touch-action: none;
+}
+
+.viewer.on {
+	opacity: 1;
+}
+
+.viewer-stage {
+	position: relative;
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	cursor: grab;
+}
+
+.viewer-stage.dragging {
+	cursor: grabbing;
+}
+
+.viewer-media {
+	max-width: 100%;
+	max-height: 100%;
+	transform-origin: center center;
+	will-change: transform;
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-user-drag: none;
+}
+
+/* 流程图是 svg，去掉写死的宽高后交给 max-width/max-height 自适应 */
+.viewer-media svg {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+.viewer-cap {
+	margin: 0;
+	padding: 10px 20px 0;
+	font-size: 13px;
+	line-height: 1.5;
+	text-align: center;
+	color: rgba(255, 255, 255, .78);
+}
+
+.viewer-cap[hidden] {
+	display: none;
+}
+
+.viewer-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 2px;
+	padding: 10px 10px calc(10px + env(safe-area-inset-bottom, 0px));
+	background: rgba(0, 0, 0, .5);
+	border-top: 1px solid rgba(255, 255, 255, .14);
+}
+
+/* 工具键：和站内的 .share-btn 一样是 1px 描边的方块，
+   只是这里的底是黑的，所以走白色系 */
+.viewer-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	font-family: inherit;
+	font-size: 17px;
+	line-height: 1;
+	color: rgba(255, 255, 255, .78);
+	background: transparent;
+	border: 1px solid transparent;
+	cursor: pointer;
+	touch-action: manipulation;
+	transition: color .15s ease, border-color .15s ease, background-color .15s ease;
+}
+
+.viewer-btn:hover {
+	color: #fff;
+	background: rgba(255, 255, 255, .08);
+	border-color: rgba(255, 255, 255, .32);
+}
+
+.viewer-scale {
+	min-width: 52px;
+	text-align: center;
+	font-size: 12px;
+	color: rgba(255, 255, 255, .6);
+	font-variant-numeric: tabular-nums;
+}
+
+.viewer-close {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	font-family: inherit;
+	font-size: 24px;
+	line-height: 1;
+	color: rgba(255, 255, 255, .75);
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+	touch-action: manipulation;
+	transition: color .18s ease;
+}
+
+.viewer-close:hover {
+	color: #fff;
+}
+
+/* ---------- 小屏 ----------
+   手指当道：按钮放大到 44px，提示文字别贴着底部安全区。 */
+@media screen and (max-width: 600px) {
+	.viewer-btn {
+		width: 44px;
+		height: 44px;
+		font-size: 18px;
+	}
+
+	.viewer-close {
+		width: 44px;
+		height: 44px;
+	}
+
+	.viewer-cap {
+		padding: 8px 16px 0;
+		font-size: 12px;
+	}
+
+	.viewer-toolbar {
+		gap: 0;
+	}
+}
+
+/* 流程图可点：给个手型提示，和图片的 zoom-in 对应 */
+.mermaid-box {
+	cursor: zoom-in;
+}
+
+/* ==========================================================================
+   代码块：右上角工具条（语言角标 + 复制）与长块折叠
+   结构见 js/extras.js。角标原本由 post.js 单独绝对定位在右上角，
+   这里统一收进 .code-actions 里一起排。
+   ========================================================================== */
+
+.code-actions {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 2;
+	display: flex;
+	align-items: stretch;
+}
+
+/* 角标进了工具条就不再自己定位 */
+.code-actions .code-lang {
+	position: static;
+	top: auto;
+	right: auto;
+}
+
+.code-copy {
+	padding: 2px 10px;
+	font-family: inherit;
+	font-size: 11px;
+	line-height: 1.5;
+	letter-spacing: .04em;
+	color: var(--c-muted);
+	background: var(--c-surface);
+	border: 0;
+	border-left: 1px solid var(--c-border);
+	border-bottom: 1px solid var(--c-border);
+	cursor: pointer;
+	touch-action: manipulation;
+	transition: color .15s ease, background-color .15s ease;
+}
+
+.code-copy:hover {
+	color: var(--c-primary);
+}
+
+/* 工具条占了一行，给代码块补出顶部内边距 */
+pre.has-actions {
+	position: relative;
+	padding-top: 30px;
+}
+
+/* ---------- 折叠 ----------
+   21em ≈ 13 行（行高 1.6）。用 em 而不是 px，改字号时不用跟着调。 */
+pre.is-folded {
+	max-height: 21em;
+	overflow: hidden;
+}
+
+.code-fold {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	padding: 28px 0 8px;
+	font-family: inherit;
+	font-size: 12px;
+	line-height: 1.4;
+	color: var(--c-primary);
+	/* 由下往上的渐隐，让"还有内容"这件事看得出来 */
+	background: linear-gradient(to top, var(--c-code-bg) 45%, transparent);
+	border: 0;
+	cursor: pointer;
+	touch-action: manipulation;
+	transition: color .15s ease;
+}
+
+.code-fold:hover {
+	color: var(--c-primary-dark);
+}
+
+/* 展开后按钮落到代码下方，不再是浮层 */
+pre:not(.is-folded) .code-fold {
+	position: static;
+	padding: 10px 0 0;
+	background: none;
+}
+
+/* 折叠状态下复制按钮压在渐隐层上方，别被盖住 */
+pre.is-folded .code-actions {
+	z-index: 3;
+}
+
+/* ==========================================================================
+   代码层级折叠（fold gutter）
+   行号那一列在 code.css 里是 3.6em 宽，这里在它左边再让出 1em 放箭头。
+   结构见 js/extras.js 的 initCodeGutters。
+   ========================================================================== */
+
+pre.code-wrap[class*="language-"].line-numbers {
+	/* 原来是 3.6em */
+	padding-left: 4.6em;
+}
+
+/* 行号整体右移 1em，把左边那一列空出来 */
+pre.code-wrap[class*="language-"].line-numbers > code > .code-line::before {
+	left: -3.6em;
+	width: 3.6em;
+}
+
+.code-folder {
+	position: absolute;
+	top: 0;
+	left: -4.6em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.1em;
+	height: 1.6em;
+	padding: 0;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: 1;
+	color: var(--c-faint);
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+	-webkit-user-select: none;
+	user-select: none;
+	z-index: 1;
+	transition: color .15s ease, transform .15s ease;
+}
+
+.code-folder:hover {
+	color: var(--c-primary);
+}
+
+/* 收起时箭头朝右，展开后转 90° 朝下 */
+.code-folder.open {
+	transform: rotate(90deg);
+}
+
+/* 被收起来的行：display:none 让它既不占位，也不递增行号计数器 */
+.code-line.fold-hidden {
+	display: none;
+}
