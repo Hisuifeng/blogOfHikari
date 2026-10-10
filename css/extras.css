@@ -569,29 +569,25 @@ pre.is-folded .code-actions {
 
 /* ==========================================================================
    代码层级折叠（fold gutter）
-   行号那一列在 code.css 里是 3.6em 宽，这里在它左边再让出 1em 放箭头。
+   箭头插在行号与代码之间。关键是行号列的总宽一点没动：
+   仍由 code.css 定为 3.6em，代码区起点因此不受影响，
+   只是把行号右边原本留的 10px 空隙改作箭头位。
    结构见 js/extras.js 的 initCodeGutters。
    ========================================================================== */
 
-pre.code-wrap[class*="language-"].line-numbers {
-	/* 原来是 3.6em */
-	padding-left: 4.6em;
-}
-
-/* 行号整体右移 1em，把左边那一列空出来 */
 pre.code-wrap[class*="language-"].line-numbers > code > .code-line::before {
-	left: -3.6em;
-	width: 3.6em;
+	padding-right: 1.2em;
 }
 
 .code-folder {
 	position: absolute;
 	top: 0;
-	left: -4.6em;
+	/* 行号列的最右边，也就是紧跟在行号后面 */
+	left: -1.2em;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 1.1em;
+	width: 1.2em;
 	height: 1.6em;
 	padding: 0;
 	font-family: inherit;

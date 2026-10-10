@@ -409,6 +409,8 @@
 }
 
 .notfound-code {
+	/* 是 h1（页面里唯一的一级标题），把浏览器默认的外边距与字号收回来 */
+	margin: 0;
 	font-size: 84px;
 	font-weight: 700;
 	line-height: 1;

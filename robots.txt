@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 
-# 站点地图由 hexo-generator-sitemap 生成（见站点 _config.yml 的 sitemap 段）
-Sitemap: https://blogofhikari.pages.dev/sitemap.xml
+# 站点地图由 hexo-generator-sitemap 生成（见站点 _config.yml 的 sitemap 段）。
+# 这里必须是主域名：blogofhikari.pages.dev 是 Cloudflare Pages 的默认域名，
+# 内容是同一份，应在 Cloudflare 侧 301 到主域名，不该再引搜索引擎去抓它。
+Sitemap: https://blog.hikari233.qd.je/sitemap.xml
