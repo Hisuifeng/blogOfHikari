@@ -10,23 +10,7 @@
   <rights>All rights reserved 2026, Hikari</rights>
   <subtitle>记录与分享技术、建站与生活</subtitle>
   <title>Hikari's Blog 光的个人博客</title>
-  <updated>2026-10-04T17:34:14.797Z</updated>
-  <entry>
-    <author>
-      <name>Hikari</name>
-    </author>
-    <content>
-      <![CDATA[<h2 id="这篇文章用于测试评论系统"><a href="#这篇文章用于测试评论系统" class="headerlink" title="这篇文章用于测试评论系统"></a>这篇文章用于测试评论系统</h2><p>聪明的人已经在这两天发现了评论系统上线了🤫<br>最开始是用的giscus，发现是屎（这个项目已经残了，表情表情用不了，消息消息发不了）<br>后面就使用了<a href="https://twikoo.js.org/">Twikoo</a>，也就是现在的系统<br>欢迎来到我的博客评论<del>jm号不能发，nsfw也不能发，篇子也不能发，发给我没这些限制</del></p>]]>
-    </content>
-    <id>https://blog.hikari233.qd.je/2026/10/04/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95/</id>
-    <link href="https://blog.hikari233.qd.je/2026/10/04/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95/"/>
-    <published>2026-10-04T15:54:39.000Z</published>
-    <summary>
-      <![CDATA[<h2 id="这篇文章用于测试评论系统"><a href="#这篇文章用于测试评论系统" class="headerlink" title="这篇文章用于测试评论系统"></a>这篇文章用于测试评论系统</h2><p>聪明的人已经在这两天发现了评论系统上线了🤫<br>最开始是]]>
-    </summary>
-    <title>博客评论系统测试</title>
-    <updated>2026-10-04T17:34:14.797Z</updated>
-  </entry>
+  <updated>2026-10-04T18:35:24.403Z</updated>
   <entry>
     <author>
       <name>Hikari</name>
@@ -63,6 +47,22 @@
     </summary>
     <title>亡妻回忆录(蓝桥杯)</title>
     <updated>2026-09-29T15:28:01.177Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>Hikari</name>
+    </author>
+    <content>
+      <![CDATA[<h2 id="这篇文章用于测试评论系统"><a href="#这篇文章用于测试评论系统" class="headerlink" title="这篇文章用于测试评论系统"></a>这篇文章用于测试评论系统</h2><p>聪明的人已经在这两天发现了评论系统上线了🤫<br>最开始是用的giscus，发现是屎（这个项目已经残了，表情表情用不了，消息消息发不了）<br>后面就使用了<a href="https://twikoo.js.org/">Twikoo</a>，也就是现在的系统<br>欢迎来到我的博客评论<del>jm号不能发，nsfw也不能发，篇子也不能发，发给我没这些限制</del></p>]]>
+    </content>
+    <id>https://blog.hikari233.qd.je/2025/10/14/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95/</id>
+    <link href="https://blog.hikari233.qd.je/2025/10/14/%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95/"/>
+    <published>2025-10-14T15:54:39.000Z</published>
+    <summary>
+      <![CDATA[<h2 id="这篇文章用于测试评论系统"><a href="#这篇文章用于测试评论系统" class="headerlink" title="这篇文章用于测试评论系统"></a>这篇文章用于测试评论系统</h2><p>聪明的人已经在这两天发现了评论系统上线了🤫<br>最开始是]]>
+    </summary>
+    <title>博客评论系统测试</title>
+    <updated>2026-10-10T14:23:42.116Z</updated>
   </entry>
   <entry>
     <author>
