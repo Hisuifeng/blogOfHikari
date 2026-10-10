@@ -305,13 +305,53 @@
 	}
 
 	/* ---------- 数学公式 ----------
-	   KaTeX 的三个文件是 defer 加载的（见 post.ejs），换页后动态插入时
-	   又不保证已经就绪，所以这里等一等再渲染。 */
-	function initKatex(tries) {
-		if (!window.renderMathInElement) {
-			if ((tries || 0) < 20) setTimeout(function () { initKatex((tries || 0) + 1); }, 100);
-			return;
+	   KaTeX 由这里按需加载，不写在 HTML 里。
+	   原因：pjax 换页是重放 #content 里的 <script>，而 createElement 动态插入的
+	   脚本会忽略 defer、退化成异步执行，时机不确定；extras.js 本身没有 defer、
+	   是立即执行的，等不到它就渲染不了，表现成「首次点进文章公式不出来，
+	   刷新一次才对」。自己加载就没有这个顺序问题了。
+
+	   状态挂在 window 上：pjax 换页会重放本脚本，不能各管各的。 */
+	var KATEX_BASE = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/';
+	var KX = window.__restartKatex = window.__restartKatex || { loading: false, queue: [] };
+
+	function loadScript(src, done) {
+		var s = document.createElement('script');
+		s.src = src;
+		s.async = true;
+		s.onload = done;
+		/* 加载失败也放行：公式不渲染总好过把排队的人永远挂着 */
+		s.onerror = done;
+		document.head.appendChild(s);
+	}
+
+	function loadKatex(done) {
+		if (window.renderMathInElement) { done(); return; }
+
+		KX.queue.push(done);
+		if (KX.loading) return;
+		KX.loading = true;
+
+		/* 样式缺了公式会挤成一团，先插 link（不阻塞脚本加载） */
+		if (!document.querySelector('link[href*="katex"]')) {
+			var css = document.createElement('link');
+			css.rel = 'stylesheet';
+			css.href = KATEX_BASE + 'katex.min.css';
+			document.head.appendChild(css);
 		}
+
+		/* auto-render 依赖 katex 全局，必须串行加载 */
+		loadScript(KATEX_BASE + 'katex.min.js', function () {
+			loadScript(KATEX_BASE + 'contrib/auto-render.min.js', function () {
+				var q = KX.queue;
+				KX.queue = [];
+				for (var i = 0; i < q.length; i++) q[i]();
+			});
+		});
+	}
+
+	function renderMath() {
+		if (!window.renderMathInElement) return;
 		try {
 			window.renderMathInElement(root, {
 				delimiters: [
@@ -325,6 +365,12 @@
 				throwOnError: false
 			});
 		} catch (e) { /* 公式写错不该把整页脚本带崩 */ }
+	}
+
+	function initKatex() {
+		/* 正文里没有 $ 就完全不碰 KaTeX，不为它付流量 */
+		if (root.textContent.indexOf('$') === -1) return;
+		loadKatex(renderMath);
 	}
 
 	/* ---------- 媒体查看器 ----------
@@ -723,6 +769,6 @@
 	initCodeGutters();
 	initGhCards();
 	initMermaid();
-	initKatex(0);
+	initKatex();
 	initShareQr();
 })();
