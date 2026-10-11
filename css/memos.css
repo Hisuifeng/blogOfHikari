@@ -1,0 +1,365 @@
+/* ==========================================================================
+   memos.css — 说说
+   逻辑见 js/memos.js，页面见 layout/shuoshuo.ejs。
+   配色全部走 main.css 的设计令牌，1px 描边、零圆角。
+   ========================================================================== */
+
+/* ---------- 说说页：发布框只对博主显示 ----------
+
+   Twikoo 顶层的发布框是 .tk-comments 的直接子节点；评论里那条「回复」用的
+   也是 .tk-submit，但它在 .tk-comment 里面。所以这里必须用 > 限定，
+   一锅端就会把访客的回复框一起藏掉。 */
+.memos-page .tk-comments > .tk-submit {
+	display: none;
+}
+
+.memos-page.is-owner .tk-comments > .tk-submit {
+	display: block;
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid var(--c-border);
+}
+
+/* 发布框那句提醒只给博主看：.is-owner 由 js/memos.js 的 initOwnerGate 加上。
+   访客这边页面上不解释为什么没有发布框，留白更干净。 */
+.memos-page .memos-tip {
+	display: none;
+	margin: 0 0 18px;
+	font-size: 12px;
+	line-height: 1.75;
+	color: var(--c-muted);
+}
+
+.memos-page.is-owner .memos-tip {
+	display: block;
+}
+
+.memos-page .memos-tip code {
+	padding: 1px 4px;
+	font-size: 12px;
+	color: var(--c-primary-dark);
+	background: var(--c-primary-soft);
+	border: 1px solid var(--c-border);
+}
+
+/* ---------- 说说页：列表就是 Twikoo 的评论区 ----------
+
+   顶层那条是博主写的说说（发布入口只给博主），二级评论是访客的回复。
+   两种东西长得必须一眼能分开，所以说说走「卡片」，回复走「缩进细线」。 */
+
+/* 计数在说说页读着别扭（顶层是说说不是评论），排序按钮也没意义；
+   搜索、刷新、管理齿轮留着 —— 往前翻历史要靠搜索。 */
+.memos-page .tk-comments-count,
+.memos-page .tk-comments-sort {
+	display: none;
+}
+
+/* 标题栏瘦成右侧一条工具行（comments.css 里那个左侧主色竖条是给文章评论区的） */
+.memos-page .tk-comments-title {
+	justify-content: flex-end;
+	margin-bottom: 12px;
+	padding-left: 0;
+	border-left: 0;
+}
+
+/* Twikoo 给容器留了 10rem 的下限，空态时下面会空一大块 */
+.memos-page .tk-comments-container {
+	min-height: 0;
+}
+
+/* 一条说说：浅主色底 + 主色粗左条，和下面的回复拉开层次 */
+.memos-page .tk-comments-container > .tk-comment {
+	margin-bottom: 18px;
+	padding: 18px 20px 16px;
+	background: var(--c-primary-soft);
+	border: 1px solid var(--c-border);
+	border-left: 3px solid var(--c-primary);
+}
+
+.memos-page .tk-comments-container > .tk-comment:last-child {
+	margin-bottom: 0;
+}
+
+.memos-page .tk-comments-container > .tk-comment .tk-nick,
+.memos-page .tk-comments-container > .tk-comment .tk-nick-link {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--c-title);
+}
+
+.memos-page .tk-comments-container > .tk-comment .tk-nick-link:hover {
+	color: var(--c-primary);
+}
+
+/* 说说正文按正文的排版走，比回复大一号 */
+.memos-page .tk-comments-container > .tk-comment > .tk-main > .tk-content {
+	font-size: 15px;
+	line-height: 1.85;
+	color: var(--c-text);
+}
+
+/* 二级评论：访客的回复，缩进 + 细竖线，明显比说说轻。
+   分隔线挂在第一条回复上，而不是 .tk-replies 上 —— Twikoo 在没有回复时也会
+   渲染一个空的 .tk-replies，挂在容器上会让每条说说底下都多出一道虚线。 */
+.memos-page .tk-replies .tk-comment {
+	padding-left: 16px;
+	border-left: 1px solid var(--c-border);
+}
+
+.memos-page .tk-replies .tk-comment:first-child {
+	margin-top: 14px;
+	padding-top: 10px;
+	border-top: 1px dashed var(--c-border-strong);
+}
+
+.memos-page .tk-replies .tk-content {
+	font-size: 13.5px;
+	line-height: 1.75;
+}
+
+/* 空态：文案由 js/memos.js 换成「还没有说说」 */
+.memos-page .tk-comments-no {
+	font-size: 13px;
+	color: var(--c-muted);
+}
+
+/* ---------- 通用：条目（首页的「最近说说」在用） ---------- */
+
+.memos-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.memo {
+	position: relative;
+	padding-left: 52px;
+}
+
+/* 头像占左侧一列，昵称与内容自然排在右边 */
+.memo-head {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.memo-avatar {
+	display: block;
+	width: 40px;
+	height: 40px;
+	object-fit: cover;
+	background: var(--c-surface);
+	border: 1px solid var(--c-border);
+}
+
+/* 没有头像（或头像加载失败）时用首字母占位 */
+.memo-avatar-text {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	font-weight: 600;
+	color: #fff;
+	background: var(--c-primary);
+	border-color: var(--c-primary);
+}
+
+.memo-who {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 8px;
+	margin-bottom: 6px;
+	font-size: 13px;
+}
+
+.memo-nick {
+	font-weight: 600;
+	color: var(--c-title);
+}
+
+a.memo-nick:hover {
+	color: var(--c-primary);
+}
+
+.memo-time {
+	font-size: 12px;
+	color: var(--c-faint);
+}
+
+/* 内容沿用正文的排版，贴代码、链接、图片都能正常显示 */
+.memo-body {
+	font-size: 14px;
+	line-height: 1.75;
+	color: var(--c-text);
+	overflow-wrap: break-word;
+}
+
+.memo-body p {
+	margin: 0 0 8px;
+}
+
+.memo-body p:last-child {
+	margin-bottom: 0;
+}
+
+.memo-body img {
+	max-width: 100%;
+	border: 1px solid var(--c-border);
+}
+
+.memo-body a {
+	color: var(--c-primary);
+	border-bottom: 1px solid var(--c-border-strong);
+}
+
+.memo-body a:hover {
+	border-bottom-color: var(--c-primary);
+}
+
+.memo-body code {
+	padding: 2px 5px;
+	font-size: 13px;
+	color: var(--c-primary-dark);
+	background: var(--c-primary-soft);
+	border: 1px solid var(--c-border);
+}
+
+.memo-body pre {
+	margin: 10px 0;
+	padding: 12px 14px;
+	overflow-x: auto;
+	font-size: 13px;
+	background: var(--c-code-bg);
+	border: 1px solid var(--c-border);
+}
+
+.memo-body pre code {
+	padding: 0;
+	background: none;
+	border: 0;
+	color: inherit;
+}
+
+/* ---------- 首页侧栏：最近说说 ----------
+
+   这块挂在 .home-side（236px）里，卡片本身没有内边距 ——
+   按 .card-body 的 14px 自己补；补上之后头像正好和「说说」标题栏的文字对齐，
+   顶部那 14px 是留给标题栏那条分隔线的，不然头像会贴着它。
+   宽度只有两百多像素，条目整体收一号：头像 28px、缩进 38px、
+   正文 13px 且最多露 4 行（要看全文点「查看全部」去说说页）。
+   与上面那张作者名片之间留 16px，和日历卡片自己的 margin-top 一致。 */
+.home-side > * + .memos-recent {
+	margin-top: 16px;
+}
+
+.memos-recent .memos-list {
+	padding: 14px 14px 0;
+}
+
+.memos-recent .memos-empty,
+.memos-recent .memos-more-link {
+	padding-left: 14px;
+	padding-right: 14px;
+}
+
+.memos-recent .memo {
+	padding-left: 38px;
+	padding-bottom: 12px;
+	margin-bottom: 12px;
+	border-bottom: 1px solid var(--c-border);
+}
+
+.memos-recent .memo:last-child {
+	padding-bottom: 0;
+	margin-bottom: 0;
+	border-bottom: 0;
+}
+
+.memos-recent .memo-avatar {
+	width: 28px;
+	height: 28px;
+}
+
+.memos-recent .memo-avatar-text {
+	font-size: 12px;
+}
+
+.memos-recent .memo-who {
+	margin-bottom: 4px;
+	gap: 6px;
+	font-size: 12px;
+}
+
+.memos-recent .memo-body {
+	/* 侧栏只露个大概，点进说说页看全部 */
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	font-size: 13px;
+	line-height: 1.7;
+}
+
+.memos-recent .memos-more-link {
+	margin-top: 10px;
+}
+
+.memos-empty {
+	margin: 0;
+	font-size: 13px;
+	color: var(--c-muted);
+}
+
+.memos-empty[hidden] {
+	display: none;
+}
+
+/* 首页区块的「查看全部」入口，外观同 .section-more */
+.memos-more-link {
+	display: inline-block;
+	margin-top: 12px;
+	font-size: 13px;
+	color: var(--c-muted);
+}
+
+.memos-more-link:hover {
+	color: var(--c-primary);
+}
+
+/* ---------- 说说页头部 ---------- */
+
+.memos-hint {
+	margin: 0 0 18px;
+	font-size: 13px;
+	color: var(--c-muted);
+}
+
+/* main.css 里 .card 自己不带内边距（内容统一交给 .card-body，或各自带 14px）。
+   这张卡没有 card-body 的壳，得自己补上 —— 否则每条说说（以及首页那排头像）
+   都会贴到卡片的描边上。
+   comments.css 还给 .post-comments 加了 40px 上边距 / 24px 上内边距 / 顶部描边，
+   那是文章评论区用来跟正文分隔的，这里三样都不要。 */
+.memos-card.post-comments {
+	margin-top: 0;
+	padding: 16px 14px;
+	border-top: 0;
+}
+
+/* ≤900px 时侧栏并回单栏、撑满整行，但说说条目仍按侧栏那套尺寸走：
+   一行里放一个 28px 头像 + 38px 缩进并不难看，也省得多一套断点。
+   这里只留底色那几条 —— 大屏侧栏那套数字改一处，窄屏跟着一起变。 */
+@media screen and (max-width: 600px) {
+	.memo {
+		padding-left: 44px;
+	}
+
+	.memo-avatar {
+		width: 32px;
+		height: 32px;
+	}
+
+	.memos-page .tk-comments-container > .tk-comment {
+		padding: 14px 14px 12px;
+	}
+}

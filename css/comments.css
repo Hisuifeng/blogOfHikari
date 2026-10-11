@@ -42,10 +42,12 @@
 
 /* ---------- 强调色：Element UI 蓝 → 站点主色 ---------- */
 
+/* 注意是 .tk-action（单数）：Twikoo 的动作区类名如此，早先写成 .tk-actions
+   一直没匹配上，靠 .tk-action-link 兜住了按钮本身的颜色。 */
 .post-comments .tk-action-link,
 .post-comments .tk-action-icon,
 .post-comments .tk-button--text,
-.post-comments .tk-actions button,
+.post-comments .tk-action button,
 .post-comments .tk-icon.__comments {
 	color: var(--c-primary);
 }
@@ -121,10 +123,17 @@
 	stroke: var(--c-primary);
 }
 
-/* 标签 */
+/* 标签：蓝是 Twikoo 默认的强调色，绿是「博主」那一枚。
+   绿标签会落在说说卡片的浅主色底上，所以做成实心主色，免得和底色糊在一起。 */
 .post-comments .tk-tag-blue {
 	color: var(--c-primary);
 	background-color: var(--c-primary-soft);
+	border-color: var(--c-primary);
+}
+
+.post-comments .tk-tag-green {
+	color: #fff;
+	background-color: var(--c-primary);
 	border-color: var(--c-primary);
 }
 

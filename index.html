@@ -101,6 +101,9 @@
 	
 <link rel="stylesheet" href="/css/extras.css">
 
+	
+<link rel="stylesheet" href="/css/memos.css">
+
 <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Hikari's Blog 光的个人博客" type="application/atom+xml">
 </head>
 
@@ -124,6 +127,8 @@
 			<nav class="nav-menu" id="nav-menu" aria-label="主导航">
 				
 					<a href="/" data-nav="/">首页</a>
+				
+					<a href="/shuoshuo" data-nav="/shuoshuo">说说</a>
 				
 					<a href="/archives" data-nav="/archives">归档</a>
 				
@@ -637,6 +642,21 @@
 			
 			
 				
+
+
+	<section class="card memos-recent" data-count="3">
+		<p class="box-title">
+			<i class="fa fa-commenting-o" aria-hidden="true"></i>说说<span class="en">Memos</span>
+		</p>
+		<ul class="memos-list"></ul>
+		<p class="memos-empty" hidden>还没有说说</p>
+		<a class="memos-more-link" href="/shuoshuo/">查看全部 →</a>
+	</section>
+
+
+			
+			
+				
 <div class="cal-card" id="cal">
 	<p class="box-title">
 		<i class="fa fa-calendar-o" aria-hidden="true"></i>日历<span class="en">Calendar</span>
@@ -682,9 +702,19 @@
 </div>
 
 
+
+	
+<script src="/js/side.js"></script>
+
+
+
 	
 <script src="/js/calendar.js"></script>
 
+
+
+
+<script type="application/json" id="memos-config">{"envId":"https://hikari-twikoo.netlify.app/.netlify/functions/twikoo","path":"/shuoshuo/","recentCount":3}</script>
 
 
 	</div>
@@ -813,6 +843,10 @@
 	
 	
 <script src="/js/extras.js"></script>
+
+	
+	
+<script src="/js/memos.js"></script>
 
 	
 	
