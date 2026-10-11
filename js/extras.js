@@ -691,6 +691,9 @@
 		var pres = root.querySelectorAll('.post-content pre.code-wrap, .rich pre.code-wrap');
 
 		for (var p = 0; p < pres.length; p++) {
+			/* 换页会重跑 initAll，已经加过折叠箭头的块跳过 */
+			if (pres[p].querySelector('.code-folder')) continue;
+
 			var lines = pres[p].querySelectorAll('code > .code-line');
 			if (lines.length < 3) continue;
 
@@ -763,12 +766,20 @@
 		}
 	}
 
-	/* ---------- 每次都跑 ---------- */
-	initCaptions();
-	initCodeBlocks();
-	initCodeGutters();
-	initGhCards();
-	initMermaid();
-	initKatex();
-	initShareQr();
+	/* ---------- 初始化 ----------
+	   本脚本挂在 layout.ejs 上（#content 之外），只加载执行一次；
+	   pjax 换页不会重放它，所以自己监听 restart:page 再跑一遍。
+	   各初始化内部都有守卫（处理过就跳过），重复触发是安全的。 */
+	function initAll() {
+		initCaptions();
+		initCodeBlocks();
+		initCodeGutters();
+		initGhCards();
+		initMermaid();
+		initKatex();
+		initShareQr();
+	}
+
+	initAll();
+	document.addEventListener('restart:page', initAll);
 })();
