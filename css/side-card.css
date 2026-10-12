@@ -156,9 +156,9 @@
 	align-items: center;
 	gap: 6px;
 	/* 一行 = 12px × 1.6 行高 + 上下各 1px padding + 上下各 1px 边框 ≈ 23.2px，
-	   第二行的起点在 23.2 + 6(row-gap) ≈ 29px，所以 26px 正好只露一行。
+	   第二行的起点在 23.2 + 6(row-gap) ≈ 29px，所以 33px 正好只露一行。
 	   换字号/行高时这个数要跟着改。 */
-	max-height: 26px;
+	max-height: 33px;
 	overflow: hidden;
 }
 
