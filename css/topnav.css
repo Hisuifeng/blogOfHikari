@@ -149,8 +149,9 @@
 	gap: 2px;
 }
 
-/* 主题切换按钮：与 .nav-external 同尺寸（34×34），一排图标才对得齐。 */
-.theme-toggle {
+/* 主题切换按钮与 RSS 入口：与 .nav-external 同尺寸（34×34），一排图标才对得齐。 */
+.theme-toggle,
+.rss-link {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -164,7 +165,8 @@
 	transition: color .15s ease, background-color .15s ease, border-color .15s ease;
 }
 
-.theme-toggle:hover {
+.theme-toggle:hover,
+.rss-link:hover {
 	color: var(--c-primary);
 	background: var(--c-primary-soft);
 }
@@ -199,8 +201,20 @@
 		padding: 0 14px;
 	}
 
+	/* 两个快捷按钮挪到汉堡菜单左边，汉堡菜单保持最右：
+	   吸顶栏上「订阅 / 明暗」比「展开菜单」用得勤，露在外侧更好按。
+	   只在这里改视觉顺序（order），DOM 顺序与桌面端的排布都不动。 */
+	.rss-link {
+		order: 1;
+	}
+
+	.theme-toggle {
+		order: 2;
+	}
+
 	.hamburger {
 		display: flex;
+		order: 3;
 	}
 
 	.nav-menu {

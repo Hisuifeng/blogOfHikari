@@ -144,20 +144,34 @@
 	color: var(--c-muted);
 }
 
-/* 常写标签：**固定一行**。flex-wrap:nowrap 是关键 ——
-   一旦允许换行，标签一多就撑出第二行，名片跟着长高，
-   文章页侧栏就得靠滚动才能看全。放不下时由 .side-tag 省略号收尾。 */
+/* 常写标签：**固定一行**。高度是这块的硬约束（见文件头），不能让标签把名片撑高，
+   但也不能像以前那样顶出卡片右边。
+   做法：允许换行，再用 max-height 只露第一行的高度、overflow 把后面几行整行裁掉 ——
+   于是一个标签要么完整出现，要么整个不出现，不会留半截卡在卡片边上。
+   注意结构是 <li> 里套 <a class="side-tag">，**flex 子项是 li 而不是 a**：
+   只把规则写在 .side-tag 上不生效，那正是以前标签会一路溢出卡片的原因。 */
 .side-tags {
 	display: flex;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
 	align-items: center;
 	gap: 6px;
+	/* 一行 = 12px × 1.6 行高 + 上下各 1px padding + 上下各 1px 边框 ≈ 23.2px，
+	   第二行的起点在 23.2 + 6(row-gap) ≈ 29px，所以 26px 正好只露一行。
+	   换字号/行高时这个数要跟着改。 */
+	max-height: 26px;
+	overflow: hidden;
 }
 
-.side-tag {
+.side-tags li {
 	flex: 0 1 auto;
 	min-width: 0;
-	display: inline-block;
+}
+
+/* 单个标签本身就比整行还宽时（超长标签名），它会被压到行宽并用省略号收尾，
+   而不是撑破卡片；这种情况下它落在第二行、照样不显示。 */
+.side-tag {
+	/* 块级才能撑满 li 的宽度，省略号才有落点 */
+	display: block;
 	padding: 1px 7px;
 	font-size: 12px;
 	line-height: 1.6;
