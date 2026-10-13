@@ -167,6 +167,143 @@
 	color: var(--c-muted);
 }
 
+/* ---------- 音乐卡片 {% music %} ----------
+   卡片上只有播放键与进度条，播放交给固定的底部播放器（js/player.js）。
+   进度条的观感与 .player-bar 一致，但那条在 player.css 里、且只在开启播放器时
+   才加载，所以这里另写一份（改其中一个记得对照另一个）。 */
+.music-card {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin: 20px 0;
+	padding: 12px 14px;
+	background: var(--c-surface);
+	border: 1px solid var(--c-border);
+	border-left: 3px solid var(--c-primary);
+}
+
+/* url 配错时 tag 生成的是文字提示而不是卡片：退回块级排版 */
+p.music-card {
+	display: block;
+	font-size: 13px;
+	line-height: 1.7;
+	color: var(--c-muted);
+}
+
+.music-play {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 36px;
+	height: 36px;
+	font-size: 14px;
+	color: var(--c-primary);
+	background: var(--c-bg);
+	border: 1px solid var(--c-border);
+	cursor: pointer;
+	transition: color .15s ease, background-color .15s ease, border-color .15s ease;
+}
+
+.music-play:hover {
+	color: #fff;
+	background: var(--c-primary);
+	border-color: var(--c-primary);
+}
+
+/* 播放/暂停两个图标都渲染出来，按卡片状态显示其中一个（与播放器同一套做法） */
+.music-ico-playing {
+	display: none;
+}
+
+.music-card.playing .music-ico-idle {
+	display: none;
+}
+
+.music-card.playing .music-ico-playing {
+	display: inline;
+}
+
+.music-meta {
+	flex: 1;
+	min-width: 0;
+}
+
+.music-name {
+	display: block;
+	font-size: 14px;
+	color: var(--c-title);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.music-artist {
+	display: block;
+	margin-top: 1px;
+	font-size: 12px;
+	color: var(--c-faint);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* 进度条：16px 高的透明命中区里放一条 3px 细线，悬停/拖动时变粗 */
+.music-bar {
+	position: relative;
+	display: block;
+	height: 16px;
+	margin-top: 6px;
+	cursor: pointer;
+	touch-action: none;
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+.music-bar::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: calc(50% - 1.5px);
+	height: 3px;
+	background: var(--c-border);
+	transition: height .12s ease, top .12s ease;
+}
+
+.music-fill {
+	position: absolute;
+	left: 0;
+	top: calc(50% - 1.5px);
+	width: 0;
+	height: 3px;
+	background: var(--c-primary);
+	transition: width .12s linear, height .12s ease, top .12s ease;
+}
+
+.music-bar:hover::before,
+.music-bar:hover .music-fill {
+	top: calc(50% - 2.5px);
+	height: 5px;
+}
+
+/* 不是正在放的那首：按不动，也不给「可拖」的指针暗示 */
+.music-card:not(.current) .music-bar {
+	cursor: default;
+}
+
+/* 播放器关掉时（js/music-card.js 加的 .off）：整块压暗，点了没反应 */
+.music-card.off {
+	opacity: .6;
+}
+
+.music-card.off .music-play {
+	cursor: not-allowed;
+	color: var(--c-faint);
+	background: var(--c-surface);
+	border-color: var(--c-border);
+}
+
 /* ---------- 分享 ---------- */
 .share-box {
 	margin-top: 18px;

@@ -391,3 +391,128 @@ html.has-reveal .archive-year:nth-child(4) {
    关闭动画的规则，结果是换页完全没有动画、只有整页刷新才播 ——
    两边表现不一致。真正造成错位的是样式表卸载/重装的时间差，
    已经由 js/pjax.js 的预加载处理掉了，动画这边保持和整页刷新一致。 */
+
+/* ==========================================================
+    多级长条淡出（hero 区域装饰）
+    ----------------------------------------------------------
+    hero 区域的多条水平装饰条，错峰淡入后停留。
+    纯 CSS 动画，首屏直接播放。
+    ========================================================== */
+.hero-bars {
+	position: absolute;
+	left: 50%;
+	bottom: 20px;
+	transform: translateX(-50%);
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	pointer-events: none;
+}
+
+.hero-bars i {
+	display: block;
+	height: 2px;
+	background: var(--c-primary);
+	animation: bar-grow .6s ease both;
+}
+
+.hero-bars i:nth-child(1) { width: 80px; animation-delay: .5s; }
+.hero-bars i:nth-child(2) { width: 60px; animation-delay: .65s; }
+.hero-bars i:nth-child(3) { width: 40px; animation-delay: .8s; }
+.hero-bars i:nth-child(4) { width: 20px; animation-delay: .95s; }
+
+@keyframes bar-grow {
+	from {
+		transform: scaleX(0);
+		transform-origin: left;
+	}
+	to {
+		transform: scaleX(1);
+		transform-origin: left;
+	}
+}
+
+/* ==========================================================
+    折叠动画
+    ----------------------------------------------------------
+    移动端菜单和目录抽屉的平滑展开/收起。
+    用 max-height 过渡模拟高度动画（无法直接过渡 height:auto）。
+    ========================================================== */
+
+/* 移动端菜单折叠 */
+@media screen and (max-width: 768px) {
+	.nav-menu {
+		overflow: hidden;
+		max-height: 0;
+		transition: max-height .3s ease;
+	}
+
+	.nav-menu.show {
+		max-height: 400px;
+	}
+}
+
+/* 目录抽屉内容折叠 */
+.toc-drawer-panel .toc-content {
+	overflow: hidden;
+	max-height: none;
+	transition: max-height .3s ease;
+}
+
+/* ==========================================================
+    增强滚动动画
+    ----------------------------------------------------------
+    为更多元素添加 reveal 目标和错峰延迟。
+    ========================================================== */
+
+/* 文章页脚区域 */
+html.has-reveal .post-footer[data-reveal] {
+	animation-name: fade-in;
+}
+
+/* 分享区域 */
+html.has-reveal .share-box[data-reveal] {
+	animation-name: fade-in;
+}
+
+/* 上下篇导航 */
+html.has-reveal .post-nav[data-reveal] {
+	animation-name: fade-in;
+}
+
+/* 侧栏名片内部元素错峰 */
+html.has-reveal .side-card[data-reveal-now] .side-id {
+	animation: fade-up .4s ease both .05s;
+}
+
+html.has-reveal .side-card[data-reveal-now] .side-links {
+	animation: fade-up .4s ease both .1s;
+}
+
+/* 统计条数字错峰 */
+html.has-reveal .stat-bar[data-reveal-now] > div:nth-child(1) {
+	animation: fade-up .4s ease both .05s;
+}
+
+html.has-reveal .stat-bar[data-reveal-now] > div:nth-child(2) {
+	animation: fade-up .4s ease both .1s;
+}
+
+html.has-reveal .stat-bar[data-reveal-now] > div:nth-child(3) {
+	animation: fade-up .4s ease both .15s;
+}
+
+html.has-reveal .stat-bar[data-reveal-now] > div:nth-child(4) {
+	animation: fade-up .4s ease both .2s;
+}
+
+/* 长条在 prefers-reduced-motion 下禁用 */
+@media (prefers-reduced-motion: reduce) {
+	.hero-bars {
+		display: none !important;
+	}
+
+	.hero-bars i {
+		animation: none !important;
+	}
+}

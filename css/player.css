@@ -124,22 +124,28 @@
 	transform: rotate(180deg);
 }
 
-/* ---------- 可折叠面板 ---------- */
+/* ---------- 可折叠面板 ----------
+   用 max-height + opacity 做平滑折叠，而不是 display:none/block 硬切。
+   收起时 max-height 过渡到 0、opacity 淡出，visibility 延迟到动画结束才收起，
+   保证过渡期间内容仍可见。展开时 visibility 立即恢复。 */
 .player-panel {
-	display: none;
-	padding: 10px 10px 12px;
+	max-height: 0;
+	padding: 0 10px;
 	border-top: 1px solid var(--c-border);
+	overflow: hidden;
+	visibility: hidden;
+	opacity: 0;
+	transition: max-height .3s ease, opacity .22s ease,
+		padding .3s ease, visibility 0s linear .3s;
 }
 
 .player.open .player-panel {
-	display: block;
-	/* 只淡入、不做位移：面板高度随显隐变化，位移会带出一次跳动 */
-	animation: player-panel-in .18s ease both;
-}
-
-@keyframes player-panel-in {
-	from { opacity: 0; }
-	to { opacity: 1; }
+	max-height: 600px;
+	padding: 10px 10px 12px;
+	visibility: visible;
+	opacity: 1;
+	transition: max-height .3s ease, opacity .22s ease,
+		padding .3s ease, visibility 0s linear 0s;
 }
 
 /* ---------- 进度：时间里联两端，省掉一整行 ---------- */
@@ -306,20 +312,38 @@
 	to { opacity: 1; }
 }
 
-/* ---------- 播放列表 ---------- */
+/* ---------- 播放列表 ----------
+   折叠动画：用 max-height + opacity 过渡替代 hidden 属性的硬切。
+   收起时 max-height 收到 0、opacity 归零；展开时放宽到 168px 并淡入。
+   overflow-y:auto 保留内部滚动能力，max-height 只控制外框高度。 */
 .player-list {
-	max-height: 168px;
-	margin-top: 8px;
-	padding-top: 4px;
+	max-height: 0;
+	margin-top: 0;
+	padding-top: 0;
 	overflow-y: auto;
 	overscroll-behavior: contain;
 	list-style: none;
 	padding-left: 0;
-	border-top: 1px solid var(--c-border);
+	border-top: 1px solid transparent;
+	visibility: hidden;
+	/* 全部淡入淡出 */
+	-webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12px);
+	mask-image: linear-gradient(to bottom, transparent 0%, black 12px);
+	transition: max-height .28s ease, opacity .2s ease, margin-top .28s ease,
+		padding-top .28s ease, border-color .28s ease, visibility 0s linear .28s;
 }
 
-.player-list[hidden] {
-	display: none;
+.player-list.expanded {
+	max-height: 168px;
+	margin-top: 8px;
+	padding-top: 4px;
+	border-top-color: var(--c-border);
+	visibility: visible;
+	/* 展开时立即恢复可见性，不使用延迟 */
+	-webkit-mask-image: none;
+	mask-image: none;
+	transition: max-height .28s ease, opacity .2s ease, margin-top .28s ease,
+		padding-top .28s ease, border-color .28s ease, visibility 0s linear 0s;
 }
 
 .player-list li {

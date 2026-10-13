@@ -115,9 +115,23 @@
 		return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
 	}
 
+	/* 两个地址是不是同一首歌。
+	   不能直接比字符串：歌单里的地址过了一道 url_for，中文与空格会被编码成
+	   %E6%A8%AA%20 这种，而正文里 {% music %} 写的往往是原文。
+	   解码后比较，两边就都对得上了；解码失败（畸形 %）就退化成原样比。 */
+	function sameUrl(a, b) {
+		if (a === b) return true;
+		if (!a || !b) return false;
+		try {
+			return decodeURI(a) === decodeURI(b);
+		} catch (e) {
+			return false;
+		}
+	}
+
 	function indexOfUrl(u) {
 		for (var n = 0; n < songs.length; n++) {
-			if (songs[n].url === u) return n;
+			if (sameUrl(songs[n].url, u)) return n;
 		}
 		return -1;
 	}
@@ -837,8 +851,8 @@
 
 	if (listBtn && listEl) {
 		listBtn.addEventListener('click', function () {
-			var show = listEl.hidden;
-			listEl.hidden = !show;
+			var show = !listEl.classList.contains('expanded');
+			listEl.classList.toggle('expanded', show);
 			listBtn.setAttribute('aria-expanded', String(show));
 			listBtn.classList.toggle('on', show);
 			if (show) renderList();
@@ -1002,4 +1016,44 @@
 	var earlyTheme = window.__restartHolidaySongQueue;
 	window.__restartHolidaySongQueue = { push: applyHolidaySong };
 	if (earlyTheme && earlyTheme.length) applyHolidaySong(earlyTheme[earlyTheme.length - 1]);
+
+	/* ---------- 给正文里的音乐卡片用的小接口 ----------
+	   scripts/tags.js 的 {% music %} 生成 .music-card，js/music-card.js 驱动它。
+	   卡片不另造 <audio>：播放、暂停、切歌、跳转全部走这里，
+	   所以它和固定播放器永远是同一份状态、同一个解码器。
+	   判断「是不是同一首」用 sameUrl（解码后比较），不直接比字符串：
+	   歌单里的地址过了一道 url_for，中文、空格会是 %XX 编码，
+	   而正文里写的是原文 —— 直接比会把同一首歌当成两首，重复加进列表。 */
+	window.__restartPlayer = {
+		/* 当前曲目的地址。blob 模式下 audio.src 是 blob: 地址，卡片拿它比不了，
+		   所以这里给的是歌单里那一份原始地址。 */
+		url: function () { return (songs[i] || {}).url || ''; },
+		/* 这首是不是正在放的那首 */
+		isCurrent: function (url) { return !!url && sameUrl((songs[i] || {}).url || '', url); },
+		playing: function () { return !audio.paused && !audio.ended; },
+		/* 与播放器自己的进度条同一个表达式：
+		   拖动中（uiRatio 已锁）返回手指位置，否则返回真实进度 */
+		ratio: function () {
+			if (uiRatio !== null) return uiRatio;
+			var d = seekLength();
+			return d > 0 ? audio.currentTime / d : 0;
+		},
+		/* 卡片上的播放键：这首在播就暂停；不在歌单里就先补进歌单再播 ——
+		   正文里写 {% music %} 不必先把歌登记到 theme._config.yml。 */
+		toggleUrl: function (url, name, artist) {
+			if (!url) return;
+			var n = indexOfUrl(url);
+			if (n < 0) {
+				songs.push({ name: name || '', artist: artist || '', url: url });
+				n = songs.length - 1;
+			}
+			if (n === i) {
+				if (audio.paused || audio.ended) play();
+				else pause();
+				return;
+			}
+			load(n, true);
+		},
+		seekRatio: applySeekRatio
+	};
 })();

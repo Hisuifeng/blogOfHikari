@@ -230,7 +230,9 @@
 	var REVEAL_SEL = [
 		'.post-item', '.archive-year', '.archive-item', '.cat-item', '.cloud-item',
 		'.friend-item', '.qr-item', '.side-card', '.toc-box',
-		'.home-archive-year'
+		'.home-archive-year', '.post-footer', '.share-box', '.post-nav',
+		'.stat-bar', '.home-block', '.memos-recent', '.calendar',
+		'.post-copyright', '.post-tags'
 	].join(', ');
 
 	function initPage() {
